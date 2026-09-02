@@ -1206,7 +1206,7 @@ table.list tbody tr{cursor:pointer}
   /* 解析 markdown 段落为 fields */
   function parseAiMd(md) {
     var fields = {};
-    var re = /\n##\s*([^\n]+)\n([\s\S]*?)(?=\n##\s|$)/g;
+    var re = /(?:^|\n)##\s*([^\n]+)\n([\s\S]*?)(?=\n##\s|$)/g;
     var m;
     while ((m = re.exec(md)) !== null) {
       fields[m[1].trim()] = m[2].trim();
