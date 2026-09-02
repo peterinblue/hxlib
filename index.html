@@ -545,7 +545,8 @@ table.list tbody tr{cursor:pointer}
           <option value="cat">按一级分类</option>
         </select>
         <select id="pageSize">
-          <option value="20" selected>20 条/页</option>
+          <option value="10" selected>10 条/页</option>
+          <option value="20">20 条/页</option>
           <option value="50">50 条/页</option>
           <option value="100">100 条/页</option>
         </select>
@@ -788,7 +789,7 @@ table.list tbody tr{cursor:pointer}
   if (!AI_CFG.key) AI_CFG.key = DEFAULT_CFG.key;
 
   /* ================= 状态 ================= */
-  var S = { q: '', qMode: 'and', batch: '', cat: '', unit: '', proj: '', flag: '', sort: 'default', page: 1, size: 20 };
+  var S = { q: '', qMode: 'and', batch: '', cat: '', unit: '', proj: '', flag: '', sort: 'default', page: 1, size: 10 };
   var view = [];
 
   /* ================= 初始化下拉 ================= */
