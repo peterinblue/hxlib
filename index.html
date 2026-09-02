@@ -59,6 +59,7 @@ header{
 
 /* ---------- Main ---------- */
 main{max-width:1440px;margin:0 auto;padding:16px 20px 60px}
+.qzone{position:sticky;top:62px;z-index:50}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:14px}
 
 /* Filters */
@@ -100,7 +101,7 @@ main{max-width:1440px;margin:0 auto;padding:16px 20px 60px}
 table.list{display:table}
 table.list th{
   text-align:left;font-size:12px;font-weight:500;color:var(--t2);padding:10px 12px;
-  background:#fafbfc;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;
+  background:#fafbfc;border-bottom:1px solid var(--line);white-space:nowrap;
 }
 table.list td{padding:11px 12px;border-bottom:1px solid var(--line-2);vertical-align:top;font-size:13px}
 table.list tbody tr:hover{background:#fafbfc}
@@ -240,6 +241,7 @@ table.list tbody tr{cursor:pointer}
   .filters{padding:12px}
   .f-grid{grid-template-columns:1fr 1fr}
   .toolbar{padding:10px 12px}
+  .qzone{top:72px}
   .drawer{width:100%;top:auto;height:92vh;border-radius:16px 16px 0 0;transform:translateY(100%)}
   .drawer.on{transform:translateY(0)}
   .dw-ft{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
@@ -265,17 +267,17 @@ table.list tbody tr{cursor:pointer}
 }
 .bot-fab{
   position:fixed; right:20px; bottom:20px; z-index:9000;
-  width:64px; height:64px; border-radius:50%;
-  background:var(--bot-bg); border:1px solid var(--bot-line);
-  box-shadow:var(--bot-shadow-sm); cursor:pointer;
+  width:62px; height:62px;
+  background:transparent; border:none; box-shadow:none;
+  cursor:pointer;
   display:flex; align-items:center; justify-content:center;
   transition:.2s; padding:0;
   animation:bot-fab-in .35s cubic-bezier(.34,1.56,.64,1) both;
 }
 @keyframes bot-fab-in{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.bot-fab:hover{transform:scale(1.08); box-shadow:var(--bot-shadow)}
+.bot-fab:hover{transform:scale(1.08)}
 .bot-fab:active{transform:scale(.96)}
-.bot-fab img{width:54px; height:54px; object-fit:contain; border-radius:50%}
+.bot-fab img{width:60px; height:60px; object-fit:contain}
 .bot-fab .pulse{
   position:absolute; top:2px; right:2px; width:12px; height:12px; border-radius:50%;
   background:#22c55e; border:2px solid #fff; display:none;
@@ -474,6 +476,7 @@ table.list tbody tr{cursor:pointer}
 </header>
 
 <main>
+  <div class="qzone">
   <!-- 筛选区 -->
   <div class="panel">
     <div class="filters">
@@ -529,7 +532,7 @@ table.list tbody tr{cursor:pointer}
     </div>
   </div>
 
-  <!-- 列表 -->
+  <!-- 查询区固定：筛选 + 工具条（与标题栏一起吸顶） -->
   <div class="panel">
     <div class="toolbar">
       <div class="tb-count">共 <b id="cnt">0</b> 条档案<span id="cntSub"></span></div>
@@ -542,12 +545,17 @@ table.list tbody tr{cursor:pointer}
           <option value="cat">按一级分类</option>
         </select>
         <select id="pageSize">
-          <option value="20">20 条/页</option>
-          <option value="50" selected>50 条/页</option>
+          <option value="20" selected>20 条/页</option>
+          <option value="50">50 条/页</option>
           <option value="100">100 条/页</option>
         </select>
       </div>
     </div>
+  </div>
+  </div><!-- /qzone -->
+
+  <!-- 列表 -->
+  <div class="panel">
     <div class="tbl-wrap">
       <table class="list">
         <thead>
@@ -780,7 +788,7 @@ table.list tbody tr{cursor:pointer}
   if (!AI_CFG.key) AI_CFG.key = DEFAULT_CFG.key;
 
   /* ================= 状态 ================= */
-  var S = { q: '', qMode: 'and', batch: '', cat: '', unit: '', proj: '', flag: '', sort: 'default', page: 1, size: 50 };
+  var S = { q: '', qMode: 'and', batch: '', cat: '', unit: '', proj: '', flag: '', sort: 'default', page: 1, size: 20 };
   var view = [];
 
   /* ================= 初始化下拉 ================= */
