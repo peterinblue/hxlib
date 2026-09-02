@@ -249,6 +249,208 @@ table.list tbody tr{cursor:pointer}
   .f-grid{grid-template-columns:1fr}
   .f-search .sw{min-width:100%}
 }
+/* ---------- 悬浮问答机器人 · 沪杏智答 ---------- */
+:root{
+  --bot-bg:#ffffff;
+  --bot-bg-2:#f7f8fa;
+  --bot-line:#e6e8eb;
+  --bot-line-2:#eef0f2;
+  --bot-text:#1f2328;
+  --bot-text-2:#6a737d;
+  --bot-text-3:#a0a8b1;
+  --bot-accent:#3a4654;
+  --bot-accent-2:#262d36;
+  --bot-shadow:0 12px 40px rgba(31,35,40,.18),0 2px 8px rgba(31,35,40,.08);
+  --bot-shadow-sm:0 4px 14px rgba(31,35,40,.12);
+}
+.bot-fab{
+  position:fixed; right:20px; bottom:20px; z-index:9000;
+  width:64px; height:64px; border-radius:50%;
+  background:var(--bot-bg); border:1px solid var(--bot-line);
+  box-shadow:var(--bot-shadow-sm); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:.2s; padding:0;
+  animation:bot-fab-in .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes bot-fab-in{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.bot-fab:hover{transform:scale(1.08); box-shadow:var(--bot-shadow)}
+.bot-fab:active{transform:scale(.96)}
+.bot-fab img{width:54px; height:54px; object-fit:contain; border-radius:50%}
+.bot-fab .pulse{
+  position:absolute; top:2px; right:2px; width:12px; height:12px; border-radius:50%;
+  background:#22c55e; border:2px solid #fff; display:none;
+}
+.bot-fab .pulse.on{display:block; animation:bot-pulse 1.6s infinite}
+@keyframes bot-pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.bot-fab .badge{
+  position:absolute; top:-6px; left:-6px; min-width:18px; height:18px; padding:0 5px;
+  border-radius:9px; background:var(--bot-accent); color:#fff;
+  font-size:11px; font-weight:600; display:none; align-items:center; justify-content:center;
+}
+.bot-fab .badge.on{display:flex}
+
+/* 面板容器：默认隐藏，点击后弹出 */
+.bot-panel{
+  position:fixed; right:20px; bottom:96px; z-index:8999;
+  width:400px; max-width:calc(100vw - 24px); height:560px; max-height:calc(100vh - 130px);
+  background:var(--bot-bg); border:1px solid var(--bot-line); border-radius:16px;
+  box-shadow:var(--bot-shadow); overflow:hidden;
+  display:none; flex-direction:column;
+  transform-origin:bottom right; animation:bot-panel-in .25s ease both;
+}
+.bot-panel.open{display:flex}
+@keyframes bot-panel-in{from{transform:translateY(10px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+/* 贴边收起态 */
+.bot-panel.docked{height:48px; max-height:48px}
+.bot-panel.docked .bot-body, .bot-panel.docked .bot-input, .bot-panel.docked .bot-mode{display:none}
+.bot-panel.docked .bot-head{cursor:pointer}
+
+/* 头部 */
+.bot-head{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; background:var(--bot-bg);
+  border-bottom:1px solid var(--bot-line-2); flex:none;
+}
+.bot-head .ava{
+  width:36px; height:36px; border-radius:50%;
+  background:var(--bot-bg-2); border:1px solid var(--bot-line);
+  display:flex; align-items:center; justify-content:center; overflow:hidden; flex:none;
+}
+.bot-head .ava img{width:32px; height:32px; object-fit:contain}
+.bot-head .meta{min-width:0; flex:1}
+.bot-head .meta h4{font-size:14px; font-weight:600; color:var(--bot-text); display:flex; align-items:center; gap:6px}
+.bot-head .meta h4 .dot{width:6px; height:6px; border-radius:50%; background:#22c55e}
+.bot-head .meta p{font-size:11px; color:var(--bot-text-3); margin-top:1px}
+.bot-head .acts{display:flex; gap:4px; flex:none}
+.bot-head .acts button{
+  width:30px; height:30px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--bot-text-2); transition:.15s;
+}
+.bot-head .acts button:hover{background:var(--bot-bg-2); color:var(--bot-text)}
+.bot-head .acts svg{width:16px; height:16px; fill:currentColor}
+
+/* 模式切换 segmented */
+.bot-mode{
+  display:flex; padding:10px 14px 6px;
+  background:var(--bot-bg); flex:none;
+}
+.bot-mode .seg{
+  display:flex; flex:1; background:var(--bot-bg-2); border-radius:8px; padding:3px; gap:3px;
+}
+.bot-mode .seg button{
+  flex:1; padding:6px 10px; border-radius:6px; font-size:12px;
+  color:var(--bot-text-2); transition:.15s; display:flex; align-items:center; justify-content:center; gap:4px;
+}
+.bot-mode .seg button.active{background:var(--bot-bg); color:var(--bot-text); box-shadow:0 1px 2px rgba(0,0,0,.06); font-weight:500}
+.bot-mode .seg button svg{width:13px; height:13px; fill:currentColor}
+.bot-mode .seg .desc{font-size:10px; color:var(--bot-text-3); padding:0 4px}
+
+/* 消息区 */
+.bot-body{
+  flex:1; overflow-y:auto; padding:12px 14px;
+  background:var(--bot-bg-2); scroll-behavior:smooth;
+}
+.bot-body::-webkit-scrollbar{width:6px}
+.bot-body::-webkit-scrollbar-thumb{background:var(--bot-line); border-radius:3px}
+
+.bot-msg{display:flex; gap:8px; margin-bottom:14px; align-items:flex-start}
+.bot-msg.user{flex-direction:row-reverse}
+.bot-msg .ava{
+  width:28px; height:28px; border-radius:50%; flex:none;
+  background:var(--bot-bg); border:1px solid var(--bot-line);
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.bot-msg .ava img{width:24px; height:24px; object-fit:contain}
+.bot-msg.user .ava{background:var(--bot-accent); border-color:var(--bot-accent); color:#fff; font-size:11px; font-weight:600}
+.bot-msg .bubble{
+  max-width:calc(100% - 44px); padding:9px 12px;
+  border-radius:12px; font-size:13px; line-height:1.55;
+  word-break:break-word; white-space:pre-wrap;
+}
+.bot-msg.bot .bubble{background:var(--bot-bg); color:var(--bot-text); border:1px solid var(--bot-line-2); border-top-left-radius:3px}
+.bot-msg.user .bubble{background:var(--bot-accent); color:#fff; border-top-right-radius:3px}
+.bot-msg .bubble.thinking{background:var(--bot-bg); color:var(--bot-text-2); font-style:italic}
+.bot-msg .bubble .typing{display:inline-flex; gap:3px; padding:2px 0}
+.bot-msg .bubble .typing span{
+  width:6px; height:6px; border-radius:50%; background:var(--bot-text-3);
+  animation:bot-dot 1.2s infinite;
+}
+.bot-msg .bubble .typing span:nth-child(2){animation-delay:.15s}
+.bot-msg .bubble .typing span:nth-child(3){animation-delay:.3s}
+@keyframes bot-dot{0%,60%,100%{opacity:.3; transform:translateY(0)}30%{opacity:1; transform:translateY(-3px)}}
+.bot-msg .bubble .reasoning{
+  margin-top:8px; padding:8px 10px; background:var(--bot-bg-2); border-radius:8px;
+  font-size:12px; color:var(--bot-text-2); border-left:2px solid var(--bot-line);
+}
+.bot-msg .bubble .reasoning::before{content:"💭 思考过程"; display:block; font-weight:600; color:var(--bot-text); margin-bottom:4px; font-size:11px}
+.bot-msg .ts{font-size:10px; color:var(--bot-text-3); margin:4px 6px 0}
+
+/* 快捷问题（冷启动） */
+.bot-suggest{padding:4px 0 12px}
+.bot-suggest .label{font-size:11px; color:var(--bot-text-3); margin-bottom:8px}
+.bot-suggest .items{display:flex; flex-wrap:wrap; gap:6px}
+.bot-suggest .items button{
+  padding:6px 10px; border-radius:14px; background:var(--bot-bg);
+  border:1px solid var(--bot-line); font-size:12px; color:var(--bot-text-2);
+  transition:.15s; text-align:left; line-height:1.3;
+}
+.bot-suggest .items button:hover{border-color:var(--bot-accent); color:var(--bot-accent)}
+
+/* 输入区 */
+.bot-input{
+  flex:none; padding:10px 12px;
+  background:var(--bot-bg); border-top:1px solid var(--bot-line-2);
+}
+.bot-input .row{
+  display:flex; align-items:flex-end; gap:8px;
+  background:var(--bot-bg-2); border:1px solid var(--bot-line); border-radius:10px;
+  padding:6px 6px 6px 10px; transition:.15s;
+}
+.bot-input .row:focus-within{border-color:var(--bot-accent); background:var(--bot-bg)}
+.bot-input textarea{
+  flex:1; border:none; background:transparent; outline:none; resize:none;
+  padding:6px 0; font-size:13px; line-height:1.5; max-height:96px; min-height:24px;
+  color:var(--bot-text);
+}
+.bot-input textarea::placeholder{color:var(--bot-text-3)}
+.bot-input .acts{display:flex; gap:4px; align-items:center; flex:none}
+.bot-input .acts button{
+  width:32px; height:32px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--bot-text-2); transition:.15s;
+}
+.bot-input .acts button:hover{background:rgba(0,0,0,.04); color:var(--bot-text)}
+.bot-input .acts button.recording{background:#fee2e2; color:#dc2626; animation:bot-pulse 1.4s infinite}
+.bot-input .acts button:disabled{opacity:.4; cursor:not-allowed}
+.bot-input .acts button svg{width:16px; height:16px; fill:currentColor}
+.bot-input .acts .send{
+  background:var(--bot-accent); color:#fff;
+}
+.bot-input .acts .send:hover{background:var(--bot-accent-2)}
+.bot-input .hint{font-size:10px; color:var(--bot-text-3); margin-top:6px; display:flex; justify-content:space-between}
+.bot-input .hint .rec{color:#dc2626; display:none; align-items:center; gap:4px}
+.bot-input .hint .rec.on{display:flex}
+
+/* 响应式：手机端 */
+@media (max-width:640px){
+  .bot-fab{right:14px; bottom:14px; width:56px; height:56px}
+  .bot-fab img{width:46px; height:46px}
+  .bot-panel{
+    right:8px; left:8px; bottom:80px; width:auto; max-width:none;
+    height:calc(100vh - 100px); max-height:none;
+    border-radius:14px;
+  }
+}
+
+/* 全屏遮罩（仅手机） */
+@media (max-width:640px){
+  body.bot-open{overflow:hidden}
+  body.bot-open::after{
+    content:""; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:8998;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1232,6 +1434,490 @@ table.list tbody tr{cursor:pointer}
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+</script>
+
+<!-- ============== 沪杏智答 · 悬浮问答机器人 ============== -->
+<button class="bot-fab" id="botFab" aria-label="打开沪杏智答">
+  <img src="assets/bot.png" alt="沪杏智答">
+  <span class="pulse" id="botPulse"></span>
+  <span class="badge" id="botBadge">0</span>
+</button>
+
+<div class="bot-panel" id="botPanel" role="dialog" aria-label="沪杏智答">
+  <div class="bot-head" id="botHead">
+    <div class="ava"><img src="assets/bot.png" alt=""></div>
+    <div class="meta">
+      <h4>沪杏智答 <span class="dot"></span></h4>
+      <p id="botStatus">在线 · 知识问答助手</p>
+    </div>
+    <div class="acts">
+      <button id="botNew" title="新对话" aria-label="新对话">
+        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      </button>
+      <button id="botDock" title="贴边收起" aria-label="贴边收起">
+        <svg viewBox="0 0 24 24"><path d="M19 11H5v2h14v-2zm-2-7H7v2h10V4zm0 12H7v2h10v-2z"/></svg>
+      </button>
+      <button id="botClose" title="关闭" aria-label="关闭">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="bot-mode">
+    <div class="seg" role="tablist">
+      <button class="active" data-mode="think" role="tab" title="快思考：日常问答、档案查询">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        思考模式
+      </button>
+      <button data-mode="expert" role="tab" title="专家模式：深度分析、权威解答">
+        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+        专家模式
+      </button>
+    </div>
+  </div>
+
+  <div class="bot-body" id="botBody">
+    <!-- 消息动态注入 -->
+  </div>
+
+  <div class="bot-input">
+    <div class="row">
+      <textarea id="botText" rows="1" placeholder="输入您的问题，Enter 发送，Shift+Enter 换行"></textarea>
+      <div class="acts">
+        <button id="botMic" title="语音输入" aria-label="语音输入">
+          <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
+        </button>
+        <button id="botSend" class="send" title="发送" aria-label="发送">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="hint">
+      <span class="rec" id="botRecHint">● 正在聆听...</span>
+      <span>由沪杏智答生成，内容仅供参考</span>
+    </div>
+  </div>
+</div>
+<script>/* ============================================================
+ * 沪杏智答 · 悬浮问答机器人
+ * 功能：思考 / 专家 双模式、语音输入、多轮对话、历史持久化
+ * 依赖：window.AGNES = { base, key, model }
+ * ============================================================ */
+(function () {
+  'use strict';
+
+  // ---------- 配置 ----------
+  // 与全站共享同一套 agnes 配置；窗口层单独传值（不污染档案系统 keyMap）
+  var AGNES_BASE = (window.AGNES && window.AGNES.base) || 'https://api.agnes-ai.cn/v1';
+  var AGNES_KEY = (window.AGNES && window.AGNES.key) || 'sk-13HeUydAemMZQHZSTipmYBMGL3k60OvQ5K14TvO4zuCtZfAl';
+  var AGNES_MODEL = (window.AGNES && window.AGNES.model) || 'agnes-2.0-flash';
+  // 档案系统数据（用于回答档案相关问题时检索）
+  var ARCHIVE_REF = window.ARCHIVE || null;
+
+  // ---------- 持久化 ----------
+  var LS_KEY = 'hxzhidda_state_v1';
+  var LS_HIST = 'hxzhidda_history_v1';
+  function loadJSON(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function saveJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  // ---------- 状态 ----------
+  var state = Object.assign({
+    open: false, docked: false, mode: 'think',
+    history: [] // {role, content, ts, reasoning?}
+  }, loadJSON(LS_KEY, {}));
+  if (!Array.isArray(state.history)) state.history = [];
+
+  // 全局历史（所有对话都汇总，最多 50 条用于上下文；按当前会话再单独展示）
+  var globalHist = loadJSON(LS_HIST, []);
+  if (!Array.isArray(globalHist)) globalHist = [];
+
+  // ---------- DOM ----------
+  var $ = function (id) { return document.getElementById(id); };
+  var fab = $('botFab');
+  var panel = $('botPanel');
+  var head = $('botHead');
+  var body = $('botBody');
+  var text = $('botText');
+  var sendBtn = $('botSend');
+  var micBtn = $('botMic');
+  var closeBtn = $('botClose');
+  var newBtn = $('botNew');
+  var dockBtn = $('botDock');
+  var statusEl = $('botStatus');
+  var pulse = $('botPulse');
+  var badge = $('botBadge');
+  var recHint = $('botRecHint');
+
+  // ---------- 工具 ----------
+  function ts() {
+    var d = new Date(), p = function (n) { return n < 10 ? '0' + n : '' + n; };
+    return p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  function escapeHTML(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+  function nl2br(s) { return escapeHTML(s).replace(/\n/g, '<br>'); }
+  function save() {
+    saveJSON(LS_KEY, { open: state.open, docked: state.docked, mode: state.mode, history: state.history.slice(-20) });
+  }
+  function saveGlobal() {
+    saveJSON(LS_HIST, globalHist.slice(-50));
+  }
+
+  // ---------- 渲染 ----------
+  function renderAll() {
+    body.innerHTML = '';
+    if (!state.history.length) {
+      renderWelcome();
+    } else {
+      state.history.forEach(function (m) { renderMsg(m, false); });
+    }
+    scrollBottom();
+  }
+
+  function renderWelcome() {
+    var html = '<div class="bot-msg bot">';
+    html += '<div class="ava"><img src="assets/bot.png" alt=""></div>';
+    html += '<div class="bubble">你好！我是<b>沪杏智答</b>，沪杏科技图书馆的智能问答助手。<br>我可以帮你：<br>• 检索 <b>3,480+ 条科普视频档案</b>，按主题/单位/批次定位<br>• 解答 <b>科普知识</b>，从天文地理到生命科学<br>• 提供 <b>观看建议</b>，按年龄段与兴趣推荐影片<br>• <b>思考 / 专家</b> 两种模式自由切换<br>下方面板选个常见问题试试，或直接开口问 👇</div>';
+    html += '</div>';
+    body.insertAdjacentHTML('beforeend', html);
+
+    var sug = [
+      '找几部适合小学生的 AI 启蒙视频',
+      '最近有哪些关于航天的科普片？',
+      '帮我推荐 3 部讲中医药文化的视频',
+      '如何用一句话介绍这个系统？'
+    ];
+    var s = '<div class="bot-suggest"><div class="label">💡 常见问题</div><div class="items">';
+    sug.forEach(function (q) {
+      s += '<button data-q="' + escapeHTML(q) + '">' + escapeHTML(q) + '</button>';
+    });
+    s += '</div></div>';
+    body.insertAdjacentHTML('beforeend', s);
+    body.querySelectorAll('.bot-suggest button').forEach(function (b) {
+      b.addEventListener('click', function () { ask(this.getAttribute('data-q')); });
+    });
+  }
+
+  function renderMsg(m, animate) {
+    if (m.role === 'user') {
+      var u = '<div class="bot-msg user">' +
+        '<div class="ava">我</div>' +
+        '<div class="bubble">' + nl2br(m.content) + '</div>' +
+        '</div>';
+      body.insertAdjacentHTML('beforeend', u);
+    } else {
+      var thinking = m.role === 'bot' && m.reasoning && state.mode === 'think';
+      var b = '<div class="bot-msg bot">' +
+        '<div class="ava"><img src="assets/bot.png" alt=""></div>' +
+        '<div class="bubble">' +
+          (thinking ? '<div class="reasoning">' + nl2br(m.reasoning) + '</div>' : '') +
+          nl2br(m.content) +
+        '</div>' +
+        '</div>';
+      body.insertAdjacentHTML('beforeend', b);
+    }
+    if (animate !== false) scrollBottom();
+  }
+
+  function renderTyping() {
+    var html = '<div class="bot-msg bot" id="botTyping">' +
+      '<div class="ava"><img src="assets/bot.png" alt=""></div>' +
+      '<div class="bubble thinking"><span class="typing"><span></span><span></span><span></span></span> 正在思考…</div>' +
+      '</div>';
+    body.insertAdjacentHTML('beforeend', html);
+    scrollBottom();
+  }
+  function removeTyping() {
+    var t = $('botTyping'); if (t) t.remove();
+  }
+
+  function scrollBottom() {
+    body.scrollTop = body.scrollHeight;
+  }
+
+  // ---------- 调用 agnes ----------
+  function buildMessages(userText) {
+    var sysThink = '你是「沪杏智答」，沪杏科技图书馆的智能问答助手。你面向科普视频档案查询与科普知识科普。请用中文回答。回答要求：(1) 简洁清晰，结构化表达；(2) 涉及具体视频时尽量给出标题、单位、年份等关键信息；(3) 如果用户问题需要从档案库检索，先说明你打算怎么检索，再给出建议。';
+    var sysExpert = '你是「沪杏智答 · 专家模式」，一位资深科普内容策划专家 + 图书馆研究员。你面向沪杏科技图书馆 3480+ 条科普视频档案，擅长：科普影片选题策划、面向不同年龄段（小学/初中/高中/成人）的影片推荐与教育价值评估、跨学科知识科普（天文/生命/医药/材料/AI/航天/中医药等）、档案数据深度分析。请用中文回答：(1) 结构化（必要时使用列表 / 表格 / 分段）；(2) 引用具体证据（视频标题、单位、年份）；(3) 给出可操作的观看建议；(4) 必要时给出 2-3 个延伸问题供用户继续探索。';
+
+    var msgs = [{ role: 'system', content: state.mode === 'expert' ? sysExpert : sysThink }];
+
+    // 注入档案数据上下文（仅当用户问题与档案相关）
+    var ctx = buildArchiveContext(userText);
+    if (ctx) msgs.push({ role: 'system', content: ctx });
+
+    // 历史上下文：最近 6 轮（不含当前）
+    var recent = state.history.slice(-12);
+    recent.forEach(function (m) { msgs.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content }); });
+
+    msgs.push({ role: 'user', content: userText });
+    return msgs;
+  }
+
+  function buildArchiveContext(q) {
+    if (!ARCHIVE_REF || !ARCHIVE_REF.items || !ARCHIVE_REF.items.length) return '';
+    var qlow = (q || '').toLowerCase();
+    // 关键词命中触发档案上下文
+    var triggers = ['视频', '档案', '推荐', '找', '什么', '哪些', '推荐', '片', '科普', '课程', '项目', '单位', '检索', '查询', '搜索', '有没有', '想看'];
+    var hit = triggers.some(function (t) { return q.indexOf(t) >= 0; });
+    if (!hit) return '';
+
+    // 快速取前 8 条做样例（语义匹配不够准，但能给模型体感）
+    var ql = q.toLowerCase().split(/\s+/).filter(Boolean);
+    var matched = [];
+    for (var i = 0; i < ARCHIVE_REF.items.length && matched.length < 8; i++) {
+      var it = ARCHIVE_REF.items[i];
+      if (!it || !it.st) continue;
+      for (var j = 0; j < ql.length; j++) {
+        if (ql[j].length >= 2 && it.st.indexOf(ql[j]) >= 0) { matched.push(it); break; }
+      }
+    }
+    if (!matched.length) return '';
+
+    var cats = ARCHIVE_REF.cats || {};
+    var projs = ARCHIVE_REF.projs || {};
+    var lines = ['[档案库摘要：共 ' + ARCHIVE_REF.total + ' 条记录]', '示例候选：'];
+    matched.forEach(function (it) {
+      lines.push('- 《' + it.title + '》 · ' + (projs[it.p] || '未知项目') + ' · ' + (cats[it.c] || '未分类'));
+    });
+    lines.push('请基于这些示例，给出更系统的推荐 / 检索建议。');
+    return lines.join('\n');
+  }
+
+  function callAgnes(messages, onChunk, onDone, onErr) {
+    var ctrl = new AbortController();
+    fetch(AGNES_BASE + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + AGNES_KEY
+      },
+      body: JSON.stringify({
+        model: AGNES_MODEL,
+        messages: messages,
+        stream: true,
+        temperature: state.mode === 'expert' ? 0.5 : 0.7,
+        max_tokens: state.mode === 'expert' ? 1500 : 900
+      }),
+      signal: ctrl.signal
+    }).then(function (r) {
+      if (!r.ok) {
+        r.text().then(function (t) { onErr(new Error('HTTP ' + r.status + ' · ' + t.slice(0, 200))); });
+        return;
+      }
+      var reader = r.body.getReader(), dec = new TextDecoder(), buf = '', full = '';
+      function pump() {
+        reader.read().then(function (d) {
+          if (d.done) { onDone(full); return; }
+          buf += dec.decode(d.value, { stream: true });
+          var lines = buf.split('\n'); buf = lines.pop();
+          lines.forEach(function (ln) {
+            ln = ln.trim();
+            if (!ln || !ln.startsWith('data:')) return;
+            var payload = ln.slice(5).trim();
+            if (payload === '[DONE]') { onDone(full); return; }
+            try {
+              var j = JSON.parse(payload);
+              var c = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
+              if (c) { full += c; onChunk(c, full); }
+            } catch (e) {}
+          });
+          pump();
+        }).catch(onErr);
+      }
+      pump();
+      return ctrl;
+    }).catch(onErr);
+    return ctrl;
+  }
+
+  // ---------- 主对话流程 ----------
+  var currentCtrl = null;
+  function ask(q) {
+    if (!q || !q.trim()) return;
+    if (state.open === false) toggle(true);
+
+    var userMsg = { role: 'user', content: q.trim(), ts: Date.now() };
+    state.history.push(userMsg);
+    globalHist.push({ role: 'user', content: q.trim(), ts: Date.now() });
+    renderMsg(userMsg, true);
+    save(); saveGlobal();
+
+    text.value = ''; autoSize();
+    sendBtn.disabled = true;
+    renderTyping();
+
+    var acc = '', typingEl = $('botTyping');
+    function paintChunk(chunk, full) {
+      acc = full;
+      if (typingEl) {
+        typingEl.querySelector('.bubble').innerHTML =
+          '<span class="typing"><span></span><span></span><span></span></span> ' + nl2br(acc) + ' ▍';
+      }
+    }
+    function done(full) {
+      removeTyping();
+      var reasoning = '';
+      var content = full;
+      // 提取 <think>...</think> 段（部分模型会用）
+      var m = full.match(/<think>([\s\S]*?)<\/think>/);
+      if (m) { reasoning = m[1].trim(); content = full.replace(/<think>[\s\S]*?<\/think>/, '').trim(); }
+      var botMsg = { role: 'bot', content: content, reasoning: reasoning, ts: Date.now() };
+      state.history.push(botMsg);
+      globalHist.push({ role: 'assistant', content: content, ts: Date.now() });
+      renderMsg(botMsg, true);
+      save(); saveGlobal();
+      sendBtn.disabled = false;
+      currentCtrl = null;
+      flashBadge();
+    }
+    function err(e) {
+      removeTyping();
+      var msg = '⚠️ 调用失败：' + (e && e.message ? e.message : e);
+      state.history.push({ role: 'bot', content: msg, ts: Date.now() });
+      renderMsg({ role: 'bot', content: msg }, true);
+      save();
+      sendBtn.disabled = false;
+      currentCtrl = null;
+    }
+    currentCtrl = callAgnes(buildMessages(q), paintChunk, done, err);
+  }
+
+  // ---------- 输入行为 ----------
+  function autoSize() {
+    text.style.height = 'auto';
+    text.style.height = Math.min(text.scrollHeight, 96) + 'px';
+  }
+  text.addEventListener('input', autoSize);
+  text.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!sendBtn.disabled) ask(text.value);
+    }
+  });
+  sendBtn.addEventListener('click', function () { if (!sendBtn.disabled) ask(text.value); });
+
+  // ---------- 语音 ----------
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var recognition = null, recording = false;
+  if (SR) {
+    recognition = new SR();
+    recognition.lang = 'zh-CN';
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    recognition.onresult = function (ev) {
+      var txt = '';
+      for (var i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+      text.value = txt; autoSize();
+    };
+    recognition.onstart = function () { recording = true; micBtn.classList.add('recording'); recHint.classList.add('on'); };
+    recognition.onend = function () { recording = false; micBtn.classList.remove('recording'); recHint.classList.remove('on'); };
+    recognition.onerror = function (e) {
+      recording = false; micBtn.classList.remove('recording'); recHint.classList.remove('on');
+      if (e.error !== 'no-speech' && e.error !== 'aborted') toast('语音识别失败：' + e.error);
+    };
+  }
+  micBtn.addEventListener('click', function () {
+    if (!SR) { toast('当前浏览器不支持语音识别，建议用 Chrome / Edge'); return; }
+    if (recording) { recognition.stop(); return; }
+    try { recognition.start(); } catch (e) { toast('语音启动失败：' + e.message); }
+  });
+
+  // ---------- 面板控制 ----------
+  function toggle(open) {
+    state.open = (open == null) ? !panel.classList.contains('open') : open;
+    if (state.open) {
+      panel.classList.add('open');
+      panel.classList.remove('docked');
+      document.body.classList.add('bot-open');
+      if (!body.children.length) renderAll();
+      setTimeout(function () { text.focus(); }, 200);
+    } else {
+      panel.classList.remove('open');
+      document.body.classList.remove('bot-open');
+    }
+    save();
+  }
+  fab.addEventListener('click', function () { toggle(true); });
+  closeBtn.addEventListener('click', function () { toggle(false); });
+
+  // 贴边收起
+  dockBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    panel.classList.toggle('docked');
+    state.docked = panel.classList.contains('docked');
+    save();
+  });
+  head.addEventListener('click', function (e) {
+    if (panel.classList.contains('docked') && e.target === head) {
+      panel.classList.remove('docked');
+      state.docked = false; save();
+    }
+  });
+
+  // 新对话
+  newBtn.addEventListener('click', function () {
+    state.history = [];
+    body.innerHTML = '';
+    renderWelcome();
+    save();
+  });
+
+  // 模式切换
+  document.querySelectorAll('.bot-mode .seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.bot-mode .seg button').forEach(function (x) { x.classList.remove('active'); });
+      this.classList.add('active');
+      state.mode = this.getAttribute('data-mode');
+      statusEl.textContent = state.mode === 'expert' ? '在线 · 专家模式已开启' : '在线 · 知识问答助手';
+      save();
+      // 重渲染（让思考面板显隐生效）
+      renderAll();
+    });
+  });
+
+  // 红点 / 计数：有新消息未读时显示
+  function flashBadge() {
+    if (!state.open) {
+      var n = state.history.filter(function (m) { return m.role === 'bot' && m._unread; }).length;
+      badge.textContent = n > 99 ? '99+' : String(n);
+      badge.classList.toggle('on', n > 0);
+      pulse.classList.add('on');
+    }
+  }
+  badge.classList.remove('on');
+  pulse.classList.add('on');
+  setTimeout(function () { pulse.classList.remove('on'); }, 4000);
+
+  // ---------- Toast ----------
+  function toast(msg) {
+    var t = $('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.classList.remove('show'); }, 2400);
+  }
+
+  // ---------- 初始化 ----------
+  // 恢复面板状态
+  if (state.open) toggle(true);
+  // 恢复模式
+  document.querySelectorAll('.bot-mode .seg button').forEach(function (b) {
+    b.classList.toggle('active', b.getAttribute('data-mode') === state.mode);
+  });
+  if (state.docked) panel.classList.add('docked');
+  statusEl.textContent = state.mode === 'expert' ? '在线 · 专家模式已开启' : '在线 · 知识问答助手';
+
+  // 暴露一个供外部调用的入口（其他页面也能问）
+  window.HuXingZhiDa = {
+    ask: ask, open: function () { toggle(true); }, close: function () { toggle(false); },
+    clear: function () { newBtn.click(); }
+  };
 })();
 </script>
 </body>
