@@ -76,6 +76,7 @@ main{max-width:1440px;margin:0 auto;padding:16px 20px 60px}
 }
 .f-search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,107,79,.08)}
 .f-search .ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:14px;pointer-events:none}
+.f-toggle{display:none}  /* 桌面端默认隐藏，移动端通过 media query 显示 */
 .f-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
 .fld{display:flex;flex-direction:column;gap:4px;min-width:0}
 .fld label{font-size:11px;color:var(--t2);font-weight:500}
@@ -246,6 +247,15 @@ table.list tbody tr{cursor:pointer}
   .drawer.on{transform:translateY(0)}
   .dw-ft{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
   .kv{grid-template-columns:74px 1fr}
+  /* 移动端：筛选区折叠 */
+  .f-toggle{display:inline-flex; align-items:center; gap:4px; padding:6px 12px;
+    background:var(--accent); color:#fff; border:none; border-radius:8px;
+    font-size:13px; cursor:pointer; white-space:nowrap}
+  .qzone.collapsed .filters > .f-grid,
+  .qzone.collapsed .filters > .f-acts,
+  .qzone.collapsed .filters > .prog{display:none}
+  .qzone.collapsed .filters{padding:8px 12px}
+  .qzone.collapsed .filters > .f-search{margin-bottom:0; padding-bottom:0; border-bottom:none}
 }
 @media (max-width:400px){
   .f-grid{grid-template-columns:1fr}
@@ -265,19 +275,42 @@ table.list tbody tr{cursor:pointer}
   --bot-shadow:0 12px 40px rgba(31,35,40,.18),0 2px 8px rgba(31,35,40,.08);
   --bot-shadow-sm:0 4px 14px rgba(31,35,40,.12);
 }
+/* 悬浮召唤按钮（可拖动，可贴边隐藏） */
 .bot-fab{
   position:fixed; right:20px; bottom:20px; z-index:9000;
   width:62px; height:62px;
   background:transparent; border:none; box-shadow:none;
-  cursor:pointer;
+  cursor:grab;
   display:flex; align-items:center; justify-content:center;
-  transition:.2s; padding:0;
+  transition:transform .2s ease, width .25s ease, height .25s ease, border-radius .25s ease, background-color .2s ease;
+  padding:0;
   animation:bot-fab-in .35s cubic-bezier(.34,1.56,.64,1) both;
+  touch-action:none;
+  user-select:none;
 }
 @keyframes bot-fab-in{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
 .bot-fab:hover{transform:scale(1.08)}
-.bot-fab:active{transform:scale(.96)}
-.bot-fab img{width:60px; height:60px; object-fit:contain}
+.bot-fab.dragging{cursor:grabbing; transition:none !important; box-shadow:var(--bot-shadow-sm); background:rgba(255,255,255,.6); border-radius:50%}
+/* 贴边隐藏收缩态：变成小竖条/小横条 */
+.bot-fab.docked{
+  width:12px; height:96px;
+  border-radius:6px;
+  background:var(--bot-line-2);
+  cursor:pointer;
+}
+.bot-fab.docked:hover{
+  width:62px; height:62px;
+  border-radius:50%;
+  background:transparent;
+  box-shadow:var(--bot-shadow-sm);
+}
+.bot-fab.docked img{opacity:0; width:0; height:0}
+.bot-fab.docked:hover img{opacity:1; width:60px; height:60px}
+.bot-fab.docked .pulse, .bot-fab.docked .badge{display:none !important}
+.bot-fab.docked:hover .pulse{display:block}
+.bot-fab.docked:hover .badge{display:flex}
+.bot-fab.docked-left{height:62px; width:96px}   /* 上下贴边时变横条 */
+.bot-fab img{width:60px; height:60px; object-fit:contain; pointer-events:none; transition:opacity .2s, width .2s, height .2s}
 .bot-fab .pulse{
   position:absolute; top:2px; right:2px; width:12px; height:12px; border-radius:50%;
   background:#22c55e; border:2px solid #fff; display:none;
@@ -490,6 +523,7 @@ table.list tbody tr{cursor:pointer}
           <option value="or">任一关键词</option>
         </select>
         <button class="btn primary" id="btnAiSearch" title="用自然语言描述你要找的视频，AI 帮你检索">✨ AI 智能检索</button>
+        <button class="f-toggle" id="fToggle" type="button" aria-label="收起/展开筛选">🔽 收起筛选</button>
       </div>
       <div class="f-grid">
         <div class="fld">
@@ -931,6 +965,11 @@ table.list tbody tr{cursor:pointer}
     renderDrawer();
     $('drawer').classList.add('on'); $('mask').classList.add('on');
     document.body.style.overflow = 'hidden';
+    /* 改动3：未生成过 AI 描述的档案，进入抽屉即自动触发流式生成 */
+    var ck = hash(curItem.key);
+    if (!AI_CACHE[ck] && AI_CFG.key) {
+      setTimeout(function () { genAI(curItem, null, { silent: true }); }, 220);
+    }
   }
   function closeDrawer() {
     $('drawer').classList.remove('on'); $('mask').classList.remove('on');
@@ -980,16 +1019,51 @@ table.list tbody tr{cursor:pointer}
     $('btnCopy').onclick = function () {
       var t = ['视频标题：' + it.title, '所属项目：' + it.pname + '（' + it.pno + '）', '承担单位：' + it.unit,
         '一级分类：' + it.cat, '年度批次：' + it.batch].join('\n');
-      if (AI_CACHE[hash(it.key)]) {
-        var a = AI_CACHE[hash(it.key)];
-        t += '\n\n【AI 描述】\n' + (a.summary || '') + '\n\n【核心知识点】\n' + ((a.points || []).join('\n')) +
-          '\n\n【观看建议】\n' + (a.advice || '');
+      var ai = AI_CACHE[hash(it.key)];
+      if (ai) {
+        if (ai.fields) {
+          // 新格式（markdown）
+          t += '\n\n' + ai.raw;
+        } else if (ai.summary) {
+          // 旧格式（JSON 字段）
+          t += '\n\n【AI 描述】\n' + (ai.summary || '') + '\n\n【核心知识点】\n' + ((ai.points || []).join('\n')) +
+            '\n\n【观看建议】\n' + (ai.advice || '');
+        }
       }
       navigator.clipboard.writeText(t).then(function () { toast('已复制到剪贴板', 'ok'); }, function () { toast('复制失败', 'err'); });
     };
   }
 
   function aiHTML(ai) {
+    /* 新格式：{raw, fields} —— 流式 markdown 输出 */
+    if (ai.fields && ai.fields['内容概述']) {
+      var f = ai.fields;
+      var h = '<div class="ai-box ai-live">';
+      if (f['内容概述']) h += '<div class="ai-field"><h4>内容概述</h4><p>' + esc(f['内容概述']) + '</p></div>';
+      if (f['核心知识点']) {
+        var lines = f['核心知识点'].split('\n').map(function (s) { return s.replace(/^[\s\-•]+/, '').trim(); }).filter(Boolean);
+        if (lines.length) h += '<div class="ai-field"><h4>核心知识点</h4><ul>' + lines.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
+      }
+      if (f['观看建议']) h += '<div class="ai-field"><h4>观看建议</h4><p>' + esc(f['观看建议']) + '</p></div>';
+      var meta = [];
+      ['适用人群', '难度等级', '预估时长'].forEach(function (k) {
+        if (f[k]) meta.push('<span class="tag">' + esc(k) + '：' + esc(f[k].split('\n')[0]) + '</span>');
+      });
+      if (meta.length) h += '<div class="ai-meta" style="margin:10px 0">' + meta.join('') + '</div>';
+      if (f['智能标签']) {
+        var tags = f['智能标签'].split(/[,，\n]/).map(function (s) { return s.replace(/[\-•\s]/g, '').trim(); }).filter(Boolean);
+        if (tags.length) h += '<div class="ai-field"><h4>智能标签</h4><div class="ai-tags">' + tags.map(function (t) { return '<span class="tag ai">' + esc(t) + '</span>'; }).join('') + '</div></div>';
+      }
+      if (ai.recheck) {
+        var ok = ai.recheck.ok;
+        h += '<div class="ai-field"><h4>分类复核</h4><p style="color:' + (ok ? 'var(--brand)' : 'var(--warn)') + '">' +
+          (ok ? '✅ 当前分类「' + esc(it_catOf(ai)) + '」合适。' : '⚠️ 建议调整为「' + esc(ai.recheck.suggest) + '」。') +
+          ' ' + esc(ai.recheck.reason || '') + '</p></div>';
+      }
+      h += '</div>';
+      return h;
+    }
+    /* 旧格式：{summary, points, advice, audience, level, duration, tags} —— 兼容旧缓存 */
     var h = '<div class="ai-box ai-live">';
     h += '<div class="ai-field"><h4>内容概述</h4><p>' + esc(ai.summary || '—') + '</p></div>';
     if (ai.points && ai.points.length) {
@@ -1072,6 +1146,45 @@ table.list tbody tr{cursor:pointer}
     });
   }
 
+  /* 流式调用 agnes —— 用于逐字段实时渲染 AI 内容分析 */
+  function aiChatStream(messages, onChunk, onDone, onErr) {
+    var ctrl = new AbortController();
+    var url = AI_CFG.base.replace(/\/+$/, '') + '/chat/completions';
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AI_CFG.key },
+      body: JSON.stringify({
+        model: AI_CFG.model, messages: messages, stream: true,
+        temperature: 0.6, max_tokens: 1100
+      }),
+      signal: ctrl.signal
+    }).then(function (r) {
+      if (!r.ok) { r.text().then(function (t) { onErr(new Error('HTTP ' + r.status + '：' + t.slice(0, 200))); }); return; }
+      var reader = r.body.getReader(), dec = new TextDecoder(), buf = '', full = '';
+      function pump() {
+        reader.read().then(function (d) {
+          if (d.done) { onDone(full); return; }
+          buf += dec.decode(d.value, { stream: true });
+          var lines = buf.split('\n'); buf = lines.pop();
+          lines.forEach(function (ln) {
+            ln = ln.trim();
+            if (!ln || !ln.startsWith('data:')) return;
+            var p = ln.slice(5).trim();
+            if (p === '[DONE]') { onDone(full); return; }
+            try {
+              var j = JSON.parse(p);
+              var c = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
+              if (c) { full += c; onChunk(c, full); }
+            } catch (e) {}
+          });
+          pump();
+        }).catch(onErr);
+      }
+      pump();
+    }).catch(onErr);
+    return ctrl;
+  }
+
   function buildPrompt(it) {
     return '你是上海市科普内容编目专家，服务于沪杏科技图书馆的科普视频档案系统。\n' +
       '请根据下面的档案信息，推断这部科普视频的内容并生成档案描述。要求：语言规范、信息务实、不虚构具体数据（如无把握不要编造具体数字、人名、机构奖项）。\n\n' +
@@ -1080,41 +1193,89 @@ table.list tbody tr{cursor:pointer}
       '【承担单位】' + it.unit + '\n' +
       '【一级分类】' + it.cat + '\n' +
       '【年度批次】' + it.batch + '\n\n' +
-      '请严格只输出如下 JSON（不要输出任何解释、不要加 markdown 代码块标记）：\n' +
-      '{"summary":"160字左右的内容描述，说明这部视频大致讲了什么、采用什么形式呈现","' +
-      'points":["核心知识点1","核心知识点2","核心知识点3"],' +
-      '"advice":"观看建议：明确适合什么人群看、建议如何配套观看或用于什么场景，60-90字",' +
-      '"audience":"适用人群（如：中小学生/社区居民/老年群体/专业从业者/亲子家庭）",' +
-      '"level":"难度等级（入门/进阶/专业 三选一）",' +
-      '"duration":"预估观看时长（如：3-5分钟）",' +
-      '"tags":["标签1","标签2","标签3","标签4","标签5","标签6"]}';
+      '请严格按以下 markdown 结构输出（**只输出 markdown，不要任何解释、不要 JSON、不要代码块标记**），每个 ## 段一行行逐段输出：\n\n' +
+      '## 内容概述\n（150字左右的视频内容描述，说明这部视频大致讲了什么、采用什么形式呈现）\n\n' +
+      '## 核心知识点\n- 知识点1\n- 知识点2\n- 知识点3\n\n' +
+      '## 观看建议\n（60-90字的观看建议，说明适合什么人群、配套使用场景）\n\n' +
+      '## 适用人群\n（如：中小学生/社区居民/老年群体/专业从业者/亲子家庭）\n\n' +
+      '## 难度等级\n（入门/进阶/专业 三选一）\n\n' +
+      '## 预估时长\n（如：3-5分钟）\n\n' +
+      '## 智能标签\n标签1, 标签2, 标签3, 标签4, 标签5, 标签6';
   }
 
-  function genAI(it, btn) {
+  /* 解析 markdown 段落为 fields */
+  function parseAiMd(md) {
+    var fields = {};
+    var re = /\n##\s*([^\n]+)\n([\s\S]*?)(?=\n##\s|$)/g;
+    var m;
+    while ((m = re.exec(md)) !== null) {
+      fields[m[1].trim()] = m[2].trim();
+    }
+    return fields;
+  }
+
+  /* 把已写出的 markdown 段落渲染到 .ai-box（流式逐字段填充） */
+  function renderStreamingAI(md) {
+    var box = $('aiBox');
+    if (!box) return;
+    var fields = parseAiMd(md);
+    var f = fields;
+    var h = '';
+    if (f['内容概述']) h += '<div class="ai-field"><h4>内容概述</h4><p>' + esc(f['内容概述']) + '</p></div>';
+    if (f['核心知识点']) {
+      var lines = f['核心知识点'].split('\n').map(function (s) { return s.replace(/^[\s\-•]+/, '').trim(); }).filter(Boolean);
+      if (lines.length) h += '<div class="ai-field"><h4>核心知识点</h4><ul>' + lines.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
+    }
+    if (f['观看建议']) h += '<div class="ai-field"><h4>观看建议</h4><p>' + esc(f['观看建议']) + '</p></div>';
+    var metaItems = [];
+    ['适用人群', '难度等级', '预估时长'].forEach(function (k) {
+      if (f[k]) metaItems.push('<span class="tag">' + esc(k) + '：' + esc(f[k].split('\n')[0]) + '</span>');
+    });
+    if (metaItems.length) h += '<div class="ai-meta" style="margin:10px 0">' + metaItems.join('') + '</div>';
+    if (f['智能标签']) {
+      var tags = f['智能标签'].split(/[,，\n]/).map(function (s) { return s.replace(/[\-•\s]/g, '').trim(); }).filter(Boolean);
+      if (tags.length) h += '<div class="ai-field"><h4>智能标签</h4><div class="ai-tags">' + tags.map(function (t) { return '<span class="tag ai">' + esc(t) + '</span>'; }).join('') + '</div></div>';
+    }
+    if (!h) {
+      box.innerHTML = '<div class="ai-stream-hint">✨ AI 正在为你生成内容描述…</div><div class="ai-stream-tip"><span class="typing"><span></span><span></span><span></span></span></div>';
+    } else {
+      // 判断是否仍在生成（最后一个 ## 段落内容还未结束）
+      var lastSec = md.match(/\n##\s*([^\n]+)\n([\s\S]*)$/);
+      var stillTyping = lastSec && !md.endsWith('\n## ') && !/##\s*[^\n]+\n[\s\S]*\n##\s/.test(md.substring(md.length - 20));
+      h += '<div class="ai-stream-tip"><span class="typing"><span></span><span></span><span></span></span> 正在生成 ' + esc(lastSec ? lastSec[1] : '') + '…</div>';
+      box.innerHTML = h;
+    }
+  }
+
+  function genAI(it, btn, opts) {
+    opts = opts || {};
     var ck = hash(it.key);
-    if (!AI_CFG.key) { toast('请先在「AI 设置」中填写 API Key', 'err'); openModal('modalSettings'); return; }
+    if (!AI_CFG.key) { toast('请先在「AI 设置」中填写 API Key', 'err'); if (!opts.silent) openModal('modalSettings'); return; }
     if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> 生成中…'; }
     var sec = $('dwBody').querySelectorAll('.sec')[1];
     if (sec) {
-      sec.innerHTML = '<div class="sec-t">AI 内容分析</div><div class="ai-box ai-live" style="padding:14px">' +
-        '<div class="skel" style="width:100%"></div><div class="skel" style="width:92%"></div>' +
-        '<div class="skel" style="width:78%"></div><div class="skel" style="width:88%;margin-top:12px"></div>' +
-        '<div class="skel" style="width:64%"></div></div>';
+      sec.innerHTML = '<div class="sec-t">AI 内容分析</div><div class="ai-box ai-streaming" id="aiBox" style="padding:14px">' +
+        '<div class="ai-stream-hint">✨ AI 正在为你生成内容描述…<br><span style="font-size:12px;color:var(--t3);font-weight:normal">模型会逐字段写出：内容概述 → 核心知识点 → 观看建议 → 元信息 → 智能标签</span></div>' +
+        '<div class="ai-stream-tip" style="margin-top:12px"><span class="typing"><span></span><span></span><span></span></span></div></div>';
     }
-    aiChat([{ role: 'user', content: buildPrompt(it) }])
-      .then(function (txt) {
-        var d = extractJSON(txt);
-        if (!d || !d.summary) throw new Error('AI 返回格式异常');
-        d.ts = Date.now();
-        AI_CACHE[ck] = d; saveJSON(LS_CACHE, AI_CACHE);
-        toast('AI 描述已生成', 'ok');
+    aiChatStream(
+      [{ role: 'user', content: buildPrompt(it) }],
+      function (chunk, total) { renderStreamingAI(total); },
+      function (total) {
+        var fields = parseAiMd(total);
+        if (!fields['内容概述']) { toast('生成失败：返回格式异常', 'err'); renderDrawer(); return; }
+        AI_CACHE[ck] = { raw: total, fields: fields, ts: Date.now() };
+        saveJSON(LS_CACHE, AI_CACHE);
+        toast(opts.silent ? '' : 'AI 描述已生成', opts.silent ? '' : 'ok');
         renderDrawer(); renderList(); renderStats();
-      })
-      .catch(function (e) {
-        toast('生成失败：' + e.message, 'err');
+        if (btn) { btn.disabled = false; btn.innerHTML = '🔄 重新生成'; }
+      },
+      function (e) {
+        toast('生成失败：' + (e && e.message ? e.message : e), 'err');
         renderDrawer();
-      })
-      .then(function () { if (btn) { btn.disabled = false; btn.textContent = '🔄 重新生成'; } });
+        if (btn) { btn.disabled = false; btn.innerHTML = '🔄 重新生成'; }
+      }
+    );
   }
 
   /* 分类复核 */
@@ -1428,6 +1589,41 @@ table.list tbody tr{cursor:pointer}
       var f = this.files[0]; if (!f) return;
       $('impPreview').textContent = '已选择：' + f.name + '（' + (f.size / 1024).toFixed(1) + ' KB），点击「导入」开始处理。';
     });
+
+    /* 移动端筛选区折叠 */
+    var fzCollapsed = false;
+    var fzBtn = $('fToggle');
+    var fzZone = document.querySelector('.qzone');
+    function isMobile() {
+      if (window.matchMedia) return window.matchMedia('(max-width: 768px)').matches;
+      return window.innerWidth <= 768;
+    }
+    function applyFz() {
+      if (!fzBtn || !fzZone) return;
+      if (!isMobile()) {
+        fzZone.classList.remove('collapsed');
+        fzBtn.style.display = 'none';
+        return;
+      }
+      fzBtn.style.display = '';
+      if (fzCollapsed) {
+        fzZone.classList.add('collapsed');
+        fzBtn.innerHTML = '🔍 展开筛选';
+      } else {
+        fzZone.classList.remove('collapsed');
+        fzBtn.innerHTML = '🔽 收起筛选';
+      }
+    }
+    if (fzBtn) {
+      fzBtn.addEventListener('click', function () {
+        fzCollapsed = !fzCollapsed;
+        try { localStorage.setItem('hxzhidda_fzone_collapsed', fzCollapsed ? '1' : '0'); } catch (e) {}
+        applyFz();
+      });
+      try { if (localStorage.getItem('hxzhidda_fzone_collapsed') === '1') fzCollapsed = true; } catch (e) {}
+      window.addEventListener('resize', applyFz);
+      applyFz();
+    }
   }
 
   /* ================= 启动 ================= */
@@ -1870,8 +2066,135 @@ table.list tbody tr{cursor:pointer}
     }
     save();
   }
-  fab.addEventListener('click', function () { toggle(true); });
   closeBtn.addEventListener('click', function () { toggle(false); });
+
+  // ---------- FAB 拖动 + 贴边隐藏 ----------
+  var LS_FAB_POS = 'hxzhidda_fab_pos';
+  var LS_FAB_DOCKED = 'hxzhidda_fab_docked';
+  var fabPos = loadJSON(LS_FAB_POS, { left: null, top: null });
+  try { fabDocked = localStorage.getItem(LS_FAB_DOCKED) === '1'; } catch (e) { fabDocked = false; }
+
+  function applyFabPos(animated) {
+    fab.style.transition = animated
+      ? 'left .25s ease, top .25s ease, width .25s ease, height .25s ease, border-radius .25s ease, background-color .2s ease'
+      : 'none';
+    if (fabDocked) {
+      fab.classList.add('docked');
+      var d = parseFloat(fabPos.distance) || 20;
+      // 清空四向 + 仅设两向
+      fab.style.left = 'auto'; fab.style.right = 'auto'; fab.style.top = 'auto'; fab.style.bottom = 'auto';
+      var side = fabPos.side || 'right';
+      if (side === 'left')   { fab.style.left = '0';   fab.style.top = d + 'px'; }
+      else if (side === 'top')    { fab.style.top = '0';    fab.style.left = d + 'px'; }
+      else if (side === 'bottom') { fab.style.bottom = '0'; fab.style.left = d + 'px'; }
+      else                         { fab.style.right = '0';  fab.style.top = d + 'px'; }
+    } else {
+      fab.classList.remove('docked');
+      if (fabPos.left != null && fabPos.top != null) {
+        fab.style.left = fabPos.left + 'px';
+        fab.style.top = fabPos.top + 'px';
+        fab.style.right = 'auto';
+        fab.style.bottom = 'auto';
+      }
+    }
+  }
+  applyFabPos(false);
+
+  // 拖动上下文
+  var dragCtx = null;
+  function onFabMouseDown(e) {
+    if (e.button !== 0) return;
+    var r = fab.getBoundingClientRect();
+    dragCtx = {
+      sx: e.clientX, sy: e.clientY,
+      rect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom },
+      moved: false
+    };
+    fab.classList.add('dragging');
+    // 拖动前如果处于贴边，先恢复到全尺寸
+    if (fabDocked) {
+      fabDocked = false;
+      try { localStorage.setItem(LS_FAB_DOCKED, '0'); } catch (e) {}
+      fab.classList.remove('docked');
+    }
+    fab.style.transition = 'none';
+    e.preventDefault();
+  }
+  function onFabMouseMove(e) {
+    if (!dragCtx) return;
+    var dx = e.clientX - dragCtx.sx, dy = e.clientY - dragCtx.sy;
+    if (!dragCtx.moved && (Math.abs(dx) + Math.abs(dy) > 3)) dragCtx.moved = true;
+    if (!dragCtx.moved) return;
+    var nl = dragCtx.rect.left + dx, nt = dragCtx.rect.top + dy;
+    var w = fab.offsetWidth, h = fab.offsetHeight;
+    nl = Math.max(0, Math.min(window.innerWidth - w, nl));
+    nt = Math.max(0, Math.min(window.innerHeight - h, nt));
+    fab.style.left = nl + 'px';
+    fab.style.top = nt + 'px';
+    fab.style.right = 'auto'; fab.style.bottom = 'auto';
+    fabPos.left = nl; fabPos.top = nt;
+  }
+  function onFabMouseUp(e) {
+    if (!dragCtx) return;
+    var dc = dragCtx; dragCtx = null;
+    fab.classList.remove('dragging');
+    if (!dc.moved) return;  // 纯点击 → 让 click 事件触发 toggle
+    // 自动吸附到最近的边
+    var w = fab.offsetWidth, h = fab.offsetHeight;
+    var cx = fabPos.left + w / 2, cy = fabPos.top + h / 2;
+    var W = window.innerWidth, H = window.innerHeight;
+    var dists = { left: cx, right: W - cx, top: cy, bottom: H - cy };
+    var side = 'right';
+    var min = dists.right;
+    for (var k in dists) { if (dists[k] < min) { min = dists[k]; side = k; } }
+    fabDocked = true;
+    fabPos.side = side;
+    // 距离存到对应方向的位置（左/右存 top，上/下存 left）
+    fabPos.distance = (side === 'left' || side === 'right') ? fabPos.top : fabPos.left;
+    try { localStorage.setItem(LS_FAB_DOCKED, '1'); } catch (e) {}
+    saveJSON(LS_FAB_POS, fabPos);
+    applyFabPos(true);
+  }
+  fab.addEventListener('mousedown', onFabMouseDown);
+  document.addEventListener('mousemove', onFabMouseMove);
+  document.addEventListener('mouseup', onFabMouseUp);
+  // 移动端触屏支持
+  fab.addEventListener('touchstart', function (e) {
+    if (!e.touches[0]) return;
+    var t = e.touches[0];
+    var r = fab.getBoundingClientRect();
+    dragCtx = {
+      sx: t.clientX, sy: t.clientY,
+      rect: { left: r.left, top: r.top, right: r.right, bottom: r.bottom },
+      moved: false
+    };
+    fab.classList.add('dragging');
+    if (fabDocked) { fabDocked = false; try { localStorage.setItem(LS_FAB_DOCKED, '0'); } catch (e) {} fab.classList.remove('docked'); }
+    fab.style.transition = 'none';
+  }, { passive: true });
+  fab.addEventListener('touchmove', function (e) {
+    if (!dragCtx || !e.touches[0]) return;
+    var t = e.touches[0];
+    var dx = t.clientX - dragCtx.sx, dy = t.clientY - dragCtx.sy;
+    if (!dragCtx.moved && (Math.abs(dx) + Math.abs(dy) > 5)) dragCtx.moved = true;
+    if (!dragCtx.moved) return;
+    var nl = dragCtx.rect.left + dx, nt = dragCtx.rect.top + dy;
+    var w = fab.offsetWidth, h = fab.offsetHeight;
+    nl = Math.max(0, Math.min(window.innerWidth - w, nl));
+    nt = Math.max(0, Math.min(window.innerHeight - h, nt));
+    fab.style.left = nl + 'px';
+    fab.style.top = nt + 'px';
+    fab.style.right = 'auto'; fab.style.bottom = 'auto';
+    fabPos.left = nl; fabPos.top = nt;
+    e.preventDefault();
+  }, { passive: false });
+  fab.addEventListener('touchend', function () { onFabMouseUp(); }, { passive: true });
+
+  // 点击 fab：未拖动时触发 toggle
+  fab.addEventListener('click', function (e) {
+    if (dragCtx) return;  // 拖动中
+    toggle(true);
+  });
 
   // 贴边收起
   dockBtn.addEventListener('click', function (e) {
