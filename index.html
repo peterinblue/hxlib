@@ -1641,7 +1641,7 @@ table.list tbody tr{cursor:pointer}
 
   // ---------- 调用 agnes ----------
   function buildMessages(userText) {
-    var sysThink = '你是「沪杏智答」，沪杏科技图书馆的智能问答助手。你面向科普视频档案查询与科普知识科普。请用中文回答。回答要求：(1) 简洁清晰，结构化表达；(2) 涉及具体视频时尽量给出标题、单位、年份等关键信息；(3) 如果用户问题需要从档案库检索，先说明你打算怎么检索，再给出建议。';
+    var sysThink = '你是「沪杏智答」，沪杏科技图书馆的智能问答助手。你面向科普视频档案查询与科普知识科普。请用中文回答。回答要求：(1) 简洁清晰，结构化表达；(2) 涉及具体视频时尽量给出标题、单位、年份等关键信息；(3) 如果用户问题需要从档案库检索，先说明你打算怎么检索，再给出建议。\n\n【思考模式特别要求】请按以下结构回答，先输出思考过程再给最终答案，便于系统展示：\n【思考】\n- 拆解用户问题的核心诉求是什么\n- 决定从哪些维度回答（档案 / 知识 / 推荐）\n- 检索 / 推理的关键步骤\n【/思考】\n\n【回答】\n正式回答（清晰、结构化）。\n【/回答】';
     var sysExpert = '你是「沪杏智答 · 专家模式」，一位资深科普内容策划专家 + 图书馆研究员。你面向沪杏科技图书馆 3480+ 条科普视频档案，擅长：科普影片选题策划、面向不同年龄段（小学/初中/高中/成人）的影片推荐与教育价值评估、跨学科知识科普（天文/生命/医药/材料/AI/航天/中医药等）、档案数据深度分析。请用中文回答：(1) 结构化（必要时使用列表 / 表格 / 分段）；(2) 引用具体证据（视频标题、单位、年份）；(3) 给出可操作的观看建议；(4) 必要时给出 2-3 个延伸问题供用户继续探索。';
 
     var msgs = [{ role: 'system', content: state.mode === 'expert' ? sysExpert : sysThink }];
@@ -1763,9 +1763,28 @@ table.list tbody tr{cursor:pointer}
       removeTyping();
       var reasoning = '';
       var content = full;
-      // 提取 <think>...</think> 段（部分模型会用）
-      var m = full.match(/<think>([\s\S]*?)<\/think>/);
-      if (m) { reasoning = m[1].trim(); content = full.replace(/<think>[\s\S]*?<\/think>/, '').trim(); }
+      // 思考模式：提取多种可能的思考过程标记（模型可能输出全角或半角斜线）
+      var pairs = [
+        ['【思考】', '【/思考】'],
+        ['【思考】', '【／思考】'],
+        ['<think>', '</think>']
+      ];
+      for (var pi = 0; pi < pairs.length; pi++) {
+        var i1 = full.indexOf(pairs[pi][0]);
+        if (i1 < 0) continue;
+        var i2 = full.indexOf(pairs[pi][1], i1 + pairs[pi][0].length);
+        if (i2 < 0) continue;
+        reasoning = full.substring(i1 + pairs[pi][0].length, i2).trim();
+        break;
+      }
+      // 剥离【思考】块（所有变体）+ 【回答】...【/回答】标签
+      content = full
+        .replace(/【思考】[\s\S]*?(?:【\/?[／/]?思考】|<\/think>)/g, '')
+        .replace(/<think>[\s\S]*?<\/think>/g, '')
+        .replace(/【回答】([\s\S]*?)(?:【\/?[／/]?回答】|$)/g, '$1')
+        .replace(/【\/回答】|【／回答】|【\/回答】/g, '')
+        .replace(/【回答】|【／回答】/g, '')
+        .trim();
       var botMsg = { role: 'bot', content: content, reasoning: reasoning, ts: Date.now() };
       state.history.push(botMsg);
       globalHist.push({ role: 'assistant', content: content, ts: Date.now() });
