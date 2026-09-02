@@ -2,118 +2,1237 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>沪杏科技图书馆 · 科普视频档案系统</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #f5f6f8;
-    color: #1f2328;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .card {
-    background: #ffffff;
-    border: 1px solid #e4e6ea;
-    border-radius: 14px;
-    padding: 48px 44px;
-    max-width: 620px;
-    width: 100%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  }
-  .badge {
-    display: inline-block;
-    font-size: 12px;
-    letter-spacing: 1px;
-    color: #1a7f5a;
-    background: #e6f4ee;
-    border: 1px solid #b9e2d0;
-    border-radius: 999px;
-    padding: 4px 12px;
-    margin-bottom: 20px;
-  }
-  h1 {
-    font-size: 30px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-  }
-  .sub {
-    font-size: 15px;
-    color: #5b6570;
-    margin-bottom: 28px;
-  }
-  .hello {
-    font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
-    font-size: 17px;
-    color: #0b6bcb;
-    background: #f2f7fd;
-    border-left: 3px solid #0b6bcb;
-    border-radius: 0 6px 6px 0;
-    padding: 14px 18px;
-    margin-bottom: 28px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-  th, td {
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid #eef0f2;
-  }
-  th {
-    width: 108px;
-    color: #5b6570;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  td { color: #1f2328; }
-  .ok { color: #1a7f5a; font-weight: 500; }
-  .foot {
-    margin-top: 26px;
-    font-size: 12px;
-    color: #8a939d;
-    border-top: 1px solid #eef0f2;
-    padding-top: 16px;
-  }
+:root{
+  --brand:#1a6b4f; --brand-2:#2a8f6c; --brand-soft:#e8f3ee; --brand-line:#b9dfcd;
+  --accent:#0b6bcb; --accent-soft:#eaf3fd;
+  --bg:#f4f6f7; --card:#ffffff; --line:#e3e7ea; --line-2:#eef1f3;
+  --t1:#1f2328; --t2:#57606a; --t3:#8b949e;
+  --warn:#b45309; --warn-soft:#fef6e7; --danger:#b42318; --danger-soft:#fdeceb;
+  --r:10px; --shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--t1); font-size:14px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+table{border-collapse:collapse;width:100%}
+
+/* ---------- Header ---------- */
+header{
+  background:var(--card); border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:60;
+}
+.hd{max-width:1440px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.logo-mark{
+  width:34px;height:34px;border-radius:8px;background:var(--brand);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex:none;
+}
+.logo-txt{min-width:0}
+.logo-txt h1{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logo-txt p{font-size:12px;color:var(--t3)}
+.hd-stats{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.stat{text-align:right}
+.stat b{display:block;font-size:17px;font-weight:600;color:var(--brand);line-height:1.2}
+.stat span{font-size:11px;color:var(--t3)}
+.hd-acts{display:flex;gap:8px}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;
+  border:1px solid var(--line);background:var(--card);color:var(--t1);font-size:13px;
+  transition:.15s;white-space:nowrap;
+}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-2);border-color:var(--brand-2);color:#fff}
+.btn.ai{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ai:hover{opacity:.88;color:#fff}
+.btn.sm{padding:5px 10px;font-size:12px;border-radius:6px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- Main ---------- */
+main{max-width:1440px;margin:0 auto;padding:16px 20px 60px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:14px}
+
+/* Filters */
+.filters{padding:14px 16px}
+.f-search{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.f-search .sw{position:relative;flex:1;min-width:200px}
+.f-search select{
+  padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  outline:none;color:var(--t2);font-size:13px;flex:none;
+}
+.f-search input{
+  width:100%;padding:10px 12px 10px 34px;border:1px solid var(--line);border-radius:8px;
+  background:var(--card);outline:none;transition:.15s;
+}
+.f-search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,107,79,.08)}
+.f-search .ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:14px;pointer-events:none}
+.f-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld label{font-size:11px;color:var(--t2);font-weight:500}
+.fld select{
+  padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--card);
+  outline:none;transition:.15s;min-width:0;
+}
+.fld select:focus{border-color:var(--brand)}
+.f-acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+/* Toolbar */
+.toolbar{
+  padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  border-bottom:1px solid var(--line-2);
+}
+.tb-count{font-size:13px;color:var(--t2)}
+.tb-count b{color:var(--brand);font-weight:600}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tb-right select{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+
+/* Table (PC) */
+.tbl-wrap{overflow-x:auto}
+table.list{display:table}
+table.list th{
+  text-align:left;font-size:12px;font-weight:500;color:var(--t2);padding:10px 12px;
+  background:#fafbfc;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;
+}
+table.list td{padding:11px 12px;border-bottom:1px solid var(--line-2);vertical-align:top;font-size:13px}
+table.list tbody tr:hover{background:#fafbfc}
+table.list tbody tr{cursor:pointer}
+.td-title{font-weight:500;color:var(--t1);max-width:420px}
+.td-sub{font-size:12px;color:var(--t3);margin-top:2px}
+.td-nowrap{white-space:nowrap;color:var(--t2)}
+.tag{
+  display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;
+  background:var(--brand-soft);color:var(--brand);border:1px solid var(--brand-line);white-space:nowrap;
+}
+.tag.warn{background:var(--warn-soft);color:var(--warn);border-color:#f5d9a8}
+.tag.ai{background:var(--accent-soft);color:var(--accent);border-color:#bcd9f5}
+.tag.grey{background:#f2f4f6;color:var(--t2);border-color:var(--line)}
+
+/* Cards (Mobile) */
+.cards{display:none;padding:10px 12px;gap:10px;flex-direction:column}
+.card{
+  border:1px solid var(--line);border-radius:9px;padding:12px;background:var(--card);cursor:pointer;
+  transition:.15s;
+}
+.card:active{background:#fafbfc}
+.card-t{font-weight:500;font-size:14px;margin-bottom:6px;line-height:1.45}
+.card-m{font-size:12px;color:var(--t3);line-height:1.7}
+.card-m div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+
+/* Pager */
+.pager{padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.pg{min-width:32px;height:32px;padding:0 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-size:13px;color:var(--t1)}
+.pg:hover:not(:disabled){border-color:var(--brand);color:var(--brand)}
+.pg.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.pg:disabled{opacity:.4;cursor:not-allowed}
+.pg-info{font-size:12px;color:var(--t3);margin-left:8px}
+
+.empty{padding:50px 20px;text-align:center;color:var(--t3)}
+.empty .big{font-size:34px;margin-bottom:10px;opacity:.5}
+
+/* ---------- Drawer ---------- */
+.mask{position:fixed;inset:0;background:rgba(16,24,40,.45);opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.mask.on{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--card);
+  box-shadow:-4px 0 24px rgba(16,24,40,.12);transform:translateX(100%);transition:.28s cubic-bezier(.4,0,.2,1);
+  z-index:90;display:flex;flex-direction:column;
+}
+.drawer.on{transform:translateX(0)}
+.dw-hd{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px}
+.dw-hd h2{font-size:16px;font-weight:600;line-height:1.45;flex:1}
+.dw-close{font-size:22px;color:var(--t3);line-height:1;padding:2px 6px;border-radius:6px}
+.dw-close:hover{background:#f2f4f6;color:var(--t1)}
+.dw-bd{flex:1;overflow-y:auto;padding:16px 18px;-webkit-overflow-scrolling:touch}
+.dw-ft{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+
+.sec{margin-bottom:18px}
+.sec-t{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sec-t::before{content:"";width:3px;height:12px;background:var(--brand);border-radius:2px}
+.kv{display:grid;grid-template-columns:82px 1fr;gap:6px 10px;font-size:13px}
+.kv dt{color:var(--t3)}
+.kv dd{color:var(--t1);word-break:break-word}
+.note-box{background:var(--warn-soft);border:1px solid #f5d9a8;color:var(--warn);padding:8px 10px;border-radius:7px;font-size:12px;margin-top:8px}
+
+/* AI box */
+.ai-box{border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.ai-box.ai-live{border-color:#bcd9f5;background:linear-gradient(180deg,#f7fbff,#fff)}
+.ai-field{padding:10px 12px;border-bottom:1px solid var(--line-2)}
+.ai-field:last-child{border-bottom:none}
+.ai-field h4{font-size:11px;color:var(--t3);font-weight:500;margin-bottom:4px;letter-spacing:.3px}
+.ai-field p{font-size:13px;line-height:1.7;color:var(--t1)}
+.ai-field ul{margin:0;padding-left:18px;font-size:13px;line-height:1.75}
+.ai-tags{display:flex;flex-wrap:wrap;gap:5px}
+.ai-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.ai-empty{padding:26px 16px;text-align:center;color:var(--t3);font-size:13px;line-height:1.8}
+.ai-empty .big{font-size:28px;display:block;margin-bottom:6px;opacity:.45}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+.spin.dark{border-color:rgba(11,107,203,.25);border-top-color:var(--accent)}
+@keyframes sp{to{transform:rotate(360deg)}}
+.skel{background:linear-gradient(90deg,#f0f2f4,#f8f9fa,#f0f2f4);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:5px;height:12px;margin:5px 0}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.rel{display:flex;flex-direction:column;gap:6px}
+.rel-item{padding:8px 10px;border:1px solid var(--line);border-radius:7px;cursor:pointer;font-size:12.5px;transition:.15s}
+.rel-item:hover{border-color:var(--brand);background:var(--brand-soft)}
+.rel-item .rt{color:var(--t1);font-weight:500}
+.rel-item .rs{color:var(--t3);font-size:11px;margin-top:2px}
+
+/* Batch progress */
+.prog{margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:12px;background:#fafbfc;display:none}
+.prog.on{display:block}
+.prog-bar{height:7px;background:#e8ebee;border-radius:4px;overflow:hidden;margin:8px 0}
+.prog-bar i{display:block;height:100%;background:var(--accent);width:0;transition:.3s}
+.prog-txt{font-size:12px;color:var(--t2);display:flex;justify-content:space-between;gap:10px}
+
+/* ---------- Modal ---------- */
+.modal{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-46%) scale(.97);width:min(480px,calc(100% - 32px));
+  background:var(--card);border-radius:12px;box-shadow:0 20px 48px rgba(16,24,40,.2);z-index:100;
+  opacity:0;pointer-events:none;transition:.2s;max-height:88vh;display:flex;flex-direction:column;
+}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.md-hd{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+.md-hd h3{font-size:15px;font-weight:600;flex:1}
+.md-bd{padding:16px 18px;overflow-y:auto}
+.md-ft{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+.f-row{margin-bottom:14px}
+.f-row label{display:block;font-size:12px;color:var(--t2);margin-bottom:5px;font-weight:500}
+.f-row input,.f-row select,.f-row textarea{
+  width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:7px;outline:none;background:var(--card);
+}
+.f-row input:focus,.f-row textarea:focus{border-color:var(--brand)}
+.f-row .hint{font-size:11px;color:var(--t3);margin-top:5px;line-height:1.6}
+.alert{background:var(--warn-soft);border:1px solid #f5d9a8;color:#8a5a08;padding:9px 11px;border-radius:7px;font-size:12px;line-height:1.65;margin-bottom:14px}
+.alert b{display:block;margin-bottom:2px}
+
+/* Toast */
+.toast{
+  position:fixed;left:50%;bottom:32px;transform:translate(-50%,14px);background:#1f2328;color:#fff;
+  padding:10px 18px;border-radius:8px;font-size:13px;z-index:200;opacity:0;pointer-events:none;transition:.22s;
+  max-width:calc(100% - 40px);text-align:center;box-shadow:0 8px 24px rgba(16,24,40,.24);
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:var(--danger)}
+.toast.ok{background:var(--brand)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .hd-stats{order:3;width:100%;margin-left:0;justify-content:space-between;gap:10px;
+    border-top:1px solid var(--line-2);padding-top:10px}
+  .stat{text-align:left}
+  .hd-acts{margin-left:auto}
+}
+@media (max-width:768px){
+  .hd{padding:10px 14px}
+  .hd-acts .btn span{display:none}
+  main{padding:12px 12px 70px}
+  table.list{display:none}
+  .cards{display:flex}
+  .filters{padding:12px}
+  .f-grid{grid-template-columns:1fr 1fr}
+  .toolbar{padding:10px 12px}
+  .drawer{width:100%;top:auto;height:92vh;border-radius:16px 16px 0 0;transform:translateY(100%)}
+  .drawer.on{transform:translateY(0)}
+  .dw-ft{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+  .kv{grid-template-columns:74px 1fr}
+}
+@media (max-width:400px){
+  .f-grid{grid-template-columns:1fr}
+  .f-search .sw{min-width:100%}
+}
 </style>
 </head>
 <body>
-  <div class="card">
-    <span class="badge">HXLIB · 部署验证</span>
-    <h1>沪杏科技图书馆</h1>
-    <div class="sub">科普视频档案系统 · Hello World 测试页</div>
 
-    <div class="hello">Hello, World! 👋</div>
+<header>
+  <div class="hd">
+    <div class="logo">
+      <div class="logo-mark">沪</div>
+      <div class="logo-txt">
+        <h1>沪杏科技图书馆 · 科普视频档案系统</h1>
+        <p>Science Video Archive · 沪杏科普视频数字档案库</p>
+      </div>
+    </div>
+    <div class="hd-stats" id="stats"></div>
+    <div class="hd-acts">
+      <button class="btn sm" id="btnSettings">⚙ <span>AI 设置</span></button>
+      <button class="btn sm primary" id="btnImport">⬆ <span>导入</span></button>
+      <button class="btn sm" id="btnExport">⬇ <span>导出</span></button>
+    </div>
+  </div>
+</header>
 
-    <table>
-      <tr><th>站点地址</th><td>https://peterinblue.github.io/hxlib/</td></tr>
-      <tr><th>代码仓库</th><td>peterinblue/hxlib</td></tr>
-      <tr><th>部署分支</th><td>main</td></tr>
-      <tr><th>部署状态</th><td class="ok" id="status">✅ GitHub Pages 部署通道正常</td></tr>
-      <tr><th>页面时间</th><td id="time">—</td></tr>
-    </table>
-
-    <div class="foot">
-      本页面用于验证 hxlib 仓库的 GitHub Pages 发布链路是否正常。后续将承载科普视频档案的检索、分类与编目功能。
+<main>
+  <!-- 筛选区 -->
+  <div class="panel">
+    <div class="filters">
+      <div class="f-search">
+        <div class="sw">
+          <span class="ico">🔍</span>
+          <input type="text" id="q" placeholder="模糊搜索：视频标题 / 项目名称 / 承担单位（空格分隔多关键词）">
+        </div>
+        <select id="qMode" title="多关键词的匹配方式">
+          <option value="and">全部关键词</option>
+          <option value="or">任一关键词</option>
+        </select>
+        <button class="btn primary" id="btnAiSearch" title="用自然语言描述你要找的视频，AI 帮你检索">✨ AI 智能检索</button>
+      </div>
+      <div class="f-grid">
+        <div class="fld">
+          <label>年度批次</label>
+          <select id="fBatch"><option value="">全部</option></select>
+        </div>
+        <div class="fld">
+          <label>一级分类</label>
+          <select id="fCat"><option value="">全部</option></select>
+        </div>
+        <div class="fld">
+          <label>承担单位</label>
+          <select id="fUnit"><option value="">全部</option></select>
+        </div>
+        <div class="fld">
+          <label>所属项目</label>
+          <select id="fProj"><option value="">全部</option></select>
+        </div>
+        <div class="fld">
+          <label>档案标记</label>
+          <select id="fFlag">
+            <option value="">全部</option>
+            <option value="ai">已有 AI 描述</option>
+            <option value="noai">尚无 AI 描述</option>
+            <option value="note">有审核备注</option>
+            <option value="multi">项目含多元内容</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-acts">
+        <button class="btn" id="btnReset">重置筛选</button>
+        <button class="btn ai" id="btnBatchAI">✨ 批量 AI 补全（当前筛选）</button>
+        <span style="font-size:12px;color:var(--t3);align-self:center" id="aiCacheInfo"></span>
+      </div>
+      <div class="prog" id="prog">
+        <div class="prog-txt"><span id="progMsg">准备中…</span><span id="progNum">0 / 0</span></div>
+        <div class="prog-bar"><i id="progBar"></i></div>
+        <button class="btn sm" id="btnStop" style="width:100%;justify-content:center">停止</button>
+      </div>
     </div>
   </div>
 
-<script>
-  function fmt(d) {
-    const p = n => String(n).padStart(2, '0');
-    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
-      + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+  <!-- 列表 -->
+  <div class="panel">
+    <div class="toolbar">
+      <div class="tb-count">共 <b id="cnt">0</b> 条档案<span id="cntSub"></span></div>
+      <div class="tb-right">
+        <select id="sortBy">
+          <option value="default">默认排序</option>
+          <option value="title">按标题</option>
+          <option value="proj">按项目名称</option>
+          <option value="unit">按承担单位</option>
+          <option value="cat">按一级分类</option>
+        </select>
+        <select id="pageSize">
+          <option value="20">20 条/页</option>
+          <option value="50" selected>50 条/页</option>
+          <option value="100">100 条/页</option>
+        </select>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="list">
+        <thead>
+          <tr>
+            <th style="width:46px">序号</th>
+            <th>视频标题</th>
+            <th style="width:210px">所属项目 / 单位</th>
+            <th style="width:96px">一级分类</th>
+            <th style="width:104px">年度批次</th>
+            <th style="width:78px">AI</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="empty" style="display:none">
+      <div class="big">🗂</div>
+      <div>没有匹配的档案</div>
+      <div style="font-size:12px;margin-top:4px">换个关键词或重置筛选试试</div>
+    </div>
+    <div class="pager" id="pager"></div>
+  </div>
+</main>
+
+<!-- 详情抽屉 -->
+<div class="mask" id="mask"></div>
+<div class="drawer" id="drawer">
+  <div class="dw-hd">
+    <h2 id="dwTitle">—</h2>
+    <button class="dw-close" id="dwClose">×</button>
+  </div>
+  <div class="dw-bd" id="dwBody"></div>
+  <div class="dw-ft" id="dwFoot"></div>
+</div>
+
+<!-- 设置弹窗 -->
+<div class="modal" id="modalSettings">
+  <div class="md-hd"><h3>AI 设置（agnes）</h3><button class="dw-close" id="btnCloseSet">×</button></div>
+  <div class="md-bd">
+    <div class="alert">
+      <b>⚠️ 密钥安全提示</b>
+      本页为纯前端静态页面，密钥保存在浏览器本地（localStorage）。若页面部署在公开仓库，请勿填入高价值密钥；建议每位使用者填入自己的密钥。
+    </div>
+    <div class="f-row">
+      <label>API Base URL</label>
+      <input type="text" id="setBase" placeholder="https://api.agnes-ai.cn/v1">
+      <div class="hint">国内站：<code>https://api.agnes-ai.cn/v1</code>　国际站：<code>https://apihub.agnes-ai.com/v1</code></div>
+    </div>
+    <div class="f-row">
+      <label>模型名称</label>
+      <input type="text" id="setModel" placeholder="agnes-2.0-flash">
+    </div>
+    <div class="f-row">
+      <label>API Key</label>
+      <input type="password" id="setKey" placeholder="sk-...">
+      <div class="hint">留空则使用内置默认密钥。修改后仅在本机浏览器生效。</div>
+    </div>
+    <button class="btn sm" id="btnTestAI" style="width:100%;justify-content:center">测试连接</button>
+  </div>
+  <div class="md-ft">
+    <button class="btn" id="btnClearAI">清空本地 AI 缓存</button>
+    <button class="btn primary" id="btnSaveSet">保存</button>
+  </div>
+</div>
+
+<!-- 导入弹窗 -->
+<div class="modal" id="modalImport">
+  <div class="md-hd"><h3>导入档案数据</h3><button class="dw-close" id="btnCloseImp">×</button></div>
+  <div class="md-bd">
+    <div class="alert">
+      <b>支持格式</b>
+      CSV（导出模板可再次导入）或 JSON 备份文件。按「项目名称 + 视频标题」匹配：已存在则更新，不存在则新增。
+    </div>
+    <div class="f-row">
+      <label>选择文件</label>
+      <input type="file" id="fileInput" accept=".csv,.json,.txt">
+    </div>
+    <div id="impPreview" style="font-size:12px;color:var(--t2);line-height:1.7"></div>
+    <div class="f-row" style="margin-top:12px">
+      <label>或直接粘贴 CSV / JSON 内容</label>
+      <textarea id="impText" rows="6" placeholder="粘贴从 Excel 复制的内容或导出的 CSV 文本…"></textarea>
+    </div>
+  </div>
+  <div class="md-ft">
+    <button class="btn" id="btnCancelImp">取消</button>
+    <button class="btn primary" id="btnDoImport">导入</button>
+  </div>
+</div>
+
+<!-- 导出弹窗 -->
+<div class="modal" id="modalExport">
+  <div class="md-hd"><h3>导出档案数据</h3><button class="dw-close" id="btnCloseExp">×</button></div>
+  <div class="md-bd">
+    <div class="f-row">
+      <label>导出范围</label>
+      <select id="expScope">
+        <option value="filtered">当前筛选结果</option>
+        <option value="all">全部档案</option>
+        <option value="ai">仅已生成 AI 描述的</option>
+      </select>
+    </div>
+    <div class="f-row">
+      <label>导出格式</label>
+      <select id="expFmt">
+        <option value="csv">CSV（Excel 可直接打开，含 AI 描述）</option>
+        <option value="json">JSON 完整备份（含 AI 缓存，可再次导入）</option>
+      </select>
+      <div class="hint">CSV 使用 UTF-8 BOM 编码，Excel 打开中文不乱码。</div>
+    </div>
+  </div>
+  <div class="md-ft">
+    <button class="btn" id="btnCancelExp">取消</button>
+    <button class="btn primary" id="btnDoExport">导出</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="fileHidden" accept=".csv,.json,.txt" style="display:none">
+
+<script>window.ARCHIVE={"meta":{"source":"沪杏科技图书馆科普视频档案","total":3480,"projects":201,"units":157,"cats":11,"batches":4,"catStat":{"生活科普":69,"医学健康":2317,"自然地理":181,"天文宇宙":76,"学科科普":54,"动物植物":128,"数字智能":530,"工程制造":102,"农林畜牧":8,"科学考古":1,"科技人物":14},"batchStat":{"20-22年项目":2472,"2023年新项目":634,"2024年项目":349,"2025年项目":25},"skipped":0},"batch":["20-22年项目","2023年新项目","2024年项目","2025年项目"],"cat":["生活科普","医学健康","自然地理","天文宇宙","学科科普","动物植物","数字智能","工程制造","农林畜牧","科学考古","科技人物"],"unit":["上海炫动传播有限公司","上海体育学院","上海中医药大学附属岳阳中西医结合医院","上海体育科学研究所（上海市反兴奋剂中心）","中国科学院上海营养与健康研究所","上海健康医学院","上海格桔信息科技有限公司","中国水产科学研究院东海水产研究所","上海市养志康复医院(上海市阳光康复中心)","上海深渊文化传媒发展有限公司","上海慧集文化发展有限公司","磐龙（上海）文化传播有限公司","复旦大学附属华山医院","上海市包装技术协会","上海市环境科学学会","上海《华东科技》杂志社有限公司","上海蔚星教育科技有限公司","复旦大学附属中山医院","上海汽笛生信息科技有限公司","华东疗养院","上海市农业科学院","上海市医师协会","上海遥程信息科技有限公司","上海市机械工程学会","复旦大学","上海教育出版社有限公司","上海交通大学医学院附属仁济医院","上海市胸科医院","上海市第七人民医院(上海中医药大学附属第七人民医院)","上海材料研究所","上海安荃教育科技有限公司","上海市宝山区吴淞中心医院(复旦大学附属中山医院吴淞医院、上海市宝山区红十字医院)","上海交通大学医学院附属瑞金医院卢湾分院","新天地方正（上海）体育文化有限公司","上海市核学会","上海市营养学会","中国福利会少年宫","聆课教育科技（上海）有限公司","上海亿蔻网络技术有限公司","中国科学院分子植物科学卓越创新中心","上海市口腔病防治院","上海市松江区中心医院(上海交通大学附属第一人民医院松江分院)","上海市农业技术推广服务中心(上海市植物保护植物检疫站、上海市农药检定所、上海市农业环境保护站)","上海市预防医学会","上海市科学技术研究所协会","上海市生物信息学会","上海市中医药学会","上海市寄生虫学会","上海市药学会","上海市电子电器技术协会","上海市气象学会","上海市太阳能学会","上海市城市科学研究会","上海市航空学会","上海市海洋湖沼学会","上海交通大学医学院附属新华医院","上海市农业生物基因中心","中国科学院上海有机化学研究所","上海市精神卫生中心（上海市心理咨询培训中心）","上海交通大学医学院","复旦大学附属妇产科医院","华东医院","上海市中医文献馆","上海交通大学","上海商学院","上海师范大学","上海市青少年活动中心(上海市青年发展服务中心)","上海骅炘智能科技有限公司","上海上房园林植物研究所有限公司","上海电力大学","上海市节能中心","上海纺织博物馆","中国科学院上海光学精密机械研究所","上海海事大学","上海市气象局宣传科普与教育中心","上海少年儿童出版社有限公司","中国科学院声学研究所东海研究站","上海市地质调查研究院(上海市环境地质站、上海市地质矿产遥感中心)","复旦大学附属儿科医院","上海中医药大学","复旦大学附属眼耳鼻喉科医院","上海东方报业有限公司","上海市第十人民医院","中国人民解放军海军军医大学第二附属医院","上海电机学院","微创博志教育科技（上海）有限公司","中国科学院上海技术物理研究所","上海市地震局","上海海关动植物与食品检验检疫技术中心","上海北辰软件股份有限公司","上海市中医医院","上海市同仁医院","上海市肿瘤研究所","上海科技馆","上海秋梅医学信息科技有限公司","上海莅仓文化发展有限公司","欣凯医药化工中间体（上海）有限公司","上海瑞梅中医药有限公司","上海蝴蝶海教育科技有限责任公司","上海交通大学电子音像出版社有限公司","上海市抗癌协会","上海市医院协会","上海市植物学会","复旦大学附属中山医院青浦分院(上海市青浦区中心医院)","上海市制冷学会","上海市化学化工学会","上海市教育委员会教育技术装备中心","上海交通大学医学院附属瑞金医院","上海市科创启明星协会","上海市毒理学会","上海卒中学会","上海市康复医学会","上海科技教育出版社有限公司","应急管理部上海消防研究所","埃依斯公司","中国福利会国际和平妇幼保健院","华东理工大学","上海市内分泌代谢病研究所","同济大学附属口腔医院","上海市神经科学学会","上海市绿化管理指导站","清丞新材料科技（上海）有限公司","上海工程技术大学","上海市图像图形学学会","上海市普陀区人民医院(上海纺织第一医院)","上海第二工业大学","中国人民解放军海军军医大学","上海代那索斯教育科技有限公司","上海辰山植物园","上海市闵行区融媒体中心(闵行报社、上海市闵行广播电视台)","复旦大学附属肿瘤医院","上电影业（上海）有限公司","上海航天空间技术有限公司","上海西虹桥导航产业发展有限公司","中国船舶集团有限公司第七○八研究所","复旦大学出版社有限公司","上海科普教育促进中心","上海市中医药研究院","上海科学技术出版社有限公司","上海市公共卫生临床中心","上海科技管理干部学院","复旦大学上海医学院","上海区块链技术协会","上海市眼病防治中心","上海实验动物研究中心","上海市第一妇婴保健院","上海市生物医药技术研究院","上海市针灸经络研究所","上海国际人类表型组研究院","上海市科普作家协会","上海出版印刷高等专科学校","上海埃依斯航天科技有限公司","上海市精神卫生中心(上海市心理咨询培训中心)","上海市净水技术学会","上海市第六人民医院","上海电器科学研究所（集团）有限公司","新闻报社"],"note":["","视频含违规内容","内容、视频含违规内容","备选","视频中含违规信息","旧LOGO","图文含违规信息","含违规信息","视频含违规内容\\图文含违规信息","(微电影）"],"desc":["","⚠️项目内含多元内容(工程制造3条、学科科普1条、天文宇宙1条)，主分类为生活科普","⚠️项目内含多元内容(动物植物4条、医学健康4条)，主分类为医学健康","⚠️项目内含多元内容(数字智能5条、工程制造2条、医学健康1条)，主分类为工程制造","⚠️项目内含多元内容(工程制造8条、自然地理2条、数字智能2条)，主分类为工程制造","⚠️项目内含多元内容(自然地理4条、医学健康1条)，主分类为动物植物","⚠️项目内含多元内容(医学健康3条、农林畜牧2条、动物植物1条)，主分类为农林畜牧","⚠️项目内含多元内容(工程制造3条、数字智能2条)，主分类为工程制造","⚠️项目内含多元内容(动物植物3条、学科科普1条、自然地理1条)，主分类为动物植物","⚠️项目内含多元内容(动物植物6条、天文宇宙5条)，主分类为动物植物","⚠️项目内含多元内容(学科科普2条、医学健康2条、数字智能1条)，主分类为学科科普","⚠️项目内含多元内容(学科科普3条、医学健康1条、天文宇宙1条)，主分类为学科科普","⚠️项目内含多元内容(自然地理5条、医学健康2条、学科科普1条)，主分类为自然地理","⚠️项目内含多元内容(医学健康1条、科技人物1条、自然地理1条)，主分类为科技人物","⚠️项目内含多元内容(工程制造9条、学科科普3条、数字智能1条)，主分类为工程制造","⚠️项目内含多元内容(工程制造4条、医学健康1条、自然地理1条)，主分类为工程制造","⚠️项目内含多元内容(自然地理4条、动物植物1条)，主分类为动物植物","⚠️项目内含多元内容(天文宇宙8条、医学健康2条、自然地理2条)，主分类为天文宇宙","⚠️项目内含多元内容(自然地理9条、动物植物3条、学科科普1条)，主分类为自然地理","⚠️项目内含多元内容(学科科普5条、自然地理1条)，主分类为自然地理"],"proj":[["21DZ2308200","“蹦蹦跳 读绘本 游新城 识科创”系列科普教育课程",0,0],["20DZ2311900","老年人防跌倒防损伤健身指导",1,0],["20DZ2301900","基于“达医晓护”全媒体平台中医系列科普实验剧目创作与推广",2,0],["21DZ2306100","抗阻训练在青少年运动参与和健康成长中的重要作用",3,0],["21DZ2306600","《小小营养师》系列科普教育课程和课件开发",4,0],["21DZ2304500","守住光明，照亮未来——儿童青少年近视防控宣教专用课件",5,0],["21DZ2310900","上海故事系列科普教育微课程",6,0],["21DZ2307000","“长江大保护”绿色小卫士系列科普教育课程课件",7,0],["21DZ2301000","工伤应急救护和职业相关伤病预防系列课程",8,0],["21DZ2308400","《人类与海洋——“潜入深海，探秘深渊”》系列科普教育课程和课件开发",9,0],["21DZ2309500","青少年中草药系列科普教育课程和课件开发",10,0],["20DZ2302500","安防实验室系列之安防小实验",11,0],["20DZ2311800","基于传统与创新媒介结合的运动损伤与防护科普系列创作",12,0],["21DZ2314800","“小包装大健康”——大众食品包装安全系列科普活动",13,0],["21DZ2313900","“远离噪声干扰，共创舒适声环境”公益科普活动",14,0],["21DZ2310300","儿童意外伤害预防和救治科普课程开发",15,0],["21DZ2307700","深空探秘科普教育课程和课件开发",16,0],["20DZ2311600","自身免疫相关肾脏疾病科普平台创立与推广",17,0],["20DZ2312000","守护生命之轴：脊柱运动损伤防治系列科普视频制作及推广",17,0],["20DZ2302400","“趣味化学生”——上海有机化学研究所系列科学实验节目的创制和推广",18,0],["21DZ2304100","AI赋能癌症早筛——面向社区居民的科学防癌科普教育系列课程",19,0],["20DZ2303000","《识别毒蘑菇，远离“真菇毒”》和《“松茸”三 兄弟，傻傻分不清楚？》科学实验视频制作和推广",20,0],["20DZ2305000","“千种出生缺陷，一个声音”出生缺陷综合防控科普宣传计划",21,0],["20DZ2302600","“上天入海”科学实验节目",22,0],["21DZ2313000","人工智能产业科普新媒体短视频创制与推广",23,0],["21DZ2313100","人工智能前沿进展与应用的短视频科普",24,0],["21DZ2313300","《大话集成电路》科普短视频的开发与推广",25,0],["21DZ2315300","“打开麻醉镇痛与重症监护的神秘大门”麻醉科普教育工程",26,0],["21DZ2315400","医“食”无忧，护佑健康——食管癌全程健康管理新媒体科普",27,0],["21DZ2315500","“社交癌”——压力性尿失禁的防治与康复",28,0],["21DZ2306200","3D打印系列科普教育课程和课件开发",29,0],["21DZ2309600","“全方位安防”之上海公安博物馆系列青少年公共安全课程",30,0],["21DZ2302900","守护“顶梁柱”，关爱“低头族”：颈椎病防治系列科普专题课件制作及推广",31,0],["21DZ2301200","防患于未然：城镇居民常见灼伤事件防治系列科普视频制作及推广",32,0],["21DZ2309700","“老年人正确体育健身科普大课堂”  -- 老年人体育锻炼66个误区及对策",33,0],["21DZ2314000","放射诊疗知多少-系列科普活动",34,0],["21DZ2313800","“知食善食”—合理膳食系列科普活动",35,0],["21DZ2303300","认识傻子癌----肠癌早防早治科普课件",31,0],["21DZ2304000","低碳科技系列科普教育课程和课件开发",36,0],["21DZ2311000","《设计我们的弹性城市》系列课程和课件",37,0],["21DZ2308700","生物多样性：让城市更“自然”",38,0],["21DZ2306900","垃圾处理，虫虫有责",39,0],["21DZ2301400","口腔健康  全身健康",40,0],["21DZ2302200","猝死的预防和急救处理-系列科普教育课件开发",41,0],["21DZ2303600","农作物病虫害绿色防控技术科普课程开发",42,0],["22DZ2300100","逝水流年去，记忆永留存-关注老年人轻度认知功能障碍的健康科普项目",43,0],["22DZ2300200","“科学-城市-生活”系列科普活动——眼底疾病防治",44,0],["22DZ2300300","“好孕来——生育促进直通车”科普活动",45,0],["22DZ2300400","“食尚中医药”进社区、进中小学",46,0],["22DZ2300500","舌尖上的寄生虫“系列科普活动”",47,0],["22DZ2300600","“安全用药，娃娃抓起”系列科普活动",48,0],["22DZ2300700","积极科普新能源、助力双碳早达成",49,0],["22DZ2300800","“研智慧气象，启科学梦想” 青少年气象科普教育系列活动",50,0],["22DZ2300900","采撷阳光，点亮未来",51,0],["22DZ2301000","品质城市之系列科普：走进地下空间",52,0],["22DZ2301100","《追逐梦想，守护蓝天—航空安全科普系列活动》",53,0],["22DZ2301200","“增强海洋意识，传播蓝色文明”——海洋塑料垃圾污染防治科普宣传",54,0],["20DZ2312300","基于“儿童罕见病的肝移植治疗”科普教育工程",26,0],["20DZ2312400","罕见病系列科普教育",55,0],["22DZ2301700","博物教育类系列绘本图书的出版与推广",25,0],["22DZ2302600","大稻自然微电影",56,0],["22DZ2302800","无处不在的“氟”",57,0],["22DZ2302900","“生日快乐”---阿尔茨海默病行为问题的背后",58,0],["22DZ2303000","《疯狂病原城梦游历险记Ⅰ》科普动画微电影制作与推广",59,0],["22DZ2303100","“冲啊！盆底肌”尿失禁科普影视制作与传播计划",60,0],["22DZ2303400","微电影《“天下第一鱼”的发现》的创制与推广",25,0],["22DZ2303700","甜蜜的负担——妊娠期糖尿病食疗与健康管理科普微电影",5,0],["22DZ2303900","《千万别谈“磨”色变》关于肺磨玻璃结节的科普微电影创制和推广",61,0],["22DZ2304000","传人",62,0],["22DZ2304100","知情解意-儿童“美丽心情”积极心理计划",55,0],["22DZ2304200","科普微电影《细菌与人——流浪细菌》的创制与推广",63,0],["22DZ2304900","“数字零距离”中小学系列科普教育课件开发",23,0],["22DZ2305000","“智慧城市”让上海更美好——AI+GIS技术科学普及课程",64,0],["22DZ2305100","人工智能与脑机接口科普课程 —— 当碳基生命遇上硅基科技",32,0],["22DZ2305200","“Hello World—AI是这样认识世界的”：青少年人工智能科普课程",65,0],["22DZ2305400","东方少年科学讲坛科普教育网络课程第三季",66,0],["22DZ2305600","“动物界中的超能英雄”系列课件（第二季）",67,0],["22DZ2305700","《植汇星球》中小学植物科学艺术系列课程",68,0],["22DZ2305800","阳台种菜在小学科普教学中的实践应用",20,0],["22DZ2305900","从复旦大学祖嘉生物博物馆看生物多样性保护的“中国案例”",24,0],["22DZ2306000","海洋珍稀动物小学科普系列教育课程开发",7,0],["22DZ2306100","面向中小学生的新能源发电和智慧校园科普教育",69,0],["22DZ2306300","“节能我行动 绿色新生活”青少年节能降碳系列科普课程",70,0],["22DZ2306400","《智能纺织品科普教育课程课件》",71,0],["22DZ2306600","“光遇未来”系列前沿科学课程",72,0],["22DZ2306700","《当航海“邂逅”人工智能—智能航海的认知和推广》系列航海科普课程课件开发",73,0],["22DZ2306800","“红色预警！气象本象今天不上学”小学科普教育课程课件开发",74,0],["22DZ2306900","“用问题叩响未来”科学探究系列课件开发计划",75,0],["22DZ2307000","《走进奇妙的声学世界》中小学系列科普教育课程课件开发",76,0],["22DZ2307100","“仰望星辰，探索宇宙”天文观测科普课程",65,0],["22DZ2307200","洞察上海地质安全",77,0],["22DZ2307300","医教结合 乐来乐好 ---低龄儿童伤害预防科普系列课程建设",78,0],["22DZ2307400","“心理药箱”危机下的青少年心理自助能力提升课程",58,0],["22DZ2307500","中小学科普教育课程课件开发——神奇的针灸",79,0],["22DZ2302400","为EYE瞳心，爱笑的眼睛——近视小飞侠舞台剧",80,0],["22DZ2304300","上海重大科技成果科普化探索",81,0],["22DZ2304400","甲状腺肿瘤的硬“核”科普",82,0],["22DZ2304500","基于新媒体的“缺血性心脏病—系列探秘”防治科普系统工程",83,0],["20DZ2303300","垃圾分类中的材料科学体验实验",84,0],["20DZ2302800","疫情防控科学剧——如何利用口罩做好个人防护",85,0],["20DZ2301100","《怎么就进了ICU？》急危重症预防科普舞台剧创制和推广",61,0],["20DZ2301500","小丁丁月球历险记",86,0],["20DZ2302900","《震得起的地震安全城市》系列科学实验节目",87,0],["21DZ2307100","新媒体互动微课堂——颜值保卫战 化妆品科普行",88,0],["21DZ2309800","面向中学生的心理教育科普片",89,0],["21DZ2311300","近视防控 你我知多少",80,0],["21DZ2311400","跑好人生马拉松-科学防治骨关节炎",90,0],["21DZ2311500","不做“谣控人”，认识沉默的杀手---“骨质疏松”",91,0],["21DZ2311600","健康口腔 科技赋能",40,0],["21DZ2311700","基于新媒体平台的胰腺恶性肿瘤科普短视频创制与推广项目",92,0],["21DZ2311800","一分钟带你学中药",79,0],["21DZ2311900","“AI万象”系列科普短视频创制与推广",93,0],["21DZ2312100","新媒体视频科普之“家庭用药，安全最重要”",94,0],["21DZ2312200","莫要谈HPV色变——宫颈癌的前世今身",95,0],["21DZ2312300","世界生物医药发展的里程碑：人和事",96,0],["21DZ2312500","病菌简史",25,0],["21DZ2312600","一种用于预防和治疗心脑血管疾病中药验方的配伍、药材研究及制作工艺的科学普及",97,0],["21DZ2312700","医生的手绘笔记——乳腺篇",98,0],["21DZ2312800","神奇的驾驶员——车辆自动驾驶中的人工智能技术",99,0],["21DZ2312900","基于人工智能技术的公共卫生科普在线教育互动短视频《科学训练营》创制与新媒体推广",59,0],["23DZ2301200","新时代下肿瘤“防筛诊治康”核心知识体系科普宣教",100,1],["23DZ2301400","“栓不住、动起来”：VTE通畅行动科普计划",101,1],["23DZ2300200","杨浦区“运动健康”科普特色能力建设项目",1,1],["23DZ2301900","美丽健康中国视角下的本草文化进校园进社区系列科普活动",102,1],["23DZ2306800","“材”能兼备--新材料与脑血管病的故事",103,1],["23DZ2301700","“节能减排、智慧冷暖—上海制冷节”品牌系列活动",104,1],["23DZ2308100","“取之不尽的氢能”——青少年绿色制氢科普课程",105,1],["23DZ2308300","从制造的过去到智造的未来——义务教育学段系列科创课程的开发与实践",106,1],["23DZ2305400","消化系统急危重症的健康科普教育",107,1],["23DZ2302000","与科创同行—“启明星”科技人才话科普",108,1],["23DZ2301300","“美丽健康”科普赋能行动计划",109,1],["23DZ2301100","卒中相关多学科系列科普活动（二）：居家康复护理",110,1],["23DZ230100","人老足健不倒翁 大步流星走天下--老年骨健康管理与康复的系列科普",111,1],["23DZ2309200","科学家讲科学之拥抱大航天时代",112,1],["23DZ2306500","《神奇的消防服装》——新材料系列科普教育课程和课件开发",113,1],["23DZ2308700","行星探测科普系列课程和课件开发",114,1],["23DZ2300300","妇幼健康，奉贤无限",115,1],["23DZ2307800","VR城镇污水厂系列科普课件开发",116,1],["23DZ2301800","“数字化嘉年华”-数字素养提升系列科普活动",23,1],["23DZ2308800","\"航天员在太空中饮食生活大揭秘\"科普课程与课件开发",117,1],["23DZ2308200","“人工智能助力口腔健康”——中小学生牙体牙髓疾病防治系列科普课程及课件开发",118,1],["23DZ2301500","聚精“汇”神 追问大脑",119,1],["23DZ2307600","“双碳背景下的城市树木保护行动”课程开发",120,1],["23DZ2306700","减碳新科技：创造净零排放的未来",121,1],["23DZ2303800","《换位童年》—儿童多动症科普微电影",55,1],["23DZ2308500","踏上“双碳”之旅  开启“碳秘”之行",122,1],["23DZ2306300","小“材”大用，“料”定未来——新材料主题系列科学教育课程研发",93,1],["23DZ2304300","认识沉默杀手--慢性肾脏病",91,1],["23DZ2302200","基于新型图像处理与传播方法的青少年沉浸式眼健康科普",123,1],["23DZ2307400","东方少年科学讲坛科普教育网络课程第四季",66,1],["23DZ2306600","你好，生物陶瓷！",124,1],["23DZ2306900","新材料·趣设计·艺起来",125,1],["23DZ2307000","中小学基于海洋重器的国防科普教育课程课件开发",126,1],["23DZ2305000","《龙在中国》科普微电影",127,1],["23DZ2307500","城市·新自然——城市植物生态修复和我们的生活",128,1],["23DZ2304800","科普微电影《少年问天宫》",129,1],["23DZ2305600","“聚力东方，护甲一生”——基于智慧医疗的甲状腺肿瘤精准科普体系建设",130,1],["23DZ2304700","《深林信号：户外求生法则》",131,1],["23DZ2308000","零碳小先锋卫星科普实践课程",132,1],["23DZ2309000","“风云全球瞰”——风云气象卫星系列青少年科普教育课程课件开发",74,1],["23DZ2309100","巡天探地又入海——综合时空PNT体系为您保驾护航",133,1],["23DZ2305900","“酷米和炫迪的化学魔盒”化学工坊",57,1],["23DZ2307300","“筑梦深蓝”舰船知识科普系列课程开发",134,1],["23DZ2303500","旅行与传染病",12,1],["23DZ2303100","《康康话健康——要命的胸痛》动漫科普图书出版与推广",135,1],["23DZ2304900","上海科普教育创新奖系列微电影——“科普之光·追光者”",136,1],["23DZ2305500","基于新媒体的“慢性肝病防治”系统性科普工程",83,1],["23DZ2300800","化学领域特色科技传播能力体系建设",57,1],["23DZ2308600","中小学科普教育课程课件开发-----寻宝-厨余垃圾中的中草药",137,1],["23DZ2308400","绿色低碳科学素养与创新思维",122,1],["23DZ2300900","健康科技传播能力体系建设",59,1],["23DZ2304400","《发热？感染与免疫之外的真相探寻》关于不明原因发热相关肿瘤的科普微电影创制和推广",61,1],["23DZ2305300","科海撷珠：打造一个“上海科技奖励获奖成果科普化”品牌栏目",138,1],["23DZ2302800","“健康智多星”青少年健康科普漫画丛书",135,1],["23DZ2306400","最友好的病毒之噬菌体——高中科普课程实践",139,1],["23DZ2300700","如何成为一名合格的科普传播者",140,1],["23DZ2300500","医学科普课程实录",141,1],["24DZ2303000","面向青少年的人工智能科普中长视频的制作与推广",24,2],["24DZ2305000","海水特性科学实验及其遥感观测科普产品创制与推广",7,2],["24DZ2305400","“未来视界，链宇智行”新质生产力科普系列活动",142,2],["24DZ2301400","《数字时代的视觉健康》科技传播素质教育课程建设",143,2],["24DZ2303300","科学背后的无名英雄——实验动物的驯化史",144,2],["24DZ2302700","颈肩痛怎么办，“锦”需动起来！",79,2],["24DZ2300600","“医心守护，青春护航”，青春期健康教育科普体系建设",145,2],["24DZ2305600","青少年气象科创人才贯通培育系列活动",50,2],["24DZ2305500","《追逐梦想，翼动未来—航空强国科普系列活动》",53,2],["24DZ2302300","女性生育力保护：生命之源安全的密码",146,2],["24DZ2303100","“智界奇点”AI主题科普视频创制与推广",93,2],["24DZ2303200","无处不在的“糖”新媒体科普视频创制",57,2],["24DZ2302200","“脑肠轴很可艾”——艾灸中医特色疗法治疗肠易激综合征的健康科普视频制作与推广",147,2],["24DZ2307700","国际人类表型组计划公众参与科学研究项目",148,2],["24DZ2305300","“老师，我有个问题！”科学问答系列——科普活动",149,2],["24DZ2301100","虚拟现实技术应用专业《科技传播实务》课程设计、建设与实践",150,2],["24DZ2304900","“解构卫星——卫星平台系统”科学实验产品",151,2],["24DZ2300800","儿童青少年情绪问题健康科普",152,2],["24DZ2305700","高品质生活与高品质水——“水悟堂”水务科普传播及实践活动",153,2],["24DZ2307800","基于公民参与的城市河流生物多样性快速监测与评估项目",24,2],["24DZ2304800","阳光体育·快乐健身：基于可穿戴设备的运动习惯养成移动应用程序的构建和推广",154,2],["24DZ2304500","构建能源数字化的新电力重大科研成果科普宣传",155,2],["24DZ2304400","周到科普·上海科技奖励获奖成果",156,2],["25DZ2302400","“阿拉七十正精彩”——“乐龄新生活”健康生活方式推广科普项目",43,3]],"rows":[[0,"“蹦蹦跳 读绘本 游新城 识科创”系列科普教育课程-松江篇",0,0,0],[0,"“蹦蹦跳 读绘本 游新城 识科创”系列科普教育课程-奉贤篇",0,0,0],[0,"“蹦蹦跳 读绘本 游新城 识科创”系列科普教育课程",0,0,0],[0,"蹦蹦跳、读绘本、游新城、识科创--嘉定篇",0,0,0],[0,"“蹦蹦跳、 读绘本、游新城、识科创”系列科普教育课程--南汇",0,0,0],[1,"健身器材",0,1,0],[1,"鱼油or鱼肝油一样吗-上海体育学院 史仍飞教授",0,1,0],[1,"转头时脖子咔咔响怎么办",0,1,0],[1,"助力老人科学运动 社区健康师 长者健身房齐上阵2021041",0,1,0],[1,"远离“职业病”办公室人群更容易患腱鞘炎！一招自测 三招预防",0,1,0],[1,"这个重阳节，教老人如何预防摔倒",0,1,0],[1,"运动一夏-夏天运动应不应该开空调",0,1,0],[1,"膝关节的康复治疗",0,1,0],[1,"运动一夏-夏天运动减肥效果更好吗",0,1,0],[1,"四个动作改善小腿外翻",0,1,0],[1,"肩周炎的康复治疗",0,1,0],[1,"社区健身器材防治老年慢性病科普漫画之高血压篇",0,1,0],[1,"太极组合+内外平衡（下集）",0,1,0],[1,"社区健康师宣传片",0,1,0],[1,"太极组合+内外平衡（上集）",0,1,0],[1,"社区健康师教你怎么吃",0,1,0],[1,"富贵包是颈椎病的预警",0,1,0],[1,"太极单式+协调训练（下集）",0,1,0],[1,"大咖小灶｜跟着运动类APP做运动要注意些什么",0,1,0],[1,"大咖小灶 _ 四字运动口诀 居家防疫抗病毒",0,1,0],[1,"太极单式+协调训练（上集）",0,1,0],[1,"大咖小灶 _ 老少三代齐运动 为你定制不同年龄居家运动套餐",0,1,0],[1,"大咖小灶 _ 家里没有运动器械也能做运动！",0,1,0],[1,"太极步法+下肢力量",0,1,0],[1,"新闻联播-上海：谱写新时代人民城市新篇章",0,1,0],[1,"新闻联播-探索健康管理新要求 上海首推社区健康师",0,1,0],[1,"太极桩功+姿势调整",0,1,0],[1,"4个动作改善腰酸背痛",0,1,0],[1,"运动健康微课程 | 第一课：为什么老年人容易跌倒？",0,1,0],[1,"运动健康微课程 | 第二课：六招改善身体柔韧与活动度",0,1,0],[1,"运动健康微课程 | 第三课：六招强化身体功能力量",0,1,0],[1,"运动健康微课程 | 第四课：六招巩固身体平衡",0,1,0],[2,"特应性皮炎",0,1,0],[2,"银屑病的防与治",0,1,0],[3,"第1集：肌肉力量发展与抗阻训练",0,1,0],[3,"第2集：抗阻训练的常见误区和收益",0,1,0],[3,"第3集：青少年抗阻训练的风险与考量",0,1,0],[3,"第4集：青少年抗阻训练实践",0,1,0],[3,"第5集：儿童和青少年营养补充与恢复策略",0,1,0],[4,"小小营养师第一集",0,1,0],[4,"小小营养师第二集",0,1,0],[4,"小小营养师第三集",0,1,0],[4,"小小营养师第四集",0,1,0],[4,"小小营养师第五集",0,1,0],[4,"小小营养师第六集",0,1,0],[4,"小小营养师第七集",0,1,0],[4,"小小营养师第八集",0,1,0],[5,"课件介绍",0,1,0],[5,"近视防控“三件套五还要”",0,1,0],[5,"5个W，教你配戴眼镜",0,1,0],[5,"近视是啥，离我们有多近?",0,1,0],[5,"屈光筛查的内容与流程",0,1,0],[5,"眼睛的结构和生长发育",0,1,0],[6,"上海科技故事之桥梁建设崛起-南浦大桥",0,0,1],[6,"上海科技故事之生物技术突破-人工全合成结晶牛胰岛素",0,0,1],[6,"上海科技故事之上海航天加速-天马望远镜",0,0,1],[6,"上海科技故事之船舶扬帆驰骋 - “东海救101”轮",0,0,1],[6,"上海科技故事之建筑技术发展-上海中心大厦",0,0,1],[7,"长江大保护第1讲长江大保护的“来龙去脉”",0,2,0],[7,"长江大保护第1讲（扩展篇）",0,2,0],[7,"长江大保护第2讲“十年禁渔”",0,2,0],[7,"长江大保护第2讲（扩展篇）国家重点水生保护动物",0,2,0],[7,"长江大保护第3讲",0,2,0],[7,"长江大保护第3讲（扩展篇）",0,2,0],[7,"长江大保护第4讲 我们在行动",0,2,0],[7,"长江大保护第4讲（扩展篇）",0,2,0],[7,"长江大保护第5讲“长江口鱼类”",0,2,0],[7,"长江大保护第5讲（扩展篇）拯救长江“水中精灵”",0,2,0],[8,"颈肩腰腿痛工间操",0,1,0],[9,"第一讲：以“科学探索”促进海洋科普",0,2,0],[9,"第二讲：“海洋科普”中的工程技术",0,2,0],[9,"第三讲：海洋科普与艺术创新",0,2,0],[9,"第四讲：海洋公益中的科普教育-上",0,2,0],[9,"第五讲：海洋公益中的科普教育-下",0,2,0],[9,"第六讲：跟着新华社记者去探海",0,2,0],[9,"第七讲：我的极地探索之旅-上",0,2,0],[9,"第八讲：我的极地探索之旅-下",0,2,0],[9,"第九讲：海底潜行者-上",0,2,0],[9,"第十讲：海底潜行者-下",0,2,0],[9,"第十一讲：皮划艇探海之旅-上",0,2,0],[9,"第十二讲：皮划艇探海之旅-下",0,2,0],[9,"第十三讲：探秘神奇海贝",0,2,0],[9,"第十四讲：贝类学家说海贝",0,2,0],[9,"第十五讲：水下机器人",0,2,0],[9,"第十六讲：深海宝藏",0,2,0],[9,"第十七讲：深海生物",0,2,0],[9,"第十八讲：滴水成海",0,2,0],[9,"第十九讲：深邃海洋",0,2,0],[9,"第二十讲：洋流之谜",0,2,0],[9,"第二十一讲：深海微生物实验",0,2,0],[9,"第二十二讲：载人深潜简史",0,2,0],[9,"2022世界海洋日特辑",0,2,0],[9,"人类为什么要探索海洋",0,2,0],[9,"听鲸鱼的声音",0,2,0],[9,"海洋活化石鹦鹉螺",0,2,0],[9,"维纳斯骨螺",0,2,0],[9,"像花儿一样的海底动物",0,2,0],[9,"聪明的头足纲章鱼",0,2,0],[9,"鲸鱼的秘密",0,2,0],[10,"奇妙的中“草”药——动物类及矿物类中草药",0,1,2],[10,"中草药也有自己的脾气",0,1,2],[10,"中华仙草 植物类中草药",0,1,2],[10,"中华仙草-植物类中草药",0,1,2],[10,"神奇百草园——植物类中草药",0,1,2],[10,"中草药也有自己的性格和脾气",0,1,2],[10,"青少年中草药系列科普教育课程和课件开发",0,1,2],[10,"青少年中医科普",0,1,2],[11,"安防实验室之安防小实验 青少年防踩踏防高坠线上安全科普讲座",0,0,0],[11,"智慧湾科创园科学之夜，安防实验室 安防科学小实验讲安大道理！",0,0,0],[11,"智慧湾科创园科学之夜，安防实验室系列之安防小实验再次来袭！",0,0,0],[12,"前交叉韧带手术后的康复是怎样的？",0,1,0],[12,"人工韧带重建前交叉韧带有哪些优势？",0,1,0],[12,"前交叉韧带手术，你需要知道的几件事",0,1,0],[12,"半月板损伤后需要手术吗？",0,1,0],[12,"膝关节前方疼痛怎么办？",0,1,0],[12,"膝关节的常见损伤和自测方法",0,1,0],[12,"肩痛都有哪些原因？",0,1,0],[12,"肩袖损伤的诊断、手术和康复",0,1,0],[12,"肩峰撞击症的病因和康复",0,1,0],[13,"食品包装和食品安全",0,1,0],[13,"如何为宝宝选购安全的奶瓶",0,1,0],[13,"塑料污染治理背景下餐饮外卖包装面临的挑战",0,1,0],[13,"“小包装大健康”主题五：如何用简单方法辨别食品包装的安全性",0,1,0],[14,"如何保护听力，带你走进科技小课堂",0,1,0],[14,"生活中常见的噪声控制技术科普讲座",0,1,0],[15,"儿童意外伤害预防和救治科普系列课程之交通事故的初步救治及预防",0,1,0],[15,"儿童意外伤害预防和救治科普系列课程之高空坠落伤",0,1,0],[15,"儿童意外伤害预防和救治科普系列课程之异物篇",0,1,0],[15,"儿童意外伤害预防和救治科普课程开发——动物伤的预防与治疗",0,1,0],[15,"儿童意外伤害预防和救治科普课程开发——儿童烫伤",0,1,0],[15,"儿童意外伤害预防与救治科普系列课程——儿童中毒的防治",0,1,0],[16,"月球车移动分系统",0,3,0],[16,"月球车热控系统",0,3,0],[16,"探索月球",0,3,0],[16,"嫦娥工程",0,3,0],[16,"第六课 探秘月球车",0,3,0],[16,"月球车分系统组成",0,3,0],[16,"月球车能源分系统",0,3,0],[16,"月球车载荷系统",0,3,0],[16,"月球车综合电子系统",0,3,0],[16,"月球起源",0,3,0],[16,"为什么要探索月球",0,3,0],[16,"我们的月球",0,3,0],[17,"自免肾第11集——安肾先降酸",0,1,0],[17,"自免肾第12集——安肾先降酸（二）降尿酸，科学喝水最有效",0,1,0],[17,"自免肾13安“肾”需抗疫（一）肾脏病患者应该注射新冠疫苗吗？",0,1,0],[17,"自免肾第14集—安肾需抗疫（二）哪些肾病患者不适合注射新冠疫",0,1,0],[17,"自免肾第15集-安肾莫忘齿 龋齿莫忘查查肾",0,1,0],[17,"自免肾第16集-肾脏也会被“膜”法加持吗？",0,1,0],[17,"自免肾第17集-暗暗来袭的ANCA相关性血管炎",0,1,0],[17,"自免肾第18集-安肾需防狼（一）狡猾如狼的狼疮",0,1,0],[17,"自免肾第19集-安肾需防狼（二）防不胜防的狼疮肾炎",0,1,0],[17,"自免肾第20集-安肾需防狼（三）狼疮女孩不能做妈妈吗？NO",0,1,0],[17,"自身免疫相关性肾脏病的饮食管理（上）",0,1,0],[17,"自身免疫相关性肾脏病的饮食管理（中）",0,1,0],[17,"自身免疫相关性肾脏病的饮食管理（下）",0,1,0],[17,"保大保小？当怀孕遇上“红斑狼疮”，这部电影告诉你该怎么抉择",0,1,0],[17,"得红斑狼疮就不能当母亲？复旦中山肾脏日微电影《生》告诉你答案",0,1,0],[18,"骨刺能去除吗",0,1,0],[18,"骨盆前后倾正常吗",0,1,0],[18,"颈部转动时为何嘎嘣脆",0,1,0],[18,"久坐有哪些危害",0,1,0],[18,"勤劳如何伤了您的腰？",0,1,0],[18,"勤劳伤腰",0,1,0],[18,"体态杀手",0,1,0],[18,"腿痛医腿还是医腰",0,1,0],[18,"腰部运动有利于腰椎健康吗",0,1,0],[18,"我的腰痛要紧吗",0,1,0],[18,"另类腰椎骨折峡部裂",0,1,0],[18,"另类腰椎骨折——峡部裂",0,1,0],[18,"腰椎间盘突出症的家庭自测",0,1,0],[18,"小心脊柱侧弯",0,1,0],[18,"颈椎生理曲度消失是怎么回事",0,1,0],[18,"脊柱上的拆弹专家",0,1,0],[18,"颈椎挥鞭伤",0,1,0],[18,"复旦大学附属中山医院住院医师科普月月讲-尾骨痛？帮你拿捏拿捏",0,1,0],[19,"23年科普实验展演——趣味化学生",0,4,0],[19,"趣味化学生进校园四川北路第一小学——第一集",0,4,0],[19,"趣味化学生进校园四川北路第一小学——第二集",0,4,0],[19,"趣味化学生进校园四川北路第一小学——第三集",0,4,0],[19,"趣味化学生进校园四川北路第一小学——第四集",0,4,0],[20,"AI赋能癌症早筛-前列腺癌",0,1,0],[20,"AI赋能癌症早筛-皮肤癌",0,1,0],[20,"AI 赋能癌症早筛-乳腺癌",0,1,0],[20,"AI赋能癌症早筛-甲状腺癌",0,1,0],[20,"AI 赋能癌症早筛-胃肠道",0,1,0],[20,"AI 赋能癌症早筛-皮肤癌",0,1,0],[20,"AI 赋能癌症早筛-肺癌",0,1,0],[21,"松茸三兄弟，傻傻分不清？",0,5,0],[21,"识别毒蘑菇，远离真“菇”毒",0,5,0],[22,"孕前优生检查中的基因检查是什么",0,1,0],[22,"无创DNA检测的是胎儿DNA吗",0,1,0],[22,"打了HPV疫苗能怀孕吗",0,1,0],[22,"羊水穿刺知多少",0,1,0],[22,"当宝宝遇上苗苗",0,1,0],[23,"“上天入海”科学实验节目——第一节 牛顿运动定律和升空原理",0,4,0],[23,"“上天入海”科学实验节目——第二节 旋翼与反扭矩",0,4,0],[23,"“上天入海”科学实验节目——第三节 多旋翼飞行器姿态控制原理",0,4,0],[23,"“上天入海”科学实验节目——第四节 传统潜艇的浮沉原理实验",0,4,0],[23,"“上天入海”科学实验节目——第五节 深海压力模拟探究实验",0,4,0],[23,"“上天入海”科学实验节目——第六节 潜水器多电机推进系统控制",0,4,0],[24,"智慧城市——概述",0,6,0],[24,"智慧城市——技术特征",0,6,0],[24,"智慧城市——灾害治理案例",0,6,0],[24,"智慧城市——城市碳排放",0,6,0],[24,"智慧城市——未来发展",0,6,0],[24,"智慧安防——概述",0,6,0],[24,"智慧安防——技术细节",0,6,0],[24,"智慧安防——城市智慧安防案例",0,6,0],[24,"智慧安防——家庭智慧安防案例",0,6,0],[24,"智慧安防——未来发展",0,6,0],[24,"智能金融——人工智能在金融领域的应用与前景",0,6,0],[24,"智能金融——智能金融概述",0,6,0],[24,"智能金融——人脸识别支付系统",0,6,0],[24,"智慧金融—大数据风控",0,6,0],[24,"智慧金融—机器人理财",0,6,0],[24,"智能仓储——立体仓库",0,6,0],[24,"智能物流——无人机配送",0,6,0],[24,"智能物流——智能集装箱空轨系统",0,6,0],[24,"智能物流——港口无人驾驶集装箱卡车",0,6,0],[24,"智能物流——AGV仓储物流机器人",0,6,0],[24,"智能制造——智能制造概述",0,6,0],[24,"智能制造——智能化生产",0,6,0],[24,"智能制造——黑灯工厂",0,6,0],[24,"智能制造——智能服务",0,6,0],[24,"智能制造——智能装备",0,6,0],[24,"智能农业——智能农业概述",0,6,0],[24,"智能农业——节水灌溉技术",0,6,0],[24,"智能农业-智能采摘机器人",0,6,0],[24,"智能农业——智能农业大棚",0,6,0],[24,"智能农业-智能水稻种植",0,6,0],[24,"智慧农业——助力乡村振兴",0,6,0],[24,"智慧农业助力乡村振兴——种植业",0,6,0],[24,"智慧农业助力乡村振兴——畜牧业",0,6,0],[24,"智慧农业助力乡村振兴——渔业",0,6,0],[24,"智慧农业——助力乡村振兴未来发展趋势",0,6,0],[24,"智慧交通—概述",0,6,0],[24,"智慧交通—无人驾驶技术",0,6,0],[24,"智慧交通—手机导航",0,6,0],[24,"智慧交通—智慧停车系统",0,6,0],[24,"智慧交通—城市轨道交通智能化",0,6,0],[24,"智能家居——智能家居云服务",0,6,0],[24,"智能家居——非接触交互",0,6,0],[24,"智能家居——家居养老",0,6,0],[24,"智能家居——智能家居的安全性",0,6,0],[24,"智能家居——智能家居概述",0,6,0],[24,"智慧医疗—远程医疗",0,6,0],[24,"智慧医疗——概述",0,6,0],[24,"智慧医疗——智能人工耳蜗",0,6,0],[24,"自然语言处理技术——语音识别",0,6,0],[24,"自然语言处理技术——机器翻译",0,6,0],[24,"自然语言处理技术——情感分析",0,6,0],[24,"自主无人系统的智能技术——自主无人驾驶技术",0,6,0],[24,"自主无人系统的智能技术——自主水下航行技术",0,6,0],[24,"自主无人系统的智能技术——自主无人机技术",0,6,0],[24,"虚拟现实智能建模技术——虚拟现实建模技术的应用",0,6,0],[24,"虚拟现实智能建模技术——虚拟现实智能建模技术特征",0,6,0],[24,"虚拟现实智能建模技术——虚拟现实智能建模技术概述",0,6,0],[24,"人工智能技术对传感器的要求及应用效果——传感器技术的未来发展",0,6,0],[24,"人工智能技术对传感器的要求及应用效果——智能机器人",0,6,0],[24,"人工智能技术对传感器的要求及应用效果—智能视觉",0,6,0],[24,"自适应学习技术和应用场景——强化学习技术",0,6,0],[24,"自适应学习技术和应用场景——深度学习技术",0,6,0],[24,"5G技术——5G技术的发展趋势",0,6,0],[24,"5G技术——5G技术意义与价值",0,6,0],[24,"5G技术——5G技术概念与特点",0,6,0],[24,"群体智能关键技术——蚁群算法",0,6,0],[24,"群体智能关键技术——粒子群算法",0,6,0],[24,"群体智能关键技术——狼群算法",0,6,0],[24,"移动和物联网设备在人工智能场景中的角色——智能家居",0,6,0],[24,"移动和物联网设备在人工智能场景中的角色——智慧交通",0,6,0],[24,"移动和物联网设备在人工智能场景中的角色——智慧医疗",0,6,0],[24,"智能计算芯片与系统——类脑计算芯片",0,6,0],[24,"智能计算芯片与系统——认知计算芯片",0,6,0],[24,"智能机器人汇总（1）",0,6,0],[24,"智能机器人汇总及其功能与应用（2）",0,6,0],[24,"智能机器人汇总及其功能与应用（3）",0,6,0],[24,"智能机器人汇总及其功能与应用（4）",0,6,0],[24,"智能产业之智慧安防",0,6,0],[24,"看看上海2021年都有哪些人工智能事吧！",0,6,0],[24,"上海2021年人工智能的几件事（下）",0,6,0],[24,"快来看看21世纪以来人工智能领域相关专利申请情况吧",0,6,0],[24,"快来看看2022年人工智能大会启动现场的智能吧",0,6,0],[24,"智慧金融—智慧金融衍生产品的安全性",0,6,0],[24,"智能计算芯片与系统——智能系统",0,6,0],[24,"自适应学习技术和应用场景——自适应学习技术的应用",0,6,0],[24,"语音和视觉识别技术——视觉定技术",0,6,0],[24,"语音和视觉识别技术——视觉测量技术",0,6,0],[24,"语音和视觉识别技术——图像测量技术",0,6,0],[24,"生物特征识别技术——生物特征识别概述",0,6,0],[24,"生物特征识别技术——人脸识别",0,6,0],[24,"图神经网络——保险和金融风险评估",0,6,0],[24,"图神经网络——推荐算法系统",0,6,0],[24,"智慧医疗—医院信息化管理系统",0,6,0],[24,"智慧医疗—智能假肢",0,6,0],[24,"混合增强智能新架构和新技术—增强人作用的混合增强智能",0,6,0],[24,"混合增强智能新架构和新技术——融合认知的增强智能",0,6,0],[24,"上海人工智能大型活动专栏——2018年世界人工智能大会",0,6,0],[24,"上海市人工智能大型活动专栏——2021年世界人工智能大会",0,6,0],[24,"上海人工智能大型活动专栏——2022中国人工智能教育大会",0,6,0],[24,"上海人工智能大型活动专栏——2022十一届中国智能产业高峰论",0,6,0],[24,"上海市人工智能大型活动专栏——2022人工智能技术大会",0,6,0],[24,"上海人工智能大型活动专栏——2022全球人工智能大会",0,6,0],[24,"上海人工智能大型活动专栏——2022人工智能大会",0,6,0],[24,"2023全球人工智能开发者先锋大会（一）",0,6,0],[24,"2023全球人工智能开发者先锋大会（二）",0,6,0],[24,"人工智能的起源与发展（一）",0,6,0],[24,"人工智能的起源与发展（二）",0,6,0],[25,"自动驾驶为什么还要脚踏板",0,6,0],[25,"为什么某音某宝很懂用户？",0,6,0],[25,"人工智能能识别双胞胎吗？",0,6,0],[25,"人工智能能取代人类吗？",0,6,0],[25,"人工智能能取代医生吗？",0,6,0],[25,"人工智能会带来新闻漩涡吗？",0,6,0],[25,"人工智能会加速人类生活吗？",0,6,0],[25,"人工智能决策优缺点",0,6,0],[25,"机器人会和人类打仗吗？",0,6,0],[25,"人工智能如何拥有意识？",0,6,0],[25,"为什么还没有强人工智能",0,6,0],[25,"人工智能会不会取代人类？",0,6,0],[25,"AI控制下的世界会如何？",0,6,0],[25,"AI算法会有隐患吗？",0,6,0],[25,"人类的生活会被AI控制吗？",0,6,0],[25,"电脑、类脑与人脑的区别",0,6,0],[25,"人工智能必学教材与跨考难度",0,6,0],[25,"机器会有情感吗",0,6,0],[25,"人工智能入门算法介绍",0,6,0],[25,"人工智能会引发裁员吗",0,6,0],[25,"人眼与机器视觉的区别",0,6,0],[25,"人工智能终局是元宇宙吗？",0,6,0],[25,"人工智能三要素：大数据、算法与云计算",0,6,0],[25,"什么是人工智能及与其他学科的区别",0,6,0],[25,"如何通俗理解人工智能",0,6,0],[25,"深度学习抽象吗？",0,6,0],[25,"AI元年普通人机会在哪里",0,6,0],[25,"SORA短板与OPENAI的思考",0,6,0],[25,"人工智能编程注意事项",0,6,0],[25,"AI对语音和图像的理解：跟汽车感觉很蠢干脆取消？",0,6,0],[25,"中小企业如何用AI创业赚钱，可能的方向在哪里？",0,6,0],[25,"AI理解方言难在哪儿？",0,6,0],[25,"青少年如何学AI？",0,6,0],[25,"监控与隐私：天眼系统为什么那么厉害",0,6,0],[25,"AI专业选择与书籍推荐",0,6,0],[25,"毁掉AI：如何发现AI短板",0,6,0],[25,"AI替代能力：艺术与计算机",0,6,0],[25,"1分钟理解残差神经网络",0,6,0],[25,"自动驾驶不成熟的五个因素",0,6,0],[25,"生成对抗网的左右互博科普",0,6,0],[25,"1分钟讲透神经网络",0,6,0],[25,"示教学习：阿罗哈机器人翻车了",0,6,0],[25,"CES2024国际消费电子展的人工智能亮点",0,6,0],[25,"chatGPT真有那么神吗？",0,6,0],[25,"ChatGPT的中国对手",0,6,0],[25,"ChatGPT的风险与不足",0,6,0],[25,"人工智能耗能",0,6,0],[25,"自动驾驶与马斯克",0,6,0],[25,"AI真正理解智能吗？",0,6,0],[25,"AI院校分析",0,6,0],[25,"AI能被人类限制住吗？",0,6,0],[25,"人工智能的风险",0,6,0],[25,"AI下一步往哪走",0,6,0],[25,"机器学习里的线性代数",0,6,0],[25,"卷积神经网络工作机理",0,6,0],[25,"AI国际国内水平对比",0,6,0],[25,"深度学习解释及应用",0,6,0],[25,"人工智能读研需知",0,6,0],[25,"人工智能对口专业与就业去向",0,6,0],[26,"《大话集成电路》1.1-集成电路的发明：算力如何改变了世界？",0,6,0],[26,"《大话集成电路》1.2集成电路发展的动力：行业为何瞬息万变？",0,6,0],[26,"摩尔定律，对中国芯片业意味着什么？",0,6,0],[26,"集成电路产业有多大，为何美国能一家独大",0,6,0],[26,"世界十大半导体公司，它们到底有多强",0,6,0],[26,"价比飞机的光刻机：造光刻机比造飞机更难？",0,6,0],[26,"芯片制造：卡脖子到底卡在哪",0,6,0],[26,"《大话集成电路》08-中国芯片行业：借科创板的风口飞起来了吗",0,6,0],[26,"《大话集成电路》09-美国芯片行业：他们可以闭门造车吗",0,6,0],[26,"《大话集成电路》10-芯片与软件：软件定义了芯片？",0,6,0],[26,"《大话集成电路》11-芯片的未来出路：中国弯道超车有哪些机会",0,6,0],[26,"《大话集成电路》12-PN结：集成电路最基本的结构之一",0,6,0],[26,"《大话集成电路》13-三极管：集成电路最重要的发明",0,6,0],[26,"《大话集成电路》14-MOS管：90秒弄懂它的基础原理",0,6,0],[26,"《大话集成电路》15-集成电路的无源元件：会成为下一个新风口",0,6,0],[26,"《大话集成电路》16-芯片的种类：造一台手机需要多少种芯片？",0,6,0],[26,"《大话集成电路17》-12英寸晶圆和5纳米工艺：80秒弄懂芯",0,6,0],[26,"大话集成电路18LED：我也叫芯片，从单色到五彩斑斓的进化史",0,6,0],[26,"《大话集成电路19》-化合物半导体：优势是什么？机会在哪里？",0,6,0],[26,"《大话集成电路20》-仙童八叛逆：造就硅谷辉煌的奠基人",0,6,0],[26,"《大话集成电路21》-为什么要用硅材料做芯片？",0,6,0],[26,"大话集成电路22-从沙子到芯片的关键：1分钟了解离子注入技术",0,6,0],[26,"《大话集成电路23》芯片光刻：精度最高的加工技术，究竟难在哪",0,6,0],[26,"《大话集成电路24》刻蚀技术：光刻之后，芯片生产的第二道技术",0,6,0],[26,"《大话集成电路25》薄膜淀积技术：造芯片要加膜？加了有啥用？",0,6,0],[26,"《大话集成电路26》造芯的晶圆：制作虽难，但比光刻容易？",0,6,0],[26,"《大话集成电路27》中国芯片从0到1：形成完整产业链还有多远",0,6,0],[26,"《大话集成电路28》千差万别的芯片，基本结构竟完全相同？",0,6,0],[26,"《大话集成电路29》芯片的元器件如何绝缘？反向电压了解一下",0,6,0],[26,"《大话集成电路30》增强型MOS管：增强在了哪儿？有啥特别？",0,6,0],[26,"大话集成电路31 如何把芯片里的元器件连起来？多层布线了解下",0,6,0],[26,"《大话集成电路32》芯片中的金属引线：铜如何打败了铝？",0,6,0],[26,"《大话集成电路33》鳍式场效应晶体管：未来计算机比指甲小？",0,6,0],[26,"《大话集成电路34》芯片5纳米仍非极限？全栅场效应晶体管登场",0,6,0],[26,"《大话集成电路35》胡正明：凭一己之力拯救摩尔定律",0,6,0],[26,"《大话集成电路36》我国原创半浮栅晶体：设计低功耗芯片的基础",0,6,0],[26,"《大话集成电路37》全球最大半导体供应商AMAT凭何基业长青",0,6,0],[26,"《大话集成电路38》倒不起的台积电：为何全球芯片业离不开它？",0,6,0],[26,"大话集成电路39 中国集成电路工业发展史：筚路蓝缕，波澜壮阔",0,6,0],[26,"大话集成电路40 集成电路中的二进制世界：0与1的神奇“对话",0,6,0],[26,"大话集成电路41 数字集成电路的基本法则：进行算术和逻辑运算",0,6,0],[26,"大话集成电路42CMOS：指甲盖大小芯片上如何集成数十亿个它",0,6,0],[26,"大话集成电路43 数字电路的脉搏：数据传输的基准——时钟信号",0,6,0],[26,"《大话集成电路44》计数器：数字电路中应用得最多的电路",0,6,0],[26,"《大话集成电路45》门电路：数字电路中最基本的逻辑单元",0,6,0],[26,"《大话集成电路46》组合逻辑电路：复杂数字逻辑系统的基础",0,6,0],[26,"《大话集成电路47》时序逻辑电路：有“记忆”能力的电路",0,6,0],[26,"《大话集成电路48》芯片设计：从前端到后端的“接力赛”",0,6,0],[26,"《大话集成电路49》专用集成电路：最早的显卡是为了……",0,6,0],[26,"《大话集成电路50》微处理器：把所有功能集中在一个芯片上",0,6,0],[26,"大话集成电路51CISC和RISC：处理器两个主流的指令集",0,6,0],[26,"大话集成电路52 处理器的开源时代：我国芯片架构设计突破重围",0,6,0],[26,"《大话集成电路53》英特尔：昔日王者，荣耀还会回归？",0,6,0],[26,"《大话集成电路54》数据存储的意义：我国为何布局“东数西算”",0,6,0],[26,"《大话集成电路55》-数据存储的层次结构",0,6,0],[26,"《大话集成电路56》存储芯片：得存储者，三分“芯”天下",0,6,0],[26,"《大话集成电路57》非易失性存储芯片：凭何断电后还能保持数据",0,6,0],[26,"《大话集成电路58》新型存储器（上）：磁存储器和阻变式存储器",0,6,0],[26,"大话集成电路59 新型存储器2：铁电随机存储器和相变存储器",0,6,0],[26,"《大话集成电路60》DRAM存储器：引发日美芯片霸主之争",0,6,0],[26,"《大话集成电路61》连续30年世界第一：“存储王”三星的第二",0,6,0],[26,"集成电路 NOR FLASH芯片设计：这家中国企业现世界第三",0,6,0],[26,"《大话集成电路63》我国闪存技术架构的突破性创新",0,6,0],[26,"《大话集成电路64》模拟集成电路：与真实世界的“对话”窗口",0,6,0],[26,"《大话集成电路65》放大器：把微弱的信号放大有多重要？",0,6,0],[26,"《大话集成电路66》ADC：模拟数字转换器基本原理",0,6,0],[26,"《大话集成电路67》数模转换器DAC：信号采集和处理离不开它",0,6,0],[26,"《大话集成电路68》5G射频芯片：艺术家的设计",0,6,0],[26,"《大话集成电路69》电源管理芯片：我们的第一个翻身仗",0,6,0],[26,"《大话集成电路70》芯片业利润之神：德州仪器才是“武当真人”",0,6,0],[26,"《大话集成电路71》EDA工具：芯片软件设计的利器",0,6,0],[26,"《大话集成电路72》数字电路设计全流程EDA",0,6,0],[26,"《大话集成电路73》模拟及混合电路设计全流程EDA",0,6,0],[26,"《大话集成电路74》集成电路制造类EDA：主要面向晶圆厂",0,6,0],[26,"《大话集成电路75》仿真：数字设计验证的性能比赛",0,6,0],[26,"《大话集成电路76》买买买：国际EDA并购促三巨头诞生",0,6,0],[26,"《大话集成电路77》中国EDA初现大本营：上海",0,6,0],[26,"《大话集成电路78》封装：装在“防护服”里的芯才安全",0,6,0],[26,"《大话集成电路79》芯片封装形式：一颗芯，百件衣",0,6,0],[26,"《大话集成电路80》两种引线框架封装形式：SOIC与QFP",0,6,0],[26,"《大话集成电路81》倒装焊与球栅阵列封装",0,6,0],[26,"《大话集成电路82》晶圆级芯片封装：更小更薄更轻",0,6,0],[26,"《大话集成电路83》多芯片封装：让芯片住上“套房”和“楼房”",0,6,0],[26,"《大话集成电路84》零缺陷的汽车芯片封装：造车“芯”有多难？",0,6,0],[26,"《大话集成电路85》芯片测试：说你行，你就行",0,6,0],[26,"《大话集成电路86》国际封装标准JEDEC是什么？",0,6,0],[26,"《大话集成电路87》中国封测业：已经坐上“牌桌”",0,6,0],[26,"《大话集成电路88》片上系统SoC：它的定义与优势",0,6,0],[26,"《大话集成电路89》IP硅知识产权：定义与分类",0,6,0],[26,"《大话集成电路90》IP之巅：处理器IP核",0,6,0],[26,"《大话集成电路91》人工智能的算力：从CPU、GPU到DPU",0,6,0],[26,"《大话集成电路92》集成电路的另一个增长极：汽车",0,6,0],[26,"《大话集成电路93》资本的力量：集成电路投资的盛宴",0,6,0],[26,"《大话集成电路94》为什么2021年芯片短缺：芯片的经济属性",0,6,0],[26,"《大话集成电路95》何谓硅知识产权：芯片就是知识产权",0,6,0],[26,"《大话集成电路96》中国集成电路发展方向，最好的大学有哪些？",0,6,0],[26,"《大话集成电路97》集成电路人才培养新篇章",0,6,0],[26,"《大话集成电路98》百花齐放：中国芯片的时代舞台",0,6,0],[26,"《大话集成电路99》国家的期盼：要突破必须创新",0,6,0],[26,"《大话集成电路100》第一季完结：产业动态，科技未来",0,6,0],[27,"别让疼痛无人问津，疼痛科医生能帮你！",0,1,0],[27,"有多少人选择了无痛分娩？",0,1,0],[27,"日间手术的流程",0,1,0],[27,"三高人群能否做手术",0,1,0],[27,"手术前为什么要签那么多字",0,1,0],[27,"颈肩腰背痛误区揭秘，让你远离不必要的痛苦！",0,1,0],[27,"痛苦中寻找安宁：关注癌症病人的疼痛管理",0,1,0],[27,"神经痛，痛点不只在身体",0,1,0],[27,"感痛身受：常见痛专家之见",0,1,0],[27,"“醉”美科普，心肺复苏",0,1,0],[28,"【“疗”如指掌】科普视频",0,1,0],[28,"胸腔闭式引流护理及其注意事项",0,1,0],[28,"你会腹式呼吸吗？",0,1,0],[28,"二型呼衰缓解低氧的氧疗",0,1,0],[28,"食管癌十问--原来加入临床研究的好处这么多",0,1,0],[28,"食管癌十问--食管癌治疗以后会复发吗",0,1,0],[28,"食管癌十问--食管癌外科手术对生活质量有什么影响",0,1,0],[28,"食管癌十问--机器人外科手术靠谱吗",0,1,0],[28,"食管癌十问--新辅助治疗的目的及用处",0,1,0],[28,"食管癌十问--局部晚期食管癌患者的福音新辅助治疗",0,1,0],[28,"食管癌十问--为什么食管癌发现就是局部晚期",0,1,0],[28,"食管癌十问--什么是早期食管癌",0,1,0],[28,"食管癌十问--食管癌筛查的好方法",0,1,0],[28,"食管癌十问--中国特色的恶性肿瘤你了解多少",0,1,0],[28,"食之有道 防癌有术",0,1,0],[28,"肠内营养科普小知识",0,1,0],[28,"食道保护不周，小心癌变上身1",0,1,0],[28,"食管癌用药指导",0,1,0],[28,"食管癌术后功能锻炼",0,1,0],[28,"预防CINV我能做些什么",0,1,0],[28,"中医有方 科普时间",0,1,0],[28,"胸部肿瘤围术期康复功能锻炼",0,1,0],[28,"食管术后常见问题解疑",0,1,0],[28,"食管癌自白书",0,1,0],[28,"食管癌术后饮食指导",0,1,0],[28,"趁热吃饭会导致食管癌",0,1,0],[28,"手术后疼痛，我该怎么办",0,1,0],[28,"胸外科术前检查",0,1,0],[28,"疾病早知晓——食管裂孔疝",0,1,0],[28,"焦虑疼痛？试试本森放松训练~",0,1,0],[28,"食管癌营养小知识",0,1,0],[28,"食管癌术后如何管饲营养",0,1,0],[28,"放松训练",0,1,0],[29,"控尿机制-男",0,1,0],[29,"控尿机制-女",0,1,0],[29,"世界上到底有几种尿失禁",0,1,0],[29,"世界上有多少人得了尿失禁",0,1,0],[29,"我会得社交癌吗",0,1,0],[29,"人体排污厂-上篇",0,1,0],[29,"什么是社交癌",0,1,0],[29,"两个诊断压力性尿失禁的试验",0,1,0],[29,"中医能不能治疗压力性尿失禁",0,1,0],[29,"一小时尿垫试验",0,1,0],[29,"人体排污厂-下篇",0,1,0],[29,"盆底肌——压力性尿失禁的关键",0,1,0],[29,"耳朵上的穴位也可以防治尿失禁",0,1,0],[29,"尿失禁与尿意有关吗",0,1,0],[29,"选择科室",0,1,0],[29,"电针也能治疗尿失禁-上篇",0,1,0],[29,"电针也能治疗尿失禁-下篇",0,1,0],[29,"《消失的她》",0,1,0],[29,"如何利用生物信号提升盆底肌功能",0,1,0],[29,"尿失禁患者居家怎么艾灸",0,1,0],[29,"太极裆功预防尿失禁",0,1,0],[29,"历史上的中医是怎么认识尿失禁的",0,1,0],[30,"3D打印的客观评价",0,7,3],[30,"3D打印与航空航天",0,7,3],[30,"3D打印技术分类（上）",0,7,3],[30,"3D打印技术分类（下）",0,7,3],[30,"3d打印在医疗领域的应用",0,7,3],[30,"3D打印工艺及建模方法",0,7,3],[30,"3D打印与伦理法制",0,7,3],[30,"疫情下的3D",0,7,3],[31,"全方位安防 青少年公共安全课程之一 车内高温自救",0,0,0],[31,"全方位安防 青少年公共安全课程之二城市迷途应对",0,0,0],[31,"全方位安防 青少年公共安全课程之三预防踩踏",0,0,0],[31,"全方位安防 青少年公共安全课程之四火灾现场应对",0,0,0],[31,"全方位安防 青少年公共安全课程之五突袭应对",0,0,0],[31,"全方位安防 青少年公共安全课程之六安全乘坐自动扶梯",0,0,0],[31,"全方位安防 青少年公共安全课程之七高空坠落预防",0,0,0],[32,"膝关节疼痛的预防保健和治疗",0,1,0],[32,"颈椎病常见问题答疑",0,1,0],[32,"颈椎病的治疗",0,1,0],[32,"日常生活中如何预防颈椎病",0,1,0],[32,"颈椎病的诊断",0,1,0],[32,"长了骨刺就是得了颈椎病吗？",0,1,0],[32,"腰背痛的常见原因及防治",0,1,0],[32,"颈椎病的常见原因及预防",0,1,0],[33,"常见灼伤事件防治1 家里隐藏的风险：燃气和电器",0,1,0],[33,"常见烧灼伤事件防治2 电灼伤的防治",0,1,0],[33,"常见灼伤事件防治3 取暖装备你用对了吗？当心低温灼伤",0,1,0],[33,"常见灼伤事件防治5 化学灼伤的防治",0,1,0],[34,"老年人健身观念十二大误区",0,1,0],[34,"老年人健身知识十四大误区",0,1,0],[34,"老年人运动强度十二大误区",0,1,0],[34,"老年人健身锻炼十三大误区",0,1,0],[34,"老年人选择健身项目十五大误区",0,1,0],[35,"《放射诊疗知多少》系列科普讲座之“立体定向放疗摧毁肿瘤”",0,1,0],[35,"《放射诊疗知多少》系列科普讲座之“什么是肿瘤放射治疗”",0,1,0],[35,"肺癌放疗科普-华东医院放疗科任艳萍",0,1,0],[35,"腹盆部肿瘤放疗科普-华东医院放疗吕博",0,1,0],[35,"肿瘤放疗营养与随访科普-华东医院放疗科焦玉新",0,1,0],[35,"肿瘤立体定向放疗科普-华东医院放疗科郑向鹏",0,1,0],[35,"肿瘤放疗常见问题科普-华东医院放疗科傅美娜",0,1,0],[35,"肿瘤放疗科介绍-华东医院放疗科郑向鹏",0,1,0],[35,"腰椎间盘突出-华东医院放射科杜宁芳",0,1,0],[35,"核医学科介绍-上海市第一人民医院核医学科赵晋华主任",0,1,0],[35,"PETCT的介绍-上海市第一人民医院核医学科赵晋华主任",0,1,0],[35,"PETCT用于肿瘤筛查-上海市第一人民医院赵晋华主任",0,1,0],[35,"PETCT流程介绍",0,1,0],[35,"《放疗知多少》-华东医院放疗科-陈梦戈",0,1,0],[36,"膳食巧搭配，营养惠万家",0,1,0],[36,"“代糖”是什么",0,1,0],[36,"分餐不分爱，引领家庭“新食尚”",0,1,0],[36,"营养师推荐的烹饪方式",0,1,0],[36,"如何保持吃动平衡",0,1,0],[37,"肠镜下能治疗哪些疾病？",0,1,0],[37,"有人年年体检，为什么还被肠癌缠上了呢？",0,1,0],[37,"不想被肠癌缠上,要更新哪些观念？",0,1,0],[37,"做肠镜就能预防肠癌，为什么？",0,1,0],[37,"有些肠癌做肠镜就能治好，为什么？",0,1,0],[37,"《把肠癌变成“傻子癌”》第四课！大肠体检：肠镜最棒！",0,1,0],[37,"《把肠癌变成“傻子癌”》第五课！肠镜下的超级微创手术",0,1,0],[38,"低碳生活我先行-着衣",0,2,0],[38,"低碳科技系列科普教育课程-低碳生活我先行（着衣）",0,2,0],[38,"低碳科技系列科普教育课程-低碳生活我先行（出行）",0,2,0],[38,"低碳科技系列科普教育课程---低碳生活我先行（序言）",0,2,0],[38,"低碳科技系列科普教育课程—低碳生活我先行（家居）",0,2,0],[38,"低碳科技系列科普教育课程--低碳生活我先行（饮食）",0,2,0],[38,"低碳科技系列科普教育课程和课件-低碳生活我先行（创意）",0,2,0],[39,"《设计我们的弹性城市》C.1认识我们的城市-S.1地理与气候",0,7,4],[39,"1.1地理与气候（设计我们的弹性城市系列课程）",0,7,4],[39,"1.2数学与测量（设计我们的弹性城市系列课程）",0,7,4],[39,"1.3城市的概念（设计我们的弹性城市系列课程）",0,7,4],[39,"1.4城市漫游（设计我们的弹性城市系列课程）",0,7,4],[39,"2.1弹性城市（设计我们的弹性城市系列课程）",0,7,4],[39,"2.2雨水花园（设计我们的弹性城市系列课程）",0,7,4],[39,"2.3植物认知（设计我们的弹性城市系列课程）",0,7,4],[39,"2.4智能种植（设计我们的弹性城市系列课程）",0,7,4],[39,"3.1有趣的结构（设计我们的弹性城市系列课程）",0,7,4],[39,"3.2-砖说：我要一个拱（设计我们的弹性城市系列课程）-课堂",0,7,4],[39,"3.3有力的机械臂（设计我们的弹性城市系列课程）-课堂教学",0,7,4],[39,"3.4数字建造（设计我们的弹性城市系列课程）",0,7,4],[40,"为什么要建设上海野生动物园？",0,5,0],[40,"10部绿色经典生态文学作品之（1）《弗兰肯斯坦》",0,5,0],[40,"认识植物多样性：上海有多少种植物？",0,5,0],[40,"认识植物多样性：植物对城市环境的指示意义",0,5,0],[40,"认识植物多样性：城市植物有什么特点？",0,5,0],[40,"【生态系统多样性】上海的自然保护区",0,5,0],[40,"短视频【生态系统多样性】上海的大陆和海洋",0,5,0],[40,"【城市生命地标】我们用建筑垃圾花十年建一个森林",0,5,0],[40,"10部绿色经典生态文学作品之（2）《瓦尔登湖》",0,5,0],[40,"10部绿色经典生态文学作品之（3）《沙乡年鉴》",0,5,0],[40,"10部绿色经典生态文学作品之（4）《鹿之民》",0,5,0],[40,"10部绿色经典生态文学作品之（5）《天根》",0,5,0],[40,"【30分钟系列课程】经典案例丨生境花园巧设计（完整版）",0,5,0],[40,"30分钟系列课程（2）绿色上海：认识植物多样性",0,5,0],[40,"30分钟系列课程（3）生态理念丨用建筑垃圾花十年建一个森林",0,5,0],[40,"30分钟系列课程【第七课】生活中的生物多样性",0,5,0],[40,"【30分钟系列课程】活力上海——认识动物多样性",0,5,0],[40,"【30分系列课程】野趣上海：走进上海野生动物园历史现状与未来",0,5,0],[40,"植物多样性让我们更健康",0,5,0],[40,"认识植物多样性，从观察绿化带开始",0,5,0],[40,"城市绿化有什么效益？",0,5,0],[40,"上海城市绿化的阶段性成果与未来规划",0,5,0],[40,"（华师大生态岛科普视频）用于闵行区2023年生物多样性日活动",0,5,0],[40,"什么是狭义、广义的乡土植物？",0,5,0],[40,"城市中出现猛禽(顶级消费者)有重要意义",0,5,0],[40,"为什么要保护生物多样性？",0,5,0],[40,"生态学：我们是给城市看病的医生",0,5,0],[40,"生态岛植物123",0,5,0],[40,"生态岛为什么不需要人为养护？",0,5,0],[40,"生态岛上的“网”是做什么的？",0,5,0],[40,"生态岛为鸟类提供栖息地",0,5,0],[40,"【生态岛】常绿树多久才落叶？",0,5,0],[40,"Hi，认识生境花园",0,5,0],[40,"【社区生境花园】如何满足不同年龄居民需求",0,5,0],[40,"【生境花园巧设计】生境山房雨水循环利用",0,5,0],[40,"【生境花园巧设计】心灵索桥+蝶恋花溪，1+1>2",0,5,0],[40,"【生境花园巧设计】天籁剧场聆听自然声音，地球印痕发现进化遗迹",0,5,0],[40,"【生境花园巧设计】星空躺床与旱溪",0,5,0],[40,"【生境花园巧设计】鸢尾池塘：为小动物们多考虑一点点",0,5,0],[40,"【生境花园巧设计】四季花园与科普长廊",0,5,0],[40,"建社区生境花园，如何做好居民参与？",0,5,0],[40,"生境花园植物多，小动物们来做客！",0,5,0],[40,"探讨：人与野生动物的相互关系",0,5,0],[40,"上海蠊类（蟑螂） 分布差异",0,5,0],[40,"城市野生动物为什么数量减少？——以蚯蚓等为例",0,5,0],[40,"活力上海丨城市动物“优势种”改变：上海苍蝇少了，蚊子多了？",0,5,0],[40,"活力上海丨城市昆虫与土壤动物",0,5,0],[40,"活力上海丨城市里的鸟类",0,5,0],[40,"活力上海丨城市里的兽类",0,5,0],[40,"【活力上海】什么算野生动物？",0,5,0],[40,"野外保护 OR 圈养繁育 ?",0,5,0],[40,"野生动物大种群的优势",0,5,0],[40,"上海野生动物园丨你的快乐与我的天性并不矛盾",0,5,0],[40,"一路走来伴随着荆棘、汗水与鲜花（上海野生动物园）",0,5,0],[40,"历史故事丨10只大熊猫助力上海世博会",0,5,0],[40,"野趣上海丨您认为，野生动物在上海的未来？",0,5,0],[40,"从吃粽子中观察生物多样性~",0,5,0],[40,"生活观察丨发现餐桌上的生物多样性变化",0,5,0],[40,"从《红楼梦》认识植物",0,5,0],[40,"趣味生物多样性",0,5,0],[40,"30分钟系列课程【第一课】从今天起保护生物多样性",0,5,0],[41,"垃圾处理-人人有责《人类与垃圾处理》",0,5,5],[41,"餐厨垃圾大黑马——黑水虻",0,5,5],[41,"餐厨垃圾大胃王——蝇蛆",0,5,5],[41,"厨余垃圾全能王——蟑螂",0,5,5],[41,"塑料分解小能手——黄粉虫",0,5,5],[42,"牙周病和糖尿病如此相关",0,1,0],[42,"盘点牙周病引起的各类全身疾病预防策略",0,1,0],[42,"提高生命质量，从注重口腔健康开始",0,1,0],[42,"早期矫治和预防，时机方法很重要",0,1,0],[42,"健康的牙齿，天真的微笑",0,1,0],[42,"牙周病和糖尿病如此相关",0,1,0],[42,"当“糖友”遇到牙周病——防治从“齿”开始",0,1,0],[42,"呼吸暂停和低通气的关联",0,1,0],[42,"口呼吸的原因1",0,1,0],[42,"口呼吸的原因2",0,1,0],[42,"下颌后缩和口呼吸的关系",0,1,0],[42,"下颌后缩的危害1",0,1,0],[42,"下颌后缩的危害2",0,1,0],[42,"什么是下颌后缩？",0,1,0],[43,"救命要靠CPR，求生还需AED",0,1,0],[43,"岁月静好背后的猝死风险",0,1,0],[43,"主动脉也会生病",0,1,0],[43,"让人“头痛”的脑卒中",0,1,0],[43,"肺里的气血不调",0,1,0],[43,"心脏宕机，胸痛中心来重启",0,1,0],[44,"“上天入地显身手”的高效施药技术",0,8,6],[44,"“繁花似锦，绿草如茵”的生态调控技术",0,8,6],[44,"师夷长技以制夷的生物防治技术（上）",0,8,6],[44,"师夷长技以制夷的生物防治技术（下）",0,8,6],[44,"“色、香、味”俱全的理化诱控技术（上）",0,8,6],[44,"“色、香、味”俱全的理化诱控技术（下）",0,8,6],[45,"记忆之路",0,1,0],[45,"太极拳",0,1,0],[45,"八段锦",0,1,0],[46,"糖尿病性视网膜病变 你必须知道的那些事!",0,1,0],[47,"男性备孕",0,1,0],[47,"男性备孕科普",0,1,0],[47,"孕前保健-高龄",0,1,0],[48,"食尚中医药进社区、进中小学项目全国科普日活动",0,1,0],[48,"红参桑葚茶",0,1,0],[48,"陈皮果茶话陈皮",0,1,0],[48,"清明上河图里的医学秘密——饮料里的中医",0,1,0],[48,"灯盏花鸡尾酒",0,1,0],[48,"寻味药食之蛋挞",0,1,0],[49,"舌尖上的寄生虫科普讲座",0,1,0],[49,"龟龟博士讲寄生虫病科普系列-肺吸虫病小科普",0,1,0],[49,"龟龟博士讲科普系列-隐孢子虫病小科普",0,1,0],[49,"身体里为什么会有姜片吸虫",0,1,0],[49,"好吃的三秒鱼，健康的大问题",0,1,0],[49,"这种螺千万别吃！有人因此得脑膜炎，留下后遗症！",0,1,0],[50,"宝宝出游，应该带点什么药？",0,1,0],[50,"退热药因该如何选用？",0,1,0],[50,"儿童常用抗组胺抗过敏药有哪些？",0,1,0],[50,"儿童常用抗组胺抗过敏药的服用时间和服用方法",0,1,0],[50,"儿童常用口服抗组胺抗过敏药的安全性如何？",0,1,0],[50,"正确认识流感，科学防治，从容对待",0,1,0],[50,"宝宝便秘药物治疗便秘安全吗？",0,1,0],[50,"儿童常用口服抗过敏药的是是非非",0,1,0],[50,"如何区分流感还是普通感冒？",0,1,0],[50,"过敏性疾病的用药注意事项与检验检查",0,1,0],[50,"流感疫苗，如何选？",0,1,0],[50,"儿童消化疾病用药",0,1,0],[50,"宝宝腹泻一定要用抗菌药吗？",0,1,0],[51,"“新能源”如何转变为电能",0,2,0],[51,"“节能有我 绿色行动”科普报告",0,2,0],[51,"科普讲座：“新能源”如何转变为电能",0,2,0],[51,"【低碳节能】碳中和，我国承诺了什么？低碳节能该从什么做起？",0,2,0],[51,"【新能源汽车科普】锂电、混动和氢能，一支视频将带您了解新能源",0,2,0],[51,"【风力发电】风怎么发电？风力发电机怎么建起来？一支视频看懂",0,2,0],[52,"观气象万千，研生活百科——“中国文化”学气象",0,2,0],[52,"观气象万千 研生活百科——“衣食住行”识气象",0,2,0],[52,"观气象万千，研生活百科——“绿色节水”护气象",0,2,0],[53,"2023年上海市太阳能学会科技节活动快剪",0,2,0],[54,"地下空间防灾安全管控",0,7,0],[54,"地下空间防大人流设计",0,7,0],[54,"地下空间防毒气设计",0,7,0],[54,"地下空间防水灾设计",0,7,0],[54,"地下空间防火灾设计",0,7,0],[54,"地下空间防灾规划",0,7,0],[54,"地下空间防灾减灾规划设计的基本认知课件",0,7,0],[54,"地下空间灾害的基本认知课件",0,7,0],[54,"地下空间灾害虚拟现实疏散模拟课件",0,7,0],[54,"01-品质城市之揭秘地下空间灾害",0,7,0],[54,"02-品质城市之揭秘地下空间灾害",0,7,0],[54,"03-品质城市之揭秘地下空间灾害-专家疑问解答",0,7,0],[54,"科普视频第一集 - 城市地下空间灾害",0,7,0],[54,"科普视频第二集 -地下空间防灾减灾规划设计",0,7,0],[54,"科普视频第三集—地下空间灾害预警",0,7,0],[54,"科普视频第四集-地下空间灾害虚拟现实疏散模拟",0,7,0],[55,"国际实时计算与机器人会议 暨人工智能青年科学家论坛（上）",0,7,7],[55,"国际实时计算与机器人会议 暨人工智能青年科学家论坛（下）",0,7,7],[55,"设计创新与科技——追逐梦想，守护蓝天航空安全科普系列活动",0,7,7],[55,"追逐梦想，守护蓝天—航空安全全国科普日活动",0,7,7],[55,"沈文佳——发动机原理",0,7,7],[56,"科普活动——净滩活动（朱家角中学）",0,2,0],[56,"科普讲座——关注海洋环境，从“微塑料”开始",0,2,0],[56,"科普讲座——海洋塑料和微塑料污染及全球应对态势",0,2,0],[56,"直播回顾——走进海洋塑料研究中心实验室",0,2,0],[56,"当桡足类邂逅微塑料",0,2,0],[56,"“海洋塑料垃圾污染防治”科普视频——生活记录片",0,2,0],[57,"夏强教授携手仁济儿童肝移植团队祝新肝宝贝们儿童节快乐！",0,1,0],[57,"科普微电影《新肝宝贝》",0,1,0],[57,"The Story of Biliary Atresia",0,1,0],[57,"服药不当导致1岁宝宝肝衰竭",0,1,0],[57,"儿童肝移植血管缝合技巧展示",0,1,0],[57,"《新肝宝贝》微电影首映仪式采访",0,1,0],[57,"以爱作为延续——肝移植大回访（上）",1,1,0],[57,"以爱作为延续——肝移植大回访（下）",0,1,0],[57,"儿童肝移植术后引流液颜色背后的故事",0,1,0],[57,"“新肝宝贝”服药小知识",0,1,0],[57,"夏强教授走上上海市科技文化节红毯介绍儿童肝移植",0,1,0],[58,"罕见病科普 | 神经纤维瘤病Ⅰ型",1,1,0],[58,"罕见病科普 | 软骨发育不全",1,1,0],[58,"罕见病科普|郎格罕细胞组织细胞增生症",0,1,0],[58,"罕见病科普|丙酸血症",0,1,0],[58,"罕见病科普 | 戊二酸血症Ⅰ型",0,1,0],[58,"罕见病科普 | 视网膜母细胞瘤",0,1,0],[58,"罕见病科普 | 原发性肉碱缺乏症",0,1,0],[58,"罕见病科普|威廉姆斯综合征",0,1,0],[58,"罕见病科普| 结节性硬化症",0,1,0],[58,"罕见病科普| 新生儿疾病筛查",0,1,0],[58,"罕见病科普 | Alport综合征",0,1,0],[58,"罕见病科普 | Noonan综合征",0,1,0],[58,"罕见病科普 | 先天性肾上腺皮质增生症",0,1,0],[58,"罕见病科普 | 血友病",0,1,0],[58,"罕见病科普 | 成骨不全症",0,1,0],[58,"罕见病科普 | 鸟氨酸氨甲酰转移酶缺乏症",0,1,0],[59,"春日 上海市花VS广州市花，一白一红审美冲击，共同点是？",0,5,0],[59,"【夏之观察】蜻蜓和豆娘哪里不一样？请打开小小博物家丛书",0,5,0],[59,"【深秋发现】谁在秋天赏残荷？在生命最破败的时刻，它做了件大事",0,5,0],[59,"【冬日惊喜】暗沉世界中的生机勃勃，你得蹲下来凑近慢慢看",0,5,0],[60,"大稻自然",0,8,0],[61,"有机师姐II无处不在的氟",1,1,0],[62,"家长在家带娃崩溃，如何做好自我安慰？",0,1,0],[62,"封控无法遛狗很焦虑怎么办",0,1,0],[63,"病毒大作战之欣欣漫游疯狂病原城",0,1,0],[64,"盆底肌危机之骨盆修复",0,1,0],[64,"盆底肌危机之电刺激",0,1,0],[64,"盆底肌危机之膏药",0,1,0],[64,"“妇愁者”联盟之盆底肌危机",0,1,0],[64,"盆底肌修复之阴道哑铃",0,1,0],[64,"盆底肌危机0疤痕手术",0,1,0],[65,"微电影《天下第一鱼》",0,9,0],[66,"《甜蜜的负担》",0,1,0],[67,"“磨”并不魔--关于肺磨玻璃结节的科普",0,1,0],[68,"海派中医科普微电影《传人》",0,10,0],[69,"从容应对压力与危机（张劲松）",0,1,0],[69,"情绪管理应激应对（巫静怡）",0,1,0],[69,"如何促进亲子关系（王珊珊）",0,1,0],[69,"如何建立良好的人际关系（陆璐）",0,1,0],[69,"如何解读情绪信息（曹璇）",0,1,0],[69,"如何做到“同情达理”（夏卫萍）",0,1,0],[69,"新华医院：儿童青少年心理健康",0,1,0],[69,"知情解意-儿童“美丽心情”积极心理计划",1,1,0],[70,"细菌与人——流浪细菌",0,5,0],[71,"数字零距离”中小学系列科普教育——数字化治理课程",0,6,0],[71,"数字零距离”中小学系列科普教育——数字化生活课程",0,6,0],[71,"数字零距离”中小学系列科普教育——数字化制造课程",0,6,0],[71,"数字零距离”中小学系列科普教育——元宇宙课程",0,6,0],[71,"数字零距离中小学系列科普课件视频——数字化三维设计之建筑设计",0,6,0],[71,"数字零距离中小学系列科普课件视频——数字化三维设计之高空抛物",0,6,0],[71,"数字零距离中小学系列科普课件视频——数字化三维设计之汽车设计",0,6,0],[71,"数字零距离课件系列科普活动——从元宇宙中看未来",0,6,0],[71,"数字零距离课件系列科普活动——从元宇宙中看未来（2）",0,6,0],[71,"数字零距离系列产品普课件——元宇宙（3）",0,6,0],[71,"数字零距离中小学系列科普课件——元宇宙（4）",0,6,0],[72,"聪明地图来帮忙——地图的发展",0,6,0],[72,"引路高手指迷津—AI+GIS的应用（智慧导航）",0,6,0],[72,"精准防疫守平安—AI+GIS的应用（二）",0,6,0],[72,"遥感卫星护九州——遥感与AI图像识别",0,6,0],[72,"三维世界探未来—AI+GIS的未来发展",0,6,0],[73,"人工智能在医学领域应用发展趋势",0,6,0],[73,"脑机接口史",0,6,0],[73,"情感脑机接口及应用",0,6,0],[73,"人工智能与高中课程",0,6,0],[73,"人工智能常见模型及应用",0,6,0],[73,"人工智能发展简史",0,6,0],[74,"Hello World：AI的“耳朵”",0,6,0],[74,"Hello World：AI的“眼睛”",0,6,0],[74,"Hello World：AI与世界互动",0,6,0],[74,"Hello World：AI的感知系统",0,6,0],[75,"第1课 认识机器学习",0,4,0],[75,"第2课 监督学习",0,4,0],[75,"第3课 无监督学习",0,4,0],[75,"第4课 强化学习",0,4,0],[75,"第5课 深度学习",0,4,0],[76,"海上“风暴预测专家”：水母",0,5,8],[76,"放屁冒烟的“化学毒师”：气步甲",0,5,8],[76,"水中“发电机”:电鱼",0,5,8],[76,"飞行员背后的神秘动物：长颈鹿",0,5,8],[76,"自然界的“发光大师”：萤火虫",0,5,8],[77,"植汇星球之会变色的紫薯粥",0,5,9],[77,"植汇星球之探寻果实的小秘密",0,5,9],[77,"植汇星球之花草艺术画1（花材的压制家庭版）",0,5,9],[77,"植汇星球之花草艺术画2（压花艺术画的制作家庭版）",0,5,9],[77,"花草艺术画",0,5,9],[77,"植汇星球之薄荷的奇妙分身术",0,5,9],[77,"植物分身术",0,5,9],[77,"种子发芽记",0,5,9],[77,"植物保鲜计",0,5,9],[77,"植物艺术初探",0,5,9],[77,"多样的植物世界",0,5,9],[78,"魔法阳台",0,8,0],[79,"从复旦大学祖嘉生物博物馆看生物多样性保护的“中国案例”预告",0,5,0],[79,"第1讲-先来说说祖嘉生物博物馆的百年历史",0,5,0],[79,"第2讲-什么是生物多样性",0,5,0],[79,"第3讲-为什么要保护生物多样性（上）",0,5,0],[79,"第3讲-为什么要保护生物多样性（下）",0,5,0],[79,"第4-讲如何保护生物多样性",0,5,0],[79,"第5讲-祖嘉生物博物馆与生物多样性保护",0,5,0],[79,"第6讲-不再濒危的大熊猫还需要我们保护吗（上）",0,5,0],[79,"第6讲-不再濒危的大熊猫还需要我们的保护吗（下）",0,5,0],[79,"第7讲-海南长臂猿的故事（上）",0,5,0],[79,"第7讲-海南长臂猿的故事（中）",0,5,0],[79,"第7讲-海南长臂猿的故事（下）",0,5,0],[79,"第8讲-植物种子的作用有多大？（上）",1,5,0],[79,"第8讲-植物种子的作用有多大？（下）",0,5,0],[79,"第9讲-赶海的鸟（上）",0,5,0],[79,"第9讲-赶海的鸟（下）",0,5,0],[79,"第10讲-城市生物多样性（上）",0,5,0],[79,"第10讲-城市生物多样性（下）",0,5,0],[80,"中华白海豚的生存秘籍",1,5,0],[80,"中华白海豚的生存秘籍1",1,5,0],[80,"海龟的神奇世界",0,5,0],[80,"斑海豹的奇特本领",0,5,0],[80,"1海马大家族及其栖息环境",0,5,0],[80,"2海马的神奇模样",0,5,0],[80,"3海马爸爸生宝宝",0,5,0],[80,"4海马神奇的眼睛",0,5,0],[80,"5海马是捕猎高手",0,5,0],[80,"6海马是伪装大师",0,5,0],[80,"7海马的文化与保护",0,5,0],[80,"鹦鹉螺的探秘之旅",0,5,0],[81,"读懂中国从电说",0,2,0],[81,"借我一点光，给你一点电",0,2,0],[81,"有风就有电",0,2,0],[82,"空调温度设定的玄机-课程实录",0,2,0],[82,"建筑的节能衣-课程实录",0,2,0],[82,"7要素初探绿色照明-课程实录",0,2,0],[82,"一度电的力量-课程实录",0,2,0],[82,"仿生智能纺织品",0,2,0],[82,"智能记忆纺织品",0,2,0],[82,"电子信息纺织品",0,2,0],[82,"自清洁纺织品",0,2,0],[82,"《建筑的节能衣》科普视频",0,2,0],[82,"《7要素初探绿色照明》科普视频",0,2,0],[82,"《一度电的力量》科普视频",0,2,0],[82,"《空调温度设定的玄机》科普视频",0,2,0],[82,"《把阳光抓回家》科普视频",0,2,0],[82,"把阳光抓回家-课程实录",1,2,0],[83,"智能纺织品课程课件-纺织的科技与时尚（上）",0,6,0],[83,"智能纺织品课程课件-纺织的科技与时尚（下）",0,6,0],[83,"智能纺织品系列-智能记忆纺织品",0,6,0],[83,"智能纺织品系列-自清洁纺织品",0,6,0],[83,"智能纺织品系列-电子信息纺织品",0,6,0],[83,"智能纺织品系列-仿生智能纺织品",0,6,0],[84,"沙子是如何变成芯片的",0,4,10],[84,"光纤通讯",0,4,10],[84,"复眼的秘密",0,4,10],[84,"透射电子显微镜",0,4,10],[84,"视觉暂留",0,4,10],[84,"神奇的玻璃材料",0,4,10],[85,"智能船的大脑",0,6,0],[85,"智能船的数据网",0,6,0],[85,"智慧港湾",0,6,0],[85,"智能船的家族",0,6,0],[86,"台风红色预警科普视频",0,2,0],[86,"暴雨红色预警科普视频",0,2,0],[86,"暴雪红色预警科普视频（六停版）",0,2,0],[86,"道路红色预警科普视频（六停版）",0,2,0],[86,"“红色预警！气象本象今天不上学”—台风红色预警（1-3年级）",0,2,0],[86,"“红色预警！气象本象今天不上学”—暴雨红色预警（1-3年级）",0,2,0],[86,"“红色预警！气象本象今天不上学”—暴雪红色预警（1-3年级）",0,2,0],[86,"“红色预警！气象本象今天不上学”—道路结冰红色预警（1-3）",0,2,0],[86,"“红色预警！气象本象今天不上学”—暴雪红色预警（4-5年级）",0,2,0],[86,"“红色预警！气象本象今天不上学”—道路结冰红色预警（4-5）",0,2,0],[86,"“红色预警！气象本象今天不上学”—台风红色预警（4-5年级）",0,2,0],[86,"“红色预警！气象本象今天不上学”—暴雨红色预警（4-5年级）",0,2,0],[87,"用问题叩响未来·人体奥秘：是什么结构让人类脱颖而出？",2,4,11],[87,"用问题叩响未来·微观世界：将一把沙子放大，能看到什么？",0,4,11],[87,"用问题叩响未来·探索太空：天上有什么好看的",0,4,11],[87,"用问题叩响未来·海底深处：海底什么样？",0,4,11],[87,"用问题叩响未来·发现恐龙：什么样的龙才是恐龙？",0,4,11],[88,"走进超声世界",0,4,0],[88,"解密听觉 保护听力",0,4,0],[88,"声学与海洋",0,4,0],[88,"声音的秘密",0,4,0],[89,"彗星—你所不知道的秘密",0,3,0],[89,"偷渡太阳会给地球带来什么？",0,3,0],[89,"如果你突然掉进黑洞，会发生什么？",0,3,0],[89,"天文科普系列讲座——原子的故事",0,3,0],[89,"天文科普系列讲座——天文望远镜",0,3,0],[89,"天文科普系列讲座——光的“秘密”",0,3,0],[89,"天文科普系列讲座——“漫步太阳系”",0,3,0],[89,"天文科普系列讲座——“宇宙”知多少？",1,3,0],[89,"上海师范大学物理科普展活动集锦",0,3,0],[90,"治疗城市“慢性病”地面沉降，上海开出了“良方”",0,2,12],[90,"科普课程实录（01 火山与地震：地球的坏脾气）",0,2,12],[90,"科普课程实录（02 海平面变化：上海的乡土家园与地质环境）",0,2,12],[90,"科普课程实录（04 海岸侵蚀：上海会被冲掉吗？）",0,2,12],[90,"科普课程实录（03 地面沉降：地球也会“生病”）",0,2,12],[90,"科普课程实录（04 海岸侵蚀：上海会被冲掉吗？）",0,2,12],[90,"科普课程实录（05 地面塌陷：城市“马路杀手”的神秘面纱）",0,2,12],[90,"地下水管泄漏形成地下空洞的实验",0,2,12],[91,"红灯停，绿灯行，安全在我心",0,1,0],[91,"乐来乐好是什么",0,1,0],[91,"我不是Superman",0,1,0],[91,"远远看风景",0,1,0],[91,"【家长必看】关乎孩子们安全的“头”等大事做好了吗？",0,1,0],[91,"24小时骑行戴头盔微电影",0,1,0],[91,"窗台不能爬",0,1,0],[91,"排好队 滑滑梯",0,1,0],[91,"烧烫伤 1",0,1,0],[91,"烧烫伤2 神奇的生日礼物",0,1,0],[91,"别烫伤了才叫妈 1",0,1,0],[91,"别烫伤了才叫妈2",0,1,0],[91,"防跌落 小学版 赵伊云 远远看风景1",0,1,0],[91,"防跌落小学版 远远看风景 2.",0,1,0],[91,"防跌落幼儿版 远远看风景 1",0,1,0],[91,"防跌落幼儿园第二讲",0,1,0],[91,"陆地飞行咻咻咻",0,1,0],[91,"骑行咻咻咻2",0,1,0],[92,"生日快乐！--阿尔茨海默病行为症状的背后--600号科普",0,1,0],[92,"绿丝带减压放松技巧（1）丨助眠技巧：4-7-8呼吸法",3,1,0],[92,"绿丝带减压放松技巧（2）丨利弊分析度过痛苦时刻",0,1,0],[92,"绿丝带减压放松技巧（3）丨短期减压技术：呼吸冥想练习",0,1,0],[92,"绿丝带减压放松技巧（4）丨任务分解技术：化难为简",0,1,0],[92,"绿丝带减压放松技巧（5）丨运动减压抗焦虑",0,1,0],[92,"绿丝带减压放松技巧（6）丨情绪稳定技术：心理着陆",0,1,0],[92,"绿丝带减压放松技巧（7）丨身体放空整合技巧：跟随重力",0,1,0],[92,"绿丝带减压放松技巧（8）丨管理愤怒技巧：STOP技术",0,1,0],[92,"绿丝带减压放松技巧（9）丨考前减压赋能技巧：蝴蝶拍技术",0,1,0],[92,"绿丝带减压放松技巧（10）丨专注技巧：学习专一地做事",0,1,0],[92,"绿丝带减压放松技巧（11）丨情绪放松：让音乐抚慰心灵",0,1,0],[92,"绿丝带减压放松技巧（12）丨安全岛技术",0,1,0],[92,"生日愿望",0,1,0],[92,"养娃焦虑这些事",0,1,0],[92,"促进儿童心理健康，共同守护美好未来直播活动",0,1,0],[92,"舒心乐学-助力青少年提升抗逆力",0,1,0],[92,"正念教养体验公益沙龙",0,1,0],[92,"父母如何成为孩子压力调节者",0,1,0],[92,"儿童青少年抑郁了，父母怎么做",0,1,0],[93,"《神奇的针灸》系列课程1",0,1,0],[93,"《神奇的针灸》系列课程2",0,1,0],[93,"《神奇的针灸》系列课程3",0,1,0],[93,"《神奇的针灸》系列课程4",0,1,0],[94,"为eye瞳心护眼歌",0,1,0],[94,"为eye瞳护眼歌小学生舞蹈版为2023国家爱眼日主题活动开场",0,1,0],[95,"视频｜地沟油，跟登陆火星也有关系？",1,10,0],[95,"视频｜专业！从粪便到临床药方，需要几步？",0,10,0],[95,"视频｜纤维有魔力，织物有智能",1,10,0],[96,"家族遗传性因素会加大甲状腺结节发生率吗？",3,1,0],[96,"发现结节或肿瘤后甲状腺就很难保住？",0,1,0],[96,"基因检测都是智商税？",0,1,0],[96,"甲状腺穿刺术会导致不良细胞扩散？",0,1,0],[96,"甲状腺肿瘤术后持续服用“优甲乐”就万无一失了？",0,1,0],[96,"得了甲状腺结节都需要做手术？",0,1,0],[96,"碘-131治疗后海鲜和含碘盐完全不能碰？",0,1,0],[96,"甲状腺肿瘤术后会变声吗？",0,1,0],[96,"熬夜也是引发甲状腺结节的凶手？",0,1,0],[96,"甲状腺结节可以通过食疗改善吗？",0,1,0],[96,"从不吃海鲜，甲状腺怎么会得结节？",0,1,0],[96,"听说豆制品与甲状腺癌有关？",0,1,0],[96,"甲状腺肿瘤与十字花科的爱恨情仇",0,1,0],[96,"了解膳食炎症指数，预防甲状腺肿瘤",0,1,0],[96,"甲状腺肿瘤中医调养",0,1,0],[96,"探秘甲状腺健康——甲状腺做超声检查的意义",0,1,0],[96,"探秘甲状腺健康——超声辅助下辨别甲状腺肿瘤良恶性",0,1,0],[96,"探秘甲状腺健康——做了穿刺活检为何还需基因检测",0,1,0],[96,"探秘甲状腺健康—— 明明是甲状腺癌为何还要对淋巴结做穿刺",0,1,0],[96,"探秘甲状腺健康—— 核医学ECT给甲状腺结节上个色",0,1,0],[97,"梁教授带您探秘心脏血管微世界-第1期",0,1,0],[97,"梁教授带您探秘心脏血管微世界-第2期",0,1,0],[97,"梁教授带您探秘心脏血管微世界-第3期",0,1,0],[97,"梁教授带您探秘心脏血管微世界-第4期",0,1,0],[97,"如何拥有一颗“年轻的心”-第一场",0,1,0],[97,"如何拥有一颗“年轻的心”-第二场",0,1,0],[97,"如何拥有一颗“年轻的心”-第三场（曲阳路街道）",1,1,0],[97,"如何拥有一颗“年轻的心”-第四场（普陀万里街道）",0,1,0],[97,"如何拥有一颗“年轻的心”-第五场（普陀长风白玉）",0,1,0],[97,"如何拥有一颗“年轻的心”-第六场（普陀长风新村街道）",1,1,0],[97,"如何拥有一颗“年轻的心”-第七场（静安区曹家渡街道）",0,1,0],[97,"如何拥有一颗“年轻的心”-第八场（长宁区红庄社区）",0,1,0],[97,"如何拥有一颗“年轻的心”-第九场（虹口区湾镇街道）",1,1,0],[97,"如何拥有一颗“年轻的心”-第十场（枫林社区医院）",0,1,0],[97,"天气炎热，长时间待在空调房里，会不会诱发心脑血管疾病？",0,1,0],[97,"体检项目这么多，怎么选才能不花冤枉钱？做好这几个检查即可！",0,1,0],[97,"体检项目这么多，怎么选才能不花冤枉钱？做好这几个检查即可！",0,1,0],[97,"”极寒“”极热“天气下，应该如何呵护我们的心脏？",0,1,0],[97,"心脏有问题，到底是不是大问题？",0,1,0],[97,"冠心病药不能停！-三句半1",0,1,0],[97,"血脂你莫高！-三句半2",0,1,0],[97,"缺血性心脏病-系列探秘-“伤”心——（科普微电影）",0,1,0],[97,"糖尿病是如何引起缺血性心脏病的？",0,1,0],[97,"年纪轻轻的我为什么会得心脏病？",0,1,0],[97,"冠脉CT和冠脉造影的区别？",0,1,0],[97,"血压怎么量？",0,1,0],[97,"心脏支架是如何放入心脏的？",0,1,0],[97,"他汀药物如何服用？",0,1,0],[97,"新冠康复后仍觉得心脏不适，问题到底出在哪里？",0,1,0],[97,"双联抗血小板药物什么时候可以停？",0,1,0],[97,"什么症状需要就诊心内科",0,1,0],[97,"年轻人发生猝死",0,1,0],[97,"想要血管健康，谨记这样“喝水”！",0,1,0],[98,"塑料垃圾再生利用实验",0,7,0],[98,"湿垃圾降解再利用科普话剧",0,7,0],[98,"垃圾分类中的材料科学体验实验项目记录短片",4,7,0],[98,"湿垃圾与不同塑料袋降解时间的对比实验",0,7,0],[99,"疫情防控科学剧——如何利用口罩做好个人防护",0,1,0],[99,"科普剧《如何利用口罩做好个人防护 》合集",0,1,0],[100,"《怎么就进了ICU？》急危重症预防科普舞台剧",0,1,0],[101,"科普舞台剧《小丁丁月球历险记》",0,3,0],[101,"科普舞台剧《小丁丁月球历险记》宣传片",0,3,0],[102,"震得起的地震安全城市-1",0,2,0],[102,"震得起的地震安全城市——以柔克刚",0,2,0],[102,"震得起的地震安全城市科学表演亮相科学之夜",0,2,0],[103,"颜值保卫战 化妆品科普行 一 揭秘进口化妆品",0,1,0],[103,"颜值保卫战 化妆品科普行 二 带你走进化妆品质量检验",0,1,0],[103,"颜值保卫战 化妆品科普行 三 化妆品标签和热门功效成分介绍",0,1,0],[103,"颜值保卫战 化妆品科普行 四 化妆品功效评价是如何开展的",0,1,0],[103,"颜值保卫战 化妆品科普行 五 化妆品选购和使用的常见误区",0,1,0],[104,"让孩子拥有自爱与爱人的能力",0,1,0],[104,"什么是最理想的父母？如何进行正确亲子教育？",0,1,0],[104,"是少年的问题，不是“问题少年”",0,1,0],[104,"中学生心理教育科普片——生命教育",0,1,0],[104,"中学生心理教育科普片——学业发展",0,1,0],[104,"中学生心理教育科普片——自我意识",0,1,0],[104,"中学生心理教育科普片——危机干预",0,1,0],[104,"中学生心理教育科普片——情绪管理",0,1,0],[104,"中学生心理教育科普片——人际关系",0,1,0],[104,"第五讲：情绪密码——教师的职业倦怠与情绪压力管理",0,1,0],[104,"第一讲：带着心理学眼光去开展教学和班级管理工作",0,1,0],[104,"第二讲：带着心理学理念去生活",0,1,0],[104,"第三讲：青春期常见问题的指导策略",0,1,0],[104,"第四讲：青少年心理危机及预防",0,1,0],[105,"哪些孩子近视更容易增长？",0,1,0],[105,"孩子检查出来近视是否需要戴镜？",0,1,0],[105,"儿童青少年近视干预的有效手段",0,1,0],[105,"视力提高，就是近视治好了吗",0,1,0],[105,"配戴塑形镜后，孩子有时候会感觉眼睛干涩",0,1,0],[105,"哪些孩子近视更容易增长？",0,1,0],[105,"孩子检查出来近视是否需要戴镜？",0,1,0],[105,"ICL术后为什么要定期复查",0,1,0],[105,"使用了一段时间低浓度阿托品滴眼液后，怎么判断疗效好不好？",0,1,0],[105,"生物特征识别技术——人脸识别技术",0,1,0],[105,"直径这么大的巩膜镜戴在眼睛里会不舒服吗？",0,1,0],[105,"验配巩膜镜的过程是怎样的",0,1,0],[105,"为什么圆锥角膜患者很适合佩戴巩膜镜？",0,1,0],[105,"哪些人群适合佩戴巩膜镜？",0,1,0],[105,"什么是巩膜镜",0,1,0],[105,"佩戴巩膜镜能缓解干眼吗？",0,1,0],[105,"近视术后需要注意什么",0,1,0],[105,"摘镜后如果出现“戒指环”怎么办",0,1,0],[105,"医生，那我得了干眼应该怎么办",0,1,0],[105,"干眼症状的出现与年龄是否有一定的相关性？",0,1,0],[105,"小孩平时戴软性接触镜控制近视为什么会觉得眼干",0,1,0],[105,"全飞秒术后视力恢复规律是怎样的？",0,1,0],[105,"近视防控同时别忘了关注眼表的健康",0,1,0],[105,"戴隐形眼镜近视度数还会增加吗",0,1,0],[105,"戴隐形眼镜干涩怎么办",0,1,0],[105,"如何保障OK镜戴镜的安全性与有效性？",0,1,0],[105,"佩戴角膜接触镜，为什么眼表健康非常重要？",0,1,0],[105,"做ICL近视手术，为什么不会加重干眼？",0,1,0],[105,"全飞秒术后要休息多久",0,1,0],[105,"离焦软镜会影响成年后近视手术吗",0,1,0],[105,"戴隐形眼镜有红血丝是怎么回事",0,1,0],[105,"40多岁能做ICL吗",0,1,0],[105,"全飞秒手术后要注意什么",0,1,0],[105,"你知道隐形眼镜属于医疗器械吗",0,1,0],[105,"T-ICL在眼内会旋转吗",0,1,0],[105,"全飞秒手术过程会很痛吗",0,1,0],[105,"你的隐形眼镜和眼睛匹配吗",0,1,0],[105,"你戴的彩色隐形眼镜安全吗",0,1,0],[105,"做了ICL手术视力能恢复到多少",0,1,0],[105,"做完ICL手术后会眩光吗",0,1,0],[105,"隐形眼镜的保湿重要吗",5,1,0],[105,"ICL手术能矫正散光吗",5,1,0],[105,"全飞秒手术中如何配合医生",5,1,0],[105,"做过ICL手术再近视怎么办",5,1,0],[105,"儿童佩戴隐形眼镜安全吗",0,1,0],[105,"软性隐形眼镜可以控制近视进展吗",0,1,0],[105,"飞秒手术的那些问题",0,1,0],[105,"ICL长期安全性",0,1,0],[105,"ICL晶体独特性",0,1,0],[105,"孩子近视如何复查",0,1,0],[105,"我有干眼症，适合做手术吗？",0,1,0],[105,"做完检查后多久能做ICL手术",0,1,0],[105,"戴接触镜影响手术吗",0,1,0],[105,"保护孩子视力，家长可以做这些",0,1,0],[105,"ICL眼内镜与隐形眼镜的区别2",0,1,0],[105,"ICL眼内镜与隐形眼镜的区别（1）",0,1,0],[105,"激光手术前为什么要做角膜地形图",0,1,0],[105,"近视手术前需要停戴接触镜吗",0,1,0],[105,"ICL手术的优势",0,1,0],[105,"儿童近视率上升的原因",0,1,0],[105,"为什么女生更适合近视手术",0,1,0],[105,"眼轴增长和近视有关，你测了吗？",0,1,0],[105,"干眼患者是否也能做屈光手术",0,1,0],[105,"ICL术前检查发现有囊肿还能作手术吗",0,1,0],[106,"养神敛气太极拳，在家就能练！",0,1,0],[107,"击骨鸣筋—第七十六讲 预防骨质疏松不同年龄阶段的运动",0,1,0],[107,"击骨鸣筋—第一百讲 老人跌倒后不疼也会骨折吗？",0,1,0],[107,"击骨鸣筋—第九十九讲 偏瘫患者为何会引起骨质疏松？",0,1,0],[107,"击骨鸣筋—第九十八讲 长期卧床病人易患有骨质疏松症吗？",0,1,0],[107,"击骨鸣筋—第九十七讲 骨质疏松的食疗？",0,1,0],[107,"击骨鸣筋—第九十六讲 碳酸饮料为什么会导致骨质疏松症？",0,1,0],[107,"击骨鸣筋—第九十五讲 饮酒为什么会导致骨质疏松？",0,1,0],[107,"击骨鸣筋—第九十四讲 如何提高骨密度？",0,1,0],[107,"击骨鸣筋—第九十三讲 骨质疏松治疗期间又骨折就是治疗失败吗？",0,1,0],[107,"击骨鸣筋—第九十二讲 为什么肌肉发达的人骨密度也高？",0,1,0],[107,"击骨鸣筋—第九十一讲 骨质疏松与骨折的关系",0,1,0],[107,"击骨鸣筋—第九十讲 什么是废用性骨质疏松？",0,1,0],[107,"击骨鸣筋—第八十九讲 骨质疏松引起骨折还是骨折引起骨质疏松？",0,1,0],[107,"击骨鸣筋—第八十八讲 男性骨质疏松的原因",0,1,0],[107,"击骨鸣筋—第八十七讲 男性骨质疏松也要警惕！",0,1,0],[107,"击骨鸣筋—第八十六讲 腰背痛要及时就诊 等骨折再治疗就晚了",0,1,0],[107,"击骨鸣筋—第八十五讲 冬天骨折的老人为什么这么多？",0,1,0],[107,"击骨鸣筋—第八十四讲 骨质疏松需要治疗多久 以后还会骨折吗？",0,1,0],[107,"击骨鸣筋—第八十三讲 老人手腕骨折后需要多久才能长好",0,1,0],[107,"击骨鸣筋—第八十二讲 老人手腕骨折也要警惕！",0,1,0],[107,"击骨鸣筋—第八十一讲 强直性脊柱炎患者应该如何做好自我管理呢",0,1,0],[107,"击骨鸣筋—第八十讲 强直性脊柱炎患者为什么更易发生骨质疏松？",0,1,0],[107,"击骨鸣筋—第七十九讲 肥胖的人如何预防骨质疏松？",0,1,0],[107,"击骨鸣筋—第七十八讲 为什么肥胖也容易得骨质疏松？",0,1,0],[107,"击骨鸣筋—第七十七讲 哪些不良方式容易导致骨质疏松？",0,1,0],[107,"击骨鸣筋—第七十五讲 糖尿病患者为何更易得骨质疏松？",0,1,0],[107,"击骨鸣筋—第七十四讲 骨头疼，到底是骨质疏松还是骨关节炎？",0,1,0],[107,"击骨鸣筋—第七十三讲 患有肾结石不能补钙，否则会加重肾结石吗",0,1,0],[107,"击骨鸣筋—第七十二讲 已确定有骨质疏松 无需做骨密度测定吗？",0,1,0],[107,"击骨鸣筋—第七十一讲 没有外伤史就不会发生骨折吗？",0,1,0],[107,"击骨鸣筋—第七十讲 骨质疏松的早期康复锻炼",0,1,0],[107,"击骨鸣筋—第六十九讲 骨质疏松能吃茄子吗？",0,1,0],[107,"击骨鸣筋—第六十八讲 中年人预防骨质疏松正当时",0,1,0],[107,"击骨鸣筋—第六十七讲 骨质疏松患者饮食的禁忌",0,1,0],[107,"击骨鸣筋—第六十六讲 推荐哪些运动来预防骨质疏松？",0,1,0],[107,"击骨鸣筋—第六十五讲 补钙会存在哪些误区呢？",0,1,0],[107,"击骨鸣筋—第六十四讲 骨质疏松跟遗传有没有关系？",0,1,0],[107,"击骨鸣筋—第六十三讲 骨质疏松还会造成什么严重的后果吗？",0,1,0],[107,"击骨鸣筋—第六十二讲 怎么判断自己是否得了骨质疏松？",0,1,0],[107,"击骨鸣筋—第六十一讲 为什么女性骨松发病率是男性的6-10倍",0,1,0],[107,"击骨鸣筋—第六十讲 等到三十岁以后再注意预防骨质疏松也不迟吗",0,1,0],[107,"击骨鸣筋—第五十九讲 骨质疏松是一个人从年轻到老的必然过程吗",0,1,0],[107,"击骨鸣筋—第五十七讲 骨质疏松到底能不能吃水煮蛋？",0,1,0],[107,"击骨鸣筋—第五十八讲 想要骨头硬朗 三种饮食劝你少吃",0,1,0],[107,"击骨鸣筋—第五十六讲 骨质疏松就是缺钙买点钙片吃就可以了吗？",0,1,0],[107,"击骨鸣筋—第五十五讲 骨质疏松的五个表现",0,1,0],[107,"击骨鸣筋—第五十四讲 预防骨质疏松无须从小开始吗？",0,1,0],[107,"击骨鸣筋—第五十三讲 “骨质疏松”等同于“骨质疏松症”吗？",0,1,0],[107,"击骨鸣筋—第五十二讲 “老年骨松”乃自然规律 治疗没有用吗？",0,1,0],[107,"击骨鸣筋—第五十一讲 骨质疏松易引发骨折所以患者少动为好吗？",0,1,0],[107,"击骨鸣筋—第四十三讲 骨量为什么会丢失？",0,1,0],[107,"击骨鸣筋—第五十讲 经常喝骨头汤能够预防骨质疏松吗？",0,1,0],[107,"击骨鸣筋—第四十九讲 只要血钙不低就没必要补钙吗？",0,1,0],[107,"击骨鸣筋—第四十八讲 年轻人得了骨质疏松怎么办？",0,1,0],[107,"击骨鸣筋—第四十七讲 骨量到底有多重要？",0,1,0],[107,"击骨鸣筋—第四十六讲 有骨刺了就不能补钙了吗？",0,1,0],[107,"击骨鸣筋—第四十五讲 容易犯骨质疏松症高危人群有哪些？",0,1,0],[107,"击骨鸣筋—第四十四讲 骨质疏松的药物治疗？",0,1,0],[107,"击骨鸣筋—第四十一讲 绝经后女性为什么会发生骨质疏松？",0,1,0],[107,"击骨鸣筋—第四十讲 女性在绝经后患骨质疏松的概率有多少？",0,1,0],[107,"击骨鸣筋—第四十二讲 围绝经期女性骨质疏松防治建议有哪些？",0,1,0],[107,"击骨鸣筋—第三十九讲 骨质疏松患者需要终身治疗吗？",0,1,0],[107,"击骨鸣筋—第三十八讲 原发性骨质疏松症分为哪几种类型？",0,1,0],[107,"击骨鸣筋—第三十七讲 骨质疏松分为哪几种类型？",0,1,0],[107,"击骨鸣筋—第三十六讲 颈椎病高危人群有哪些？",0,1,0],[107,"击骨鸣筋—第三十五讲 颈椎病可以通过哪些运动来改善？",0,1,0],[107,"击骨鸣筋—第三十四讲 颈椎病的病因有哪些？",0,1,0],[107,"击骨鸣筋—第三十三讲 什么是颈椎病？",0,1,0],[107,"击骨鸣筋—第三十讲 骨质疏松能逆转吗？",0,1,0],[107,"击骨鸣筋—第三十一讲 预防老人跌倒保护性措施有哪些？",0,1,0],[107,"击骨鸣筋—第三十二讲 骨质疏松的运动疗法有哪些？",0,1,0],[107,"击骨鸣筋—第二十九讲 女性减肥也会引起骨质疏松吗？",0,1,0],[107,"击骨鸣筋—第十六讲 什么是非暴力性骨折？",0,1,0],[107,"击骨鸣筋—第二十八讲 骨质疏松引起的疼痛有什么特点？",0,1,0],[107,"击骨鸣筋—第二十七讲 只有女性会得骨质疏松吗？",0,1,0],[107,"击骨鸣筋—第二十六讲 年轻人要如何预防骨质疏松？",0,1,0],[107,"击骨鸣筋—第二十五讲 年过五旬后如何养身来防治骨质疏松？",0,1,0],[107,"击骨鸣筋—第二十四讲 骨质疏松会遗传吗？",0,1,0],[107,"击骨鸣筋—第二十三讲 每个老年人都会得骨质疏松吗？",0,1,0],[107,"击骨鸣筋—第二十二讲 钙剂什么时候服用最好？",0,1,0],[107,"击骨鸣筋—第二十一讲 骨质增生了还能补钙吗？",0,1,0],[107,"击骨鸣筋—第二十讲 骨质增生和骨质疏松是一回事吗？",0,1,0],[107,"击骨鸣筋—第十九讲 肌肉的活动是如何影响骨密度的？",0,1,0],[107,"击骨鸣筋—第十八讲 骨骼肌肉会影响肌肉的功能吗？",0,1,0],[107,"击骨鸣筋—第十七讲 骨密度低但是没来没有发生过骨折，有问题吗",0,1,0],[107,"击骨鸣筋—第十五讲 骨质疏松不同部位的骨折治疗有什么区别吗？",0,1,0],[107,"击骨鸣筋—第十四讲 骨质疏松性骨折对家庭的影响？",0,1,0],[107,"击骨鸣筋—第十三讲 如何预防骨质疏松性骨折？",0,1,0],[107,"击骨鸣筋—第十二讲 骨质疏松是如何形成的？",0,1,0],[107,"击骨鸣筋—第十一讲 什么是骨质疏松性椎体骨折？",0,1,0],[107,"击骨鸣筋—第十讲 如何诊断骨质疏松性椎体压缩性骨折",0,1,0],[107,"击骨鸣筋—第九讲 骨质疏松性椎体压缩性骨折的发生率高吗？",0,1,0],[107,"击骨鸣筋—第八讲 人老了身高“缩水”正常吗？",0,1,0],[107,"击骨鸣筋—第七讲 补钙会容易结石吗？",0,1,0],[107,"击骨鸣筋—第二讲 什么样的人容易患骨质疏松",0,1,0],[107,"击骨鸣筋—第一讲 补钙会引起血管钙化吗？",0,1,0],[107,"击骨鸣筋—第三讲 牙齿脱落和骨质疏松症有关系吗？",0,1,0],[107,"击骨鸣筋—第六讲 骨质疏松症患者需要终身治疗吗？",0,1,0],[107,"击骨鸣筋— 第五讲 肌肉无力，会影响骨密度",0,1,0],[107,"击骨鸣筋—第四讲 年轻人也会骨质疏松吗",0,1,0],[108,"你的孩子会刷牙吗",0,1,0],[108,"儿童OSAHS治疗时机",0,1,0],[108,"为什么天天刷牙也有蛀牙",0,1,0],[108,"补过的牙齿可以维持多久呢？",0,1,0],[108,"根管治疗后一定要做牙冠修复吗",0,1,0],[108,"osahs患儿的多学科诊疗途径",0,1,0],[108,"根管治疗和干髓治疗有什么不同",0,1,0],[108,"补牙拍X光片的重要性",0,1,0],[108,"口腔放射我们该拍啥",0,1,0],[108,"什么是智齿",0,1,0],[108,"为什么要拔智齿，从智齿的危害说起",0,1,0],[108,"什么是颌骨囊肿，颌骨囊肿有什么危害",0,1,0],[108,"是不是要等牙全换完了才能矫正",0,1,0],[108,"儿童能用牙线吗",0,1,0],[108,"孩子的牙刷，你选对了吗",0,1,0],[108,"什么是儿童口呼吸",0,1,0],[108,"口呼吸应该看耳鼻喉科还是口腔科？",0,1,0],[108,"你的孩子，会咬唇吮指吐舌吗？",0,1,0],[108,"地包天需要矫治吗",0,1,0],[108,"乳牙有必要做根管治疗吗",0,1,0],[108,"什么情况需要拔牙矫正呢？",0,1,0],[108,"为什么孩子会长双排牙？",0,1,0],[108,"同样是假牙，为何种植牙这么优秀",0,1,0],[108,"种牙的那些事儿，你都知道吗",0,1,0],[108,"什么是牙列缺损，牙列缺损对我们有什么影响？",0,1,0],[108,"我就少了一颗牙，反正不痛也不痒，吃饭也很香，可以放任不管吗？",0,1,0],[108,"那牙列缺损应该怎么治疗呢",0,1,0],[108,"拔牙后多久可以种植牙？",0,1,0],[108,"哪些人不适宜洗牙？",0,1,0],[108,"洗牙验血的项目有哪些？可以评估哪些疾病",0,1,0],[108,"除了洗牙需要验血外还有哪些口腔诊疗需要验血？",0,1,0],[108,"扩弓导致颧骨距离变宽",0,1,0],[108,"扩弓器与Twin block矫治器",0,1,0],[108,"儿童患睡眠呼吸暂停",0,1,0],[108,"儿童适合哪种扩弓器",0,1,0],[108,"下颌前导装置的舒适性",0,1,0],[108,"牙支持扩弓器和骨支持扩弓器",0,1,0],[108,"根管治疗后牙能够使用多久",0,1,0],[108,"严重的牙周炎患者，只能做开放手术吗？",0,1,0],[108,"牙周检查需要拍片子吗？",0,1,0],[108,"为什么洗牙收费不同，要洗很多遍",0,1,0],[108,"什么是牙隐裂",0,1,0],[108,"看牙紧张又害怕，如何配合医生",0,1,0],[108,"患牙一定要拔除吗",0,1,0],[108,"如何高效的同口腔医生沟通",0,1,0],[108,"微创拔牙是什么",0,1,0],[108,"拔牙后其他牙齿会松动吗？",0,1,0],[108,"微创拔牙后要注意些什么？",0,1,0],[108,"种植牙的流程是什么？",0,1,0],[108,"半年内能够完成种植牙的全部治疗吗？",0,1,0],[108,"拔牙当天就能植入种植体吗？",0,1,0],[108,"为什么要做牙贴面",0,1,0],[108,"小朋友做牙齿矫正一定要等换完牙吗",0,1,0],[108,"小朋友蛀牙不拔会传染给其他牙齿吗",0,1,0],[108,"根管治疗后为什么要做装牙套",0,1,0],[108,"牙线怎么用",0,1,0],[108,"我的种植牙能使用多久",0,1,0],[108,"种植牙大概需要多少钱？",0,1,0],[108,"医生我能不能做种植牙呢",0,1,0],[108,"牙周炎患者可以不洗牙吗",0,1,0],[108,"什么是龈下刮治",0,1,0],[108,"洗牙为什么要洗很多遍",0,1,0],[108,"有关牙齿美白硬核问答二",0,1,0],[108,"有关牙齿美白硬核问答一",0,1,0],[108,"牙齿矫正如何省时间？",0,1,0],[108,"年龄大了还可以做矫正么？",0,1,0],[108,"矫正期间怀孕有什么影响？",0,1,0],[108,"如何预防牙套脸",0,1,0],[108,"牙套脸真的是矫正牙齿导致的？",0,1,0],[108,"什么是牙套脸，如何造成",0,1,0],[108,"拔除智齿真能瘦脸吗",0,1,0],[108,"牙齿残根是如何形成的",0,1,0],[108,"智齿真的一无是处吗",0,1,0],[108,"有一种疼叫智齿疼",0,1,0],[108,"楔状缺损，怎么形成的？",0,1,0],[108,"牙线，一定要用吗",0,1,0],[108,"矫正牙齿会大力出奇迹吗？",0,1,0],[108,"牙齿矫正为什么要1-2个月复诊？",0,1,0],[108,"牙齿矫正后为什么要保持？",0,1,0],[108,"为什么天天刷牙也有蛀牙？—蒋永福",0,1,0],[108,"儿童早期矫治是否可以进行下颌逆旋？",0,1,0],[108,"骨性扩弓支抗钉植入单皮质和双皮质骨的区别",0,1,0],[108,"口腔正畸的美学目标",0,1,0],[108,"孩子打鼾做睡眠呼吸监测的必要",0,1,0],[108,"儿童阻塞性睡眠呼吸暂停低通气综合征的危害及健康管理",0,1,0],[108,"儿童与成人的鼾症治疗区别",0,1,0],[108,"CPAP治疗鼾症的适应征",0,1,0],[108,"CPAP治疗鼾症的原理",0,1,0],[108,"osahs患儿正畸治疗的优势",0,1,0],[108,"长期口呼吸的影响-2",0,1,0],[108,"长期口呼吸对面部的影响-1",0,1,0],[108,"什么是张口呼吸？",0,1,0],[108,"打呼噜是什么原因？",0,1,0],[109,"胰腺癌的“一生传奇”",0,1,0],[109,"肿瘤患者面临怎样的心理问题",0,1,0],[109,"肿瘤患者出现轻度发热怎么办？是癌性发热还是新冠感染？",0,1,0],[109,"新冠疫情之下，肿瘤患者感染风险如何",0,1,0],[109,"疫情居家健康心理小妙招（二）深呼吸法",0,1,0],[109,"疫情居家健康心理小妙招（一）放松疗法",0,1,0],[109,"如何区分感冒、流感和新冠感染",0,1,0],[109,"正确佩戴口罩降低新冠感染风险",0,1,0],[109,"新冠是怎样传播的？该怎样预防",0,1,0],[109,"胰腺癌为什么被称为“癌中之王”",0,1,0],[109,"胰腺癌会有多疼",0,1,0],[109,"胰腺癌的罪魁祸首",0,1,0],[109,"浅谈胰腺癌的遗传性问题",0,1,0],[109,"糖尿病患者要警惕胰腺癌么",0,1,0],[109,"胰腺癌，它悄悄地来了",0,1,0],[109,"胰腺癌与分子靶向治疗（下）",0,1,0],[109,"胰腺癌与分子靶向治疗（上）",0,1,0],[109,"患了胰腺癌，会告诉患者实情么",0,1,0],[109,"警惕胰腺肿瘤相关的胰腺炎",0,1,0],[109,"胰腺炎会变成胰腺癌吗？",0,1,0],[109,"初次就诊应该做哪些准备？",0,1,0],[109,"怀疑胰腺癌一定要挂专家号吗？",0,1,0],[109,"发现胰腺癌后要怎样配合医生的治疗？",0,1,0],[109,"哪些患者不适合立即进行胰腺手术？",0,1,0],[109,"长期口服抗凝药会对胰腺手术有影响吗？",0,1,0],[109,"高血压和糖尿病是胰腺手术的禁区吗？（下）",0,1,0],[109,"高血压和糖尿病是胰腺手术的禁区吗？（上）",0,1,0],[109,"做胰腺手术我还能保住脾脏吗？（下）",0,1,0],[109,"做胰腺手术我还能保住脾脏吗？（上）",0,1,0],[109,"术后家属能够为患者做些什么？",0,1,0],[109,"术前准备需要做些什么？",0,1,0],[109,"术后胰瘘到底是怎么回事？",0,1,0],[109,"胰腺术后为何还可能发生胆漏？",0,1,0],[109,"超声内镜让胰腺癌无所遁形（下）",0,1,0],[109,"超声内镜让胰腺癌无所遁形（上）",0,1,0],[109,"说说PETCT那些事（下）",0,1,0],[109,"说说PETCT那些事（中）",0,1,0],[109,"说说PETCT那些事（上）",0,1,0],[109,"胰腺癌术后能不能不做化疗（下）",0,1,0],[109,"胰腺癌术后能不能不做化疗（上）",0,1,0],[109,"胰腺癌手术后复发绝对不是手术的禁区（下）",0,1,0],[109,"胰腺癌的新辅助治疗（下）",0,1,0],[109,"胰腺癌的新辅助治疗（上）",0,1,0],[109,"“小黄人”不能化疗！",0,1,0],[109,"晚期胰腺癌如何治疗？",0,1,0],[109,"胰腺癌肝转移患者真的没有手术机会了吗？",0,1,0],[109,"为什么胰腺癌难以早期发现？",0,1,0],[109,"胰腺癌的分类和分期",0,1,0],[109,"胰腺癌患者出现腹水的原因（下）",0,1,0],[109,"胰腺癌患者出现腹水的原因（上）",0,1,0],[109,"如何从体检报告中发现胰腺癌的蛛丝马迹？",0,1,0],[109,"揭开“MDT”的神秘面纱",0,1,0],[109,"胰腺手术术前谈话谈什么？",0,1,0],[109,"胰腺术后出血请勿“步步惊心”",0,1,0],[109,"晚期胰腺癌拒绝摆烂（下）",0,1,0],[109,"晚期胰腺癌拒绝摆烂（上）",0,1,0],[109,"B超能诊断胰腺癌吗？",0,1,0],[109,"得了胰腺癌会有什么症状？（下）",0,1,0],[109,"得了胰腺癌会有什么症状？（上）",0,1,0],[109,"被你忽视的，可能就是胰腺癌的危险因素（下）",0,1,0],[109,"胰腺术后血糖波动我该怎么办？",0,1,0],[109,"神经侵袭——胰腺癌的重要特点",0,1,0],[109,"胰腺术后的“管道”应该如何护理？",0,1,0],[109,"如何确诊胰腺癌？",0,1,0],[109,"术前准备为什么一定要检查血型（下）",0,1,0],[109,"术前准备为什么一定要检查血型（上）",0,1,0],[109,"胰腺癌的高危人群有哪些？离我们远吗？（下）",0,1,0],[109,"胰腺癌的高危人群有哪些？离我们远吗？（上）",0,1,0],[109,"胰腺癌的“胰腺”生机",0,1,0],[109,"什么是胰腺术后的“脂肪泻”",0,1,0],[109,"胰腺癌患者如果不能手术就没有机会了吗（上）",0,1,0],[109,"胰腺癌患者如果不能手术就没有机会了吗（下）",0,1,0],[109,"胰腺癌的多学科诊疗机制是什么意思（上）",0,1,0],[109,"胰腺癌的多学科诊疗机制是什么意思（下）",0,1,0],[109,"胰腺癌的手术中和手术后风险有哪些（上）",0,1,0],[109,"胰腺癌的手术中和手术后风险有哪些（下）",0,1,0],[109,"日常生活中如何预防胰腺癌（上）",0,1,0],[109,"日常生活中如何预防胰腺癌（下）",0,1,0],[109,"胰腺癌手术切除效果的影响因素（上）",0,1,0],[109,"胰腺癌手术切除效果的影响因素（下）",0,1,0],[109,"胰腺囊性肿瘤应该如何随访（上）",0,1,0],[109,"胰腺囊性肿瘤应该如何随访（下）",0,1,0],[109,"胰腺癌的病理分期到底有用吗（上）",0,1,0],[109,"胰腺癌的病理分期到底有用吗（下）",0,1,0],[109,"胰腺囊性肿瘤应该怎样检查（上）",0,1,0],[109,"胰腺囊性肿瘤应该怎样检查（下）",0,1,0],[109,"体检发现胰腺囊肿怎么办？（上）",0,1,0],[109,"体检发现胰腺囊肿怎么办？（下）",0,1,0],[109,"不开刀 不吃药也有办法治疗“癌症”这是真的吗？（上）",0,1,0],[109,"不开刀 不吃药也有办法治疗“癌症”这是真的吗？（下）",0,1,0],[109,"中医对胰腺的认识",6,1,0],[109,"胰腺肿瘤患者有必要忌口吗（上）",0,1,0],[109,"胰腺肿瘤患者有必要忌口么（下）",0,1,0],[109,"中医对胰腺患者的排泄如何建议（上）",6,1,0],[109,"中医对胰腺患者的排泄如何建议（下）",6,1,0],[109,"胰腺肿瘤患者是否可以做一些功法修整来保健",6,1,0],[109,"胰腺癌患者面对的主要营养问题",6,1,0],[109,"放化疗期间需要注意什么（上）",1,1,0],[109,"放化疗期间需要注意什么（下）",0,1,0],[109,"胰腺肿瘤患者的综合治疗，可否同时服用中药（上）",0,1,0],[109,"胰腺肿瘤患者的综合治疗，可否同时服用中药（下）",0,1,0],[109,"面临疼痛针灸疗法可有应用",0,1,0],[109,"全程营养管理对胰腺癌患者的重要性",0,1,0],[109,"胰腺癌患者与营养不良",0,1,0],[109,"胰腺癌患者是否越胖越好",0,1,0],[109,"营养不良肿瘤患者吃什么更好呢",0,1,0],[109,"胰腺癌患者特有的营养问题之外分泌功能受损",0,1,0],[109,"胰腺癌患者特有的营养问题之内分泌功能受损",0,1,0],[109,"术后恢复时间",0,1,0],[109,"术后饮食恢复步骤",0,1,0],[109,"中医对胰腺肿瘤患者睡眠的建议（上）",0,1,0],[109,"为什么胰腺癌手术该根治性切除了还很容易出现复发和转移（上）",0,1,0],[109,"为什么胰腺癌手术根治性切除了还很容易出现复发和转移（下）",0,1,0],[109,"中医对于胰腺肿瘤术后的病人有哪些饮食的建议（上）",0,1,0],[109,"中医对胰腺肿瘤术后的病人有哪些饮食的建议（下）",0,1,0],[110,"6/6《黄芪篇》之黄芪的使用注意",0,1,0],[110,"5/6《黄芪篇》之黄芪小验方",0,1,0],[110,"4/6《黄芪篇》之黄芪的补气作用②",0,1,0],[110,"3/6《黄芪篇》之黄芪的补气作用①",0,1,0],[110,"2/6《黄芪篇》之衰老体弱与气虚",0,1,0],[110,"1/6《黄芪篇》之字解黄芪",0,1,0],[110,"一分钟带你学中药之《黄芪篇》",0,1,0],[110,"6/6《枸杞篇》之枸杞的应用方法",0,1,0],[110,"5/6《枸杞篇》之枸杞小验方",0,1,0],[110,"3/6《枸杞篇》之枸杞的性能、功用",0,1,0],[110,"2/6《枸杞篇》之延缓衰老的根本",0,1,0],[110,"1/6《枸杞篇》之字解枸杞",0,1,0],[110,"一分钟带你学中药之《枸杞篇》",0,1,0],[110,"6/6《莲子篇》之莲药知多少",0,1,0],[110,"5/6 《莲子篇》之莲子小验方",0,1,0],[110,"4/6《莲子篇》之莲子的养生特点",0,1,0],[110,"3/6《莲子篇》之莲子的性能与功用",0,1,0],[110,"2/6《莲子篇》之日常养生要点",0,1,0],[110,"1/6《莲子篇》之字解莲子",0,1,0],[110,"一分钟带你学中药之《莲子篇》",0,1,0],[110,"13/13《人参篇》之人参的不良反应与注意事项",0,1,0],[110,"12/13《人参篇》之人参的用法用量",0,1,0],[110,"11/13《人参篇》之人参选用方法",0,1,0],[110,"10/13《人参篇》之人参知多少",0,1,0],[110,"9/13《人参篇》之人参的应用误区⑤",0,1,0],[110,"8/13《人参篇》之人参的应用误区④",0,1,0],[110,"7/13《人参篇》之人参的应用误区③",0,1,0],[110,"6/13《人参篇》之人参的应用误区②",0,1,0],[110,"5/13《人参篇》之人参的应用误区①",0,1,0],[110,"4/13《人参篇》之人参的应用要点",0,1,0],[110,"3/13《人参篇》之人参的性能与功用",0,1,0],[110,"3/13《人参篇》之人参的性能与功用",0,1,0],[110,"2/13《人参篇》之人参的生长环境",0,1,0],[110,"1/13《人参篇》之字解人参",0,1,0],[110,"一分钟带你学中药之《人参篇》",0,1,0],[110,"中药文化篇·教你读懂刺身料理的配菜",0,1,0],[110,"中药文化篇·冰镇小龙虾or十三香小龙虾",0,1,0],[110,"中药文化篇·新生儿可以喝黄连水吗？",0,1,0],[110,"中药文化篇·“遍插茱萸少一人”的茱萸是什么？",0,1,0],[110,"中药文化篇·古代的空气清新剂",0,1,0],[110,"中药文化篇·你知道椒房殿的来历吗？",0,1,0],[110,"中药文化篇·最早的口香糖",0,1,0],[110,"中药文化篇·豆腐的来历",0,1,0],[110,"4/4《桑叶篇》之小验方",0,1,0],[110,"3/4《桑叶篇》之桑药",0,1,0],[110,"2/4《桑叶篇》之性能功用（二）",0,1,0],[110,"1/4《桑叶篇》之性能功用（一）",0,1,0],[110,"5/5《山药篇》之山药葛根玉米须饮",0,1,0],[110,"4/5《山药篇》之消渴病证中的应用",0,1,0],[110,"3/5《山药篇》之山药适应人群2",0,1,0],[110,"2/5《山药篇》之山药适应人群1",0,1,0],[110,"1/5《山药篇》之功效特点",0,1,0],[110,"3/3《茯苓篇》之茯苓的养生特点",0,1,0],[110,"2/3《茯苓篇》之养生要素",0,1,0],[110,"1/3《茯苓篇》之字解茯苓",0,1,0],[110,"7/7《三七篇》之使用注意",0,1,0],[110,"6/7《三七篇》之在脑血管病中的应用",0,1,0],[110,"5/7《三七篇》之在心血管病中的应用",0,1,0],[110,"4/7《三七篇》之三七作用特点",0,1,0],[110,"3/7《三七篇》之别名中的养生寓意",0,1,0],[110,"2/7《三七篇》之血管与衰老",0,1,0],[110,"1/7《三七篇》之养生热中的三七",0,1,0],[110,"川贝冰糖炖雪梨",0,1,0],[110,"鼻衄小验方",0,1,0],[110,"4/4《栀子篇》之栀子在伤科中的应用",0,1,0],[110,"3/4《栀子篇》之退热小验方",0,1,0],[110,"2/4《栀子篇》之栀子的清热特点",0,1,0],[110,"1/4《栀子篇》之名解栀子",0,1,0],[110,"4/4《石斛篇》之用量用法与使用注意",0,1,0],[110,"3/4《石斛篇》之石斛的功能与养生",0,1,0],[110,"2/4《石斛篇》之石斛性能与养生",0,1,0],[110,"5/5《地黄篇》之不良反应与使用注意.",0,1,0],[110,"4/5《地黄篇》之熟地黄的补肾应用",0,1,0],[110,"3/5《地黄篇》之熟地黄的补肾应用",0,1,0],[110,"2/5《地黄篇》之地黄炮制、性能。功用",0,1,0],[110,"5/5《牛蒡子篇》之使用注意",0,1,0],[110,"4/5《牛蒡子篇》之小验方",0,1,0],[110,"3/5《牛蒡子篇》之牛蒡子的抗疫特点",0,1,0],[110,"2/5《牛蒡子篇》之疫的特点",0,1,0],[110,"1/5《牛蒡子篇》之牛蒡子与抗疫",0,1,0],[110,"4/4《肉苁蓉篇》之通便小验方",0,1,0],[110,"3/4《肉苁蓉篇》之补肾特点与应用",0,1,0],[110,"2/4《肉苁蓉篇》之生长特性与性能",0,1,0],[110,"1/4《肉苁蓉篇》之名解肉苁蓉",0,1,0],[110,"3/3《灵芝篇》之灵芝小验方",0,1,0],[110,"2/3《灵芝篇》之功用",0,1,0],[110,"1/3《灵芝篇》之养生作用",0,1,0],[110,"8/8《冬虫夏草篇》之用量用法与使用注意",0,1,0],[110,"7/8《冬虫夏草篇》之虫草老鸭汤",0,1,0],[110,"6/8《冬虫夏草篇》之应用问题2",0,1,0],[110,"5/8《冬虫夏草篇》之应用问题1",0,1,0],[110,"4/8《冬虫夏草篇》之补肾作用",0,1,0],[110,"3/8《冬虫夏草篇》之补肺作用",0,1,0],[110,"2/8《冬虫夏草篇》之性能特点",0,1,0],[110,"1/8《冬虫夏草篇》之名解虫草",0,1,0],[110,"7/7《陈皮篇》之用量用法与使用注意",0,1,0],[110,"6/7《陈皮篇》之橘一身是药",0,1,0],[110,"5/7《陈皮篇》之养生作用",0,1,0],[110,"4/7《陈皮篇》之陈皮在呼吸系统中的作用",0,1,0],[110,"3/6《陈皮篇》之陈皮在消化系统中的作用",0,1,0],[110,"2/7《陈皮篇》之陈皮的特点",0,1,0],[110,"1/7《陈皮篇》之名解陈皮",0,1,0],[110,"5/5《白芷篇》之用量用法与使用注意",0,1,0],[110,"4/5《白芷篇》之白芷在皮肤病以及美白中的应用",0,1,0],[110,"3/5《白芷篇》之白芷的祛湿作用",0,1,0],[110,"2/5《白芷篇》之白芷芳香之性的应用",0,1,0],[110,"1/5《白芷篇》之字解白芷",0,1,0],[110,"4/4《艾叶篇》之艾叶的应用注意",0,1,0],[110,"3/4《艾叶篇》之医疗中的艾叶",0,1,0],[110,"2/4《艾叶篇》之熏灸中的艾叶",0,1,0],[110,"1/4《艾叶篇》之节日、习俗中的艾叶",0,1,0],[110,"6/6《阿胶篇》之哪些人不能用阿胶",0,1,0],[110,"5/6《阿胶篇》之阿胶的认识误区2",0,1,0],[110,"4/6《阿胶篇》之阿胶的认识误区1",0,1,0],[110,"3/6《阿胶篇》之以内养外的阿胶",0,1,0],[110,"2/6《阿胶篇》之以内养外的阿胶",0,1,0],[110,"1/6《阿胶篇》之阿胶的来源",0,1,0],[110,"4/6《枸杞篇》之枸杞的性能、功用",0,1,0],[110,"湿气是什么",0,1,0],[111,"AR设备也是一种人工智能技术？",0,6,0],[111,"AI预测大力神杯的最终归属",0,6,0],[111,"在AI技术中感受别样的世界杯",0,6,0],[111,"2022世界杯中的AI",0,6,0],[111,"AI主播",0,6,0],[111,"AI绘画",0,6,0],[111,"1分钟了解自动程序设计",0,6,0],[111,"1分钟了解专家系统",0,6,0],[111,"1分钟了解智能信息检索",0,6,0],[111,"1分钟了解模式识别",0,6,0],[111,"1分钟了解人工智能研究领域——博弈（下）",0,6,0],[111,"1分钟了解人工智能研究领域——博弈（上）",0,6,0],[111,"1分钟了解自动定理证明",0,6,0],[111,"1分钟了解AIGC（下）",0,6,0],[111,"1分钟了解AIGC（上）",0,6,0],[111,"1分钟了解数据挖掘",0,6,0],[111,"1分钟了解人工智能法律",0,6,0],[111,"1分钟了解智能工厂",0,6,0],[111,"1分钟了解智能装备",0,6,0],[111,"1分钟了解智能机器人",0,6,0],[111,"1分钟了解智能城市管理",0,6,0],[111,"1分钟了解智能交通",0,6,0],[111,"1分钟了解智能汽车",0,6,0],[111,"1分钟了解分布式人工智能",0,6,0],[111,"1分钟了解组合优化问题",0,6,0],[111,"1分钟了解智能管理与决策",0,6,0],[111,"1分钟了解细胞自动机",0,6,0],[111,"1分钟了解通用人工智能",0,6,0],[111,"1分钟了解小数据",0,6,0],[111,"1分钟了解情感计算",0,6,0],[111,"1分钟了解群体智能",0,6,0],[111,"1分钟了解人工智能的未来——量子人工智能（上）",0,6,0],[111,"1分钟了解人工生命",0,6,0],[111,"1分钟了解自然语言理解",0,6,0],[111,"1分钟了解机器视觉",0,6,0],[111,"1分钟了解神经网络黑箱",0,6,0],[111,"1分钟了解人工神经网络（上）",0,6,0],[111,"1分钟了解人工神经网络（下）",0,6,0],[111,"1分钟了解“深度学习三巨头”之杨立昆",0,6,0],[111,"1分钟了解“深度学习三巨头”之杰弗里辛顿",0,6,0],[111,"1分钟了解“深度学习三巨头”之约书亚本吉奥",0,6,0],[111,"1分钟了解麦卡锡",0,6,0],[111,"1分钟了解“人工智能之父”明斯基",0,6,0],[111,"1分钟了解“计算机科学之父”艾伦图灵",0,6,0],[111,"1分钟了解深度神经网络",0,6,0],[111,"1分钟了解神经网络计算",0,6,0],[111,"1分钟了解深蓝计算机",0,6,0],[111,"1分钟了解无人驾驶汽车的发展",0,6,0],[111,"1分钟了解人工智能的寒冬和炎夏",0,6,0],[111,"1分钟了解达特茅斯会议的召开",0,6,0],[111,"1分钟了解下棋程序的发展",0,6,0],[111,"1分钟了解第一台神经网络计算机",0,6,0],[111,"AI万象——1分钟了解图灵测试",0,6,0],[111,"混合智能会是人工智能的未来吗？",0,6,0],[111,"将ChatGPT接入人形机器人？",0,6,0],[111,"智能汽车智能在哪里？",0,6,0],[111,"1分钟了解火爆全网的ChatGPT",0,6,0],[111,"ChatGPT3.5和4.0有哪些区别？",0,6,0],[111,"ChatGPT和其他语音助手的区别",0,6,0],[111,"给食物拍张照就能获取热量信息？",0,6,0],[111,"1分钟了解AI绘画",0,6,0],[111,"1分钟了解机器学习",0,6,0],[111,"1分钟了解AI如何助力体育赛事",0,6,0],[111,"1分钟了解AI生活助理",0,6,0],[111,"1分钟了解AI如何助力科学研究",0,6,0],[111,"1分钟了解智能医疗——AI如何助力医疗",0,6,0],[111,"1分钟了解智能农业——智能农机",0,6,0],[111,"1分钟了解AI谱曲",0,6,0],[111,"1分钟了解伦理道德困境",0,6,0],[111,"1分钟了解人工智能防范",0,6,0],[111,"1分钟了解智能金融——AI交易员",0,6,0],[111,"1分钟了解智能教育",0,6,0],[111,"1分钟了解人工智能的未来——量子人工智能（下）",0,6,0],[111,"什么是ChatGPT",0,6,0],[112,"是不是进口药比国产药好？",0,1,0],[112,"听说，中药比西药安全？",0,1,0],[112,"05. 桌子上的药，是你的吧？",0,1,0],[112,"6.忘记吃药，我有妙招！",0,1,0],[112,"7. 看你还敢碰瓷？",0,1,0],[112,"8. 听说，有种降压药能减肥？",0,1,0],[112,"9.减压药，也有不良反应？",0,1,0],[112,"10.借来的降压药",0,1,0],[112,"11.降压药，吃着吃着就不灵了？",0,1,0],[112,"12.降压药，最忌吃吃停停！",0,1,0],[112,"13.龙虾兄，我来了",0,1,0],[112,"14.容易忽略的痛风征兆，有哪些？",0,1,0],[112,"15.痛风药",0,1,0],[112,"16.秋水仙碱",0,1,0],[112,"17.痛风和阿司匹林",0,1,0],[112,"18.降尿酸",0,1,0],[112,"19. 痛风药，能随便吃吗？",0,1,0],[112,"20.管住嘴",0,1,0],[112,"21. 全身遭殃",0,1,0],[112,"22.甲状腺也会偏心？",0,1,0],[112,"23.甲亢，甲减，一对大冤家！",0,1,0],[112,"24.甲亢，切了一了百了？",0,1,0],[112,"25.啥时候可以停药？",0,1,0],[112,"26. 甲减，与心脏有关？",0,1,0],[112,"27 吃起肉来，哗哗的",0,1,0],[112,"28 纳尼？救星",0,1,0],[112,"29 我看我们也要罢工了",0,1,0],[112,"30 再不吃药，我就要凉凉了",0,1,0],[112,"31. 辣条冠军",0,1,0],[112,"32.第二天，又来了！",0,1,0],[112,"33.这大脑也坑我啊？我该咋办？",0,1,0],[112,"34 穷的连吃饭钱也没了？",0,1,0],[112,"35.偏方，真的管用吗",0,1,0],[112,"36.贫血不补铁，那补什么？",0,1,0],[112,"37.他能挺住，我挺不住啊！",0,1,0],[112,"38.你一大老爷们，看妇科？",0,1,0],[112,"39 免费的检查",0,1,0],[112,"40 预防骨质疏松",0,1,0],[112,"41 病根，原来在这里",0,1,0],[112,"42 越动弹，越费骨头？",0,1,0],[112,"43 补钙更有效",0,1,0],[112,"44 主从食，副从药",0,1,0],[112,"45 补钙的最佳选择",0,1,0],[112,"46，新来的就是没见识",0,1,0],[112,"47 大爷 你咋发现的啊？",0,1,0],[112,"48.药物治疗起效慢，怎么办？",0,1,0],[112,"49.有点迷糊，怕是要晕了！",0,1,0],[112,"50.想根治这病？",0,1,0],[112,"51,我最多能帮你吐出来.",0,1,0],[112,"52.两秒点压一次？",0,1,0],[112,"53. 脑哥，速速救急",0,1,0],[112,"54 有一种治疗，叫电刺激！",0,1,0],[112,"55.这谁挤我呢？我要泄洪!",0,1,0],[112,"56 老慢支，搞不好会要命",0,1,0],[112,"57 持续时间长，可维持12小时",0,1,0],[112,"58 踩着七彩祥云，带着神丹妙药",0,1,0],[112,"59 人生自古谁无死",0,1,0],[112,"60 固执的大妈",0,1,0],[112,"61 用药不是关键",0,1,0],[112,"62那屋里医生技术更好？",0,1,0],[112,"63这病能治好吗？",0,1,0],[112,"64戒掉，你会越来越健康",0,1,0],[112,"65 我真的好想再活500年",0,1,0],[112,"66 快让五位将军出门迎战",0,1,0],[112,"67为何有情人，不能终成眷属？",0,1,0],[112,"68 关键时候，能救命",0,1,0],[112,"69 陛下，你切不可过于伤感",0,1,0],[112,"70 微臣冤枉",0,1,0],[112,"71憋废话了！救人吧！.",0,1,0],[112,"72.胃侯爷是不是还恶心想吐？",0,1,0],[112,"73.这悄悄话，说滴也太无所畏惧了！",0,1,0],[112,"74.保证你不出三月，就生龙活虎！",0,1,0],[112,"75.给他激动滴鼻歪眼斜，直接背过气去了！",0,1,0],[112,"76.最近都赶上果汁工厂了，生产的尿液甜丝丝滴！",0,1,0],[112,"77.杜绝大鱼大肉，清淡饮食，主要是我和嘴的功劳！",0,1,0],[112,"78.一到午夜，就想cos吸血鬼，整点儿毛血旺吃吃",0,1,0],[112,"79.把我当药罐子呢？",0,1,0],[112,"80.手老抖，跟弹棉花似的！",0,1,0],[112,"81-天上没有白掉的馅饼",0,1,0],[112,"82.我看我这程度，快要晚期了吧？",0,1,0],[112,"83.你咋连自己都骂呢？",0,1,0],[112,"84.大哥，你别给我发信号了",0,1,0],[112,"85.你这脑回路里，怕不都是“井”吧？",0,1,0],[112,"86.圣斗士，绝不会被同一技能击倒两次",0,1,0],[112,"87.看出来你不差钱了",0,1,0],[112,"88.这年头做老板真难",0,1,0],[112,"89.突然感觉，这嘴里的鸭舌，它不香了！",0,1,0],[112,"90.你脱鞋让我瞅瞅",0,1,0],[112,"91.消毒的，用哪个合适？",0,1,0],[112,"92.吃光用光，身体健康？",0,1,0],[112,"93.三分药医，七分心疗",0,1,0],[112,"94.有阅历的男人是本书",0,1,0],[112,"95.说好听点儿，叫伤春悲秋！",0,1,0],[112,"96.嘴呢？来，给哥笑一个！",0,1,0],[112,"97.别跟姐说白头偕老",0,1,0],[112,"98.睡美人，原来是这么来的呀！",0,1,0],[112,"99.睡觉睡到自然醒、数钱数到手抽筋!.",0,1,0],[112,"100. 我自横刀向天笑",0,1,0],[113,"怎么更快清除hpv感染？",7,1,0],[113,"你以为的青春痘，可能是感染了hpv！",0,1,0],[113,"男性也会感染hpv，比女性更容易传播！",0,1,0],[113,"未雨绸缪，HPV病毒的预防很重要！",0,1,0],[113,"戴套也防不住HPV病毒？",0,1,0],[113,"接种HPV疫苗前，要先做筛查吗？",0,1,0],[113,"HPV疫苗可以提前或延迟打吗？",7,1,0],[113,"感冒了，还能打九价HPV疫苗吗",0,1,0],[113,"感染了HPV病毒后，身体发出的信号",0,1,0],[113,"三类人群不适合接种HPV疫苗！",0,1,0],[113,"感染HPV后，吃什么可以提高免疫力？",0,1,0],[113,"感染HPV病毒很丢人吗？",0,1,0],[113,"如果感染过HPV病毒还能接种吗？",0,1,0],[113,"HPV病毒男女“通吃”！",0,1,0],[113,"HPV疫苗二价、四价、九价有何不同？",0,1,0],[113,"导致尖锐湿疣的罪魁祸首——HPV病毒",0,1,0],[113,"感染了 HPV ，就一定会得宫颈癌吗？",0,1,0],[113,"打完HPV疫苗后，就不用担心了吗？",0,1,0],[113,"在打HPV疫苗之前还需要做检查吗？",0,1,0],[113,"打了二价-四价，还有必要再打九价吗？",0,1,0],[113,"越早接种HPV疫苗，疫苗是不是也会很快失效？",0,1,0],[113,"男生会不会感染HPV病毒？",0,1,0],[113,"单身没有性生活，也会感染HPV？",0,1,0],[113,"HPV疫苗接种之后，终身有效吗？",0,1,0],[113,"建议这两类人，尽快接种HPV疫苗！",0,1,0],[113,"男性如何预防HPV？",0,1,0],[113,"HPV疫苗的防护期是多久？",0,1,0],[113,"HPV疫苗的区别，你都知道吗？",0,1,0],[113,"有过性生活，再打HPV就没用了吗？",0,1,0],[113,"只有一个男朋友，也会感染HPV吗？",0,1,0],[113,"HPV阳性不用药，难道等着变成宫颈癌吗？",0,1,0],[113,"HPV呈阳性，还要打九价吗",0,1,0],[113,"HPV转阴后，还会复阳吗",0,1,0],[113,"HPV和TCT检查傻傻分不清？",0,1,0],[113,"脖子上长小肉揪，是感染HPV病毒了吗？",0,1,0],[113,"打完HPV四价，还需要打九价吗？",0,1,0],[113,"为什么打了九价，还会查出HPV阳性？",0,1,0],[113,"感染HPV后，还能同房吗？",0,1,0],[113,"用玩具，会感染HPV吗？",0,1,0],[113,"打了HPV，是永久有效吗？",0,1,0],[113,"进口HPV疫苗，一定比国产好吗？",0,1,0],[113,"HPV呈阳性，还要打九价吗？",0,1,0],[113,"宫颈糜烂是宫颈炎吗？",0,1,0],[113,"打了HPV疫苗能同房吗？",0,1,0],[113,"打了九价疫苗，还检查出HPV感染？",0,1,0],[113,"HPV阳性，需要做利普手术吗？",0,1,0],[113,"HPV58型，多久才能转阴？",0,1,0],[113,"同事检查出宫颈癌，这会传染吗",0,1,0],[113,"备孕中发现HPV感染，还能要孩子吗？",0,1,0],[113,"许医生HPV私信解答时间！",0,1,0],[113,"打九价疫苗前医生会问我有无性生活吗？",0,1,0],[113,"低危型HPV一定会长尖锐湿疣吗？",0,1,0],[113,"我是雏女为什么会感染HPV？",0,1,0],[113,"HPV疫苗常见问题解答",0,1,0],[113,"感染HPV不要怕！建议去做这个检查",0,1,0],[113,"HPV感染后饮食有什么禁忌吗？",0,1,0],[113,"HPV检查有必要每年都做吗？",0,1,0],[113,"特殊时期可以接种HPV疫苗吗？",0,1,0],[113,"一分钟教会你如何选择HPV疫苗！",0,1,0],[113,"HPV自检包检测准吗？",0,1,0],[113,"感染HPV不要怕！赶紧去做这个检查",0,1,0],[113,"男生也用打HPV疫苗？",0,1,0],[113,"HPV阳性=宫颈癌？",0,1,0],[113,"这些HPV转阴方法 别轻易相信！",0,1,0],[113,"hpv感染人群为什么趋于年轻？",0,1,0],[113,"男方不注意卫生，女生会感染hpv吗？",0,1,0],[113,"你支持hpv疫苗免费吗？",0,1,0],[113,"打九价前隐瞒病史会有什么后果？",0,1,0],[113,"尖锐湿疣好了，是不是HPV也好了？",0,1,0],[113,"17岁性生活 是感染HPV的高危人群吗？",0,1,0],[113,"已经感染了HPV还能打九价吗？",0,1,0],[113,"九价难约 为何不考虑国产二价呢？",0,1,0],[113,"16 18 53……HPV数值代表什么？",0,1,0],[113,"国产VS进口二价、四价、九价怎么选？",0,1,0],[113,"我已经30+、40+了，还有必要打疫苗吗？",0,1,0],[113,"HPV阳性，到底能不能打疫苗？",0,1,0],[113,"宫颈炎会发展成宫颈癌吗？",0,1,0],[113,"感染HPV后会有什么表现？",0,1,0],[113,"妇科炎症会影响HPV疫苗接种吗？",0,1,0],[113,"坚持每年做宫颈癌筛查，医生却说没必要？",0,1,0],[113,"医生，我查出HPV阳性了怎么办？",0,1,0],[113,"HPV疫苗是如何起作用的？",0,1,0],[113,"怎么更快清除hpv感染？",0,1,0],[113,"HPV疫苗可以提前或延迟打吗？",0,1,0],[113,"接种HPV疫苗前需要进行宫颈癌筛查吗？",0,1,0],[113,"有性生活的女性，都有感染高危HPV病毒的可能",0,1,0],[113,"感染 HPV 不能怀孕吗？",0,1,0],[113,"有两个年龄段，更应该接种HPV疫苗！",0,1,0],[113,"接种HPV疫苗以后，就不用担心得宫颈癌了吗？",0,1,0],[113,"九价放开年龄限制以后，我要如何选择HPV疫苗？",0,1,0],[113,"怎么预防宫颈癌的发生？",0,1,0],[113,"查出HPV阳性了怎么办？",0,1,0],[113,"宫颈癌有遗传性吗？",0,1,0],[113,"怀孕和哺乳期能打HPV疫苗吗？",0,1,0],[113,"感染HPV病毒会影响生育能力吗",0,1,0],[113,"你可能已经被宫颈癌盯上！",0,1,0],[113,"不疼不痒，一查居然是“宫颈癌” ！",0,1,0],[113,"“阳”了还能打HPV疫苗吗？",0,1,0],[113,"妇科炎症，会引起宫颈癌吗？",0,1,0],[113,"出现这个症状是宫颈癌的信号，千万要当心！",0,1,0],[113,"关于HPV的误区，看看你知道几个？",0,1,0],[113,"关于HPV疫苗的谣言从来没有停止过！",0,1,0],[113,"什么是HPV？",0,1,0],[113,"HPV会传染给孩子吗？",0,1,0],[113,"现在多数男性感染HPV却不自知？",0,1,0],[113,"在医院查出HPV阳性，该怎么办？",0,1,0],[113,"怎么保护脆弱的宫颈",0,1,0],[113,"到底什么是HPV？",0,1,0],[113,"出现这个症状是宫颈癌的信号！",0,1,0],[113,"引起宫颈癌的原因是它！",0,1,0],[113,"男性是怎么做HPV检测？",0,1,0],[113,"戴好“小雨伞”，就能防住HPV病毒吗？",0,1,0],[113,"想打HPV疫苗但害怕有不良反应怎么办？",0,1,0],[113,"很多男性感染HPV却不知道？",0,1,0],[114,"杀虫剂近亲——神经毒武器，沙林",0,1,0],[114,"能快速催眠，也能诱出真话——硫喷妥钠｜世界医药里程碑57",0,1,0],[114,"最强减肥药——二硝基酚｜世界医药里程碑56",0,1,0],[114,"大脑加速器——安非他明｜世界医药里程碑55",0,1,0],[114,"雌激素-更年期女性的宝贝还是毒药？｜世界医药里程碑54",0,1,0],[114,"20世纪最伟大的发现——青霉素｜世界医药里程碑53",0,1,0],[114,"药品跨界食品、化妆品——己雷琐辛｜世界医药里程碑52",0,1,0],[114,"最快发放的诺贝尔奖-胰岛素｜世界医药里程碑51",0,1,0],[114,"梦境的启示——神经递质终被发现｜世界医药里程碑50",0,1,0],[114,"狗肝带给人类的礼物，肝素——开启抗凝时代｜世界医药里程碑49",0,1,0],[114,"甲状腺素——第一个激素替代疗法｜世界医药里程碑48",0,1,0],[114,"奎宁的兄弟治疗心律失常——奎尼丁｜世界医药里程碑47",0,1,0],[114,"一场“药害事件”，催生药品监管",0,1,0],[114,"染料中发现的抗菌药-百浪多息",0,1,0],[114,"从止咳药到毒药-第一个人造魔鬼｜世界医药里程碑40",0,1,0],[114,"征服癫痫-苯妥英钠 | 世界医药里程碑61",0,1,0],[114,"激素的潘多拉魔盒——己烯雌酚 | 世界医药里程碑62",1,1,0],[114,"试图消灭疟疾的杀虫剂-滴滴涕 | 世界医药里程碑63",0,1,0],[114,"从出血死牛发现的抗凝药——华法林 | 世界医药里程碑64",0,1,0],[114,"芥子气开启癌症化疗——氮芥 | 世界医药里程碑65",0,1,0],[114,"半人造的致幻剂——新型毒品LSD | 世界医药里程碑66",6,1,0],[114,"土壤中发现的抗结核药——链霉素 | 世界医药里程碑67",0,1,0],[114,"抗过敏药的问世——抗组胺药 | 世界医药里程碑68",0,1,0],[114,"似冰之毒——从日本流到全球 | 世界医药里程碑69",0,1,0],[114,"保护牙齿的创举——自来水加氟 | 世界医药里程碑70",0,1,0],[114,"德国缺少药理学家的故事——奎宁和氯喹 | 世界医药里程碑71",0,1,0],[114,"拯救儿童白血病第一药—氨基蝶呤&甲氨蝶呤|世界医药里程碑72",1,1,0],[114,"延迟的损害——四环素的兴与衰 | 世界医药里程碑73",0,1,0],[114,"利多卡因：现代局麻药的开端 | 世界医药里程碑74",0,1,0],[114,"以金属“克”躁狂——锂|世界医药里程碑75",0,1,0],[114,"有致命缺陷的抗生素——氯霉素 | 世界医药里程碑76",1,1,0],[114,"可的松——美国“仙丹“往事 | 世界医药里程碑77",0,1,0],[114,"被搁置40年的抗痨先锋——异烟肼 | 世界医药里程碑78",6,1,0],[114,"丙嗪类药物中的“异类”-异丙嗪 | 世界医药里程碑79",0,1,0],[114,"精神病治疗史上的“No.1”——氯丙嗪 |世界医药里程碑80",0,1,0],[114,"从减少青霉素尿排泄发现的痛风药——丙磺舒|世界医药里程碑81",0,1,0],[114,"退烧药的故事，始于1886——泰诺 | 世界医药里程碑82",0,1,0],[114,"用伪造的嘌呤诱骗癌细胞——6-巯基嘌呤 |世界医药里程碑83",0,1,0],[114,"霉菌的抗真菌产物——制霉菌素 | 世界医药里程碑84",0,1,0],[114,"脊髓灰质炎终结者——疫苗 | 世界医药里程碑85",1,1,0],[114,"第一个治疗糖尿病风险人群的药：甲苯磺丁脲|世界医药里程碑86",1,1,0],[114,"从天使到魔鬼，再到天使：沙利度胺 | 世界医药里程碑87",1,1,0],[114,"山羊豆长出金瓜瓜——二甲双胍 | 世界医药里程碑88",0,1,0],[114,"利尿剂的意外发现-氯噻嗪安全降血压 | 世界医药里程碑89",0,1,0],[114,"牙买加降糖茶的意外发现：抗癌药长春花生物碱|世界医药里程90",0,1,0],[114,"滴虫和厌氧菌的克星-甲硝唑 | 世界医药里程碑91",0,1,0],[114,"解放女性的“魔丸”-第一个避孕药 | 世界医药里程碑92",0,1,0],[114,"革兰氏阴性细菌的解决方案：氨卞青霉素 | 世界医药里程碑93",0,1,0],[114,"下水道中发现的宝贝——头孢菌素 | 世界医药里程碑94",0,1,0],[114,"高效的袢利尿剂——速尿 | 世界医药里程碑95",1,1,0],[114,"抗癌研究的意外发现——别嘌呤醇治痛风 | 世界医药里程碑96",0,1,0],[114,"逆转女性生物钟，第一个不孕治疗药物——克罗米芬|世界医药97",0,1,0],[114,"左“打”癫痫、右“捶”躁狂——丙戊酸 | 世界医药里程碑98",0,1,0],[114,"帕金森的救星-左旋多巴 | 世界医药里程碑99",0,1,0],[114,"中医药给人类的礼物：青蒿素 | 世界医药里程碑100",0,1,0],[114,"一个失败避孕药的命运—抗癌英雄他莫昔芬|世界医药里程碑101",0,1,0],[114,"消化性溃疡颠覆性药物—西咪替丁 | 世界医药里程碑102",0,1,0],[114,"南美蝮蛇的礼物—卡托普利 | 世界医药里程碑103",0,1,0],[114,"终于能对付病毒了-阿昔洛韦 | 世界医药里程碑104",0,1,0],[114,"第一个治疗HIV感染的药物——齐多夫定|世界医药里程碑105",0,1,0],[114,"打破艾滋病必死的魔咒——鸡尾酒疗法（HAART）",0,1,0],[114,"生物制剂时代的到来—重组人胰岛素 | 世界医药里程碑107",0,1,0],[114,"长高密码-生长激素 | 世界医药里程碑108",0,1,0],[114,"溶解血栓——t-PA | 世界医药里程碑109",0,1,0],[114,"既是抗贫血药，又是赛场禁药—促红素 | 世界医药里程碑110",0,1,0],[114,"升白针——G-CSF | 世界医药里程碑111",0,1,0],[114,"乳腺癌的革命性治疗——赫赛汀 | 世界医药里程碑112",0,1,0],[114,"TNF抑制剂①—英夫利昔单抗 | 世界医药里程碑113",0,1,0],[114,"TNF抑制剂②——依那西普 | 世界医药里程碑114",0,1,0],[114,"TNF抑制剂③——阿达木单抗 | 世界医药发展里程碑115",0,1,0],[114,"饿死肿瘤！抗肿瘤血管生成—贝伐珠单抗 |世界医药里程碑116",0,1,0],[114,"霉菌送给器官移植的礼物-环孢素 | 世界医药里程碑117",0,1,0],[114,"第一个降血脂药——洛伐他汀 | 世界医药里程碑118",0,1,0],[114,"抗抑郁的SSRI——百优解 | 世界医药里程碑119",0,1,0],[114,"第一个脱发救星竟然是降压药！—米诺地尔|世界医药里程碑120",0,1,0],[114,"流产不用手术，堕胎药—米非司酮 | 世界医药里程碑121",0,1,0],[114,"第一个质子泵抑制剂（PPI）—奥美拉唑|世界医药里程碑122",0,1,0],[114,"从毒药到除皱针的奇幻转变—神奇肉毒素 |世界医药里程碑123",0,1,0],[114,"“伤心”的止痛药——万络（罗非昔布）| 世界医药里程碑124",0,1,0],[114,"胰岛素增敏药：文迪雅的撤市 | 世界医药里程碑125",1,1,0],[114,"慢粒白血病的“神奇子弹”——伊马替尼 | 世界医药里程碑12",0,1,0],[114,"快乐的意外，失败的副产物——万艾可 | 世界医药里程碑127",1,1,0],[114,"扶正祛邪，癌症疫苗-普罗文奇 | 世界医药里程碑128",0,1,0],[114,"现代疫苗四大金刚（上）：灭活、病毒载体疫苗 |世界医药129",0,1,0],[114,"现代疫苗四大金刚（下）：重组蛋白、核酸疫苗 |世界医药129",0,1,0],[114,"药品是如何研发出来的？ | 世界医药里程碑130",0,1,0],[114,"临床研究的设计思路 | 世界医药里程碑131",0,1,0],[114,"保障品质，守护健康-GLP、GCP和GMP |世界医药132",0,1,0],[114,"创新药与仿制药：解密药物研发的双重秘密|世界医药里程碑133",0,1,0],[114,"揭秘药物世界的奇妙联络：药物代谢和药物相互作用|里程碑134",0,1,0],[114,"挖掘传统医药宝库的思路 | 世界医药里程碑135",0,1,0],[114,"组织修复的魔法：诱导多能干细胞 | 世界医药里程碑136",0,1,0],[114,"重写生命密码：基因治疗 | 世界医药里程碑137",0,1,0],[114,"青春永驻的秘诀：科学抗衰 | 世界医药里程碑138",0,1,0],[114,"大脑数据交换 | 世界医药里程碑139",0,1,0],[114,"人工智能：医疗界的超级英雄！|世界医药里程碑140",0,1,0],[114,"科技重塑生命：人造器官 | 世界医药里程碑141",0,1,0],[115,"引爆中东的“新非典”",0,1,0],[115,"有限的人际间传播",0,1,0],[115,"21世纪第一个新发传染病",0,1,0],[115,"超级传播者",0,1,0],[115,"SARS源头（上）",0,1,0],[115,"SARS源头（下）",0,1,0],[115,"救命的马血清",0,1,0],[115,"笼罩在喉咙上的白色恐怖",0,1,0],[115,"久咳不愈的真相",0,1,0],[115,"预防久咳 疫苗最佳",0,1,0],[115,"新发传染病的崛起",0,1,0],[115,"逐渐失效的抗生素",0,1,0],[115,"超级细菌的诞生",0,1,0],[115,"消毒改变外科-李斯特",0,1,0],[115,"医学微生物奠基人-巴斯德",0,1,0],[115,"细菌学之父-科赫",0,1,0],[115,"中国防疫先驱-伍连德",0,1,0],[115,"意外发现的青霉素（上）",0,1,0],[115,"意外发现的青霉素（下）",0,1,0],[115,"染料传奇-磺胺（上）",0,1,0],[115,"染料传奇-磺胺（下）",0,1,0],[115,"传染指数最高的病毒",0,1,0],[115,"麻疹疫苗的问世",0,1,0],[115,"“自由”的代价",0,1,0],[115,"致命的小伤口（上）",0,1,0],[115,"致命的小伤口（下）",0,1,0],[115,"水疱和麻点",0,1,0],[115,"潜伏者-带状疱症的元凶",0,1,0],[115,"显微镜下的小动物",0,1,0],[115,"病毒的发现",0,1,0],[115,"微生物世界两大阵营",0,1,0],[115,"立在生命的边缘",0,1,0],[115,"基因中的不速之客",0,1,0],[115,"人体内的外来户",0,1,0],[115,"肠道中的微妙平衡",0,1,0],[115,"撬动人类历史车轮的微小生物",0,1,0],[115,"传染病防控三部曲",0,1,0],[115,"防范艾滋病一起行动",0,1,0],[115,"HIV感染者≠艾滋病人",0,1,0],[115,"柏林病人（下）",0,1,0],[115,"柏林病人（上）",0,1,0],[115,"鸡尾酒疗法",0,1,0],[115,"HIV疫苗",0,1,0],[115,"美国西海岸的不明病例",0,1,0],[115,"宫颈癌疫苗",0,1,0],[115,"生物界的特洛伊木马",0,1,0],[115,"HIV的跳跃",0,1,0],[115,"一号病，从未远离",0,1,0],[115,"耶尔森与鼠疫杆菌",0,1,0],[115,"永生的海拉细胞",0,1,0],[115,"嗜血的红樱",0,1,0],[115,"国士无双",0,1,0],[115,"欧洲梦魇",0,1,0],[115,"关于霍乱，你该知道的",0,1,0],[115,"可怕的“逗号”",0,1,0],[115,"死亡地图与流行病学之父",0,1,0],[115,"从南亚地方病到世界大流行",0,1,0],[115,"肠道病毒在搞怪",0,1,0],[115,"海洋球池里的隐患",0,1,0],[115,"舌尖上的“防疫”",0,1,0],[115,"一类致癌物",0,1,0],[115,"诺贝尔奖光环下的明星细菌",0,1,0],[115,"消失的阿兹特克文明",0,1,0],[115,"最古老的“疫苗”",0,1,0],[115,"死神的镰刀",0,1,0],[115,"阴影重现",0,1,0],[115,"世界上第一种疫苗：牛痘（上）",0,1,0],[115,"世界上第一种疫苗：牛痘（下）",0,1,0],[115,"消灭天花",0,1,0],[115,"肝炎如何预防",0,1,0],[115,"能被治愈的慢性病",0,1,0],[115,"沉默的杀手",0,1,0],[115,"乙肝可防、可治、不可怕",0,1,0],[115,"乙肝如何传播",0,1,0],[115,"乙肝三部曲",0,1,0],[115,"生吃海鲜与甲肝（下）",0,1,0],[115,"生吃海鲜与甲肝（上）",0,1,0],[115,"抗原自测与核酸检测（下）",0,1,0],[115,"抗原自测与核酸检测（上）",0,1,0],[115,"与新冠的长期斗争",0,1,0],[115,"魔高一尺道高一丈",0,1,0],[115,"新冠疫苗家族四大天王（下）",0,1,0],[115,"新冠疫苗家族四大天王（上）",0,1,0],[115,"新的毒王奥密克戎",0,1,0],[115,"超级变变变",0,1,0],[115,"新冠病毒基因溯源",0,1,0],[115,"轻装的刺客",0,1,0],[115,"不能承受的“王冠”之重",0,1,0],[115,"应对流感，防重于治",0,1,0],[115,"病毒界的变装大佬——流感",0,1,0],[115,"流感起源解密",0,1,0],[115,"“结核”最早的痕迹——古埃及的雕像",0,1,0],[116,"中药基本理论科普——中药的配伍（一）",0,1,0],[116,"中药基本理论科普——中药的配伍（二）",0,1,0],[116,"中药基本理论科普——中药的配伍（三）",0,1,0],[116,"中药基本理论科普——中药的配伍（四）",0,1,0],[116,"中药基本理论科普——中药炮制的目的（上）",0,1,0],[116,"中药基本理论科普——中药炮制的目的（下）",0,1,0],[116,"中药基本理论科普——中药配伍的君臣佐使",0,1,0],[116,"中药基本理论科普——中药炮制方法",0,1,0],[116,"中药基本理论科普——中药炮制",0,1,0],[116,"中药基本理论科普——中药用法",0,1,0],[116,"中药基本理论科普——中药用药剂量",0,1,0],[116,"中药基本理论科普——中药用药禁忌（下）",0,1,0],[116,"中药基本理论科普——中药用药禁忌（上）",0,1,0],[116,"中药基本理论科普——药物的归经",0,1,0],[116,"中药基本理论科普——药物升降浮沉的影响因素",0,1,0],[116,"中药基本理论科普——药物的升降浮沉",0,1,0],[116,"中药基本理论科普——药物的“毒性”",0,1,0],[116,"中药基本理论科普——四气五味",0,1,0],[116,"中药基本理论科普——五味理论",0,1,0],[116,"中药基本理论科普——四气理论2",0,1,0],[116,"中药基本理论科普——四气理论",0,1,0],[116,"中药基本理论科普——中药的存储",0,1,0],[116,"中药基本理论科普——中药的采集",0,1,0],[116,"中药基本理论科普——道地药材三",0,1,0],[116,"中药基本理论科普——道地药材二",0,1,0],[116,"中药基本理论科普——道地药材一",0,1,0],[116,"中药基本理论科普——中药分类方法",0,1,0],[116,"心脑血管疾病筛查技术——自我检查判断",0,1,0],[116,"心脑血管疾病筛查技术——心脏超声",0,1,0],[116,"心脑血管疾病筛查技术——颅脑CT",0,1,0],[116,"心脑血管疾病筛查技术——经颅多普勒",0,1,0],[116,"心脑血管疾病筛查技术——颈动脉超声",0,1,0],[116,"心脑血管疾病的4s干预理念",0,1,0],[116,"安全性评价研究",0,1,0],[116,"模型建立与相关试验",0,1,0],[116,"主要药效学研究",0,1,0],[116,"药物稳定性研究-上",0,1,0],[116,"药物稳定性研究-下",0,1,0],[116,"成品质量标准研究",0,1,0],[116,"质量标准的建立",0,1,0],[116,"中试放大工艺研究",0,1,0],[116,"制剂工艺研究",0,1,0],[116,"浓缩干燥工艺",0,1,0],[116,"提取工艺研究",0,1,0],[116,"制备工艺研究",0,1,0],[116,"药材的炮制研究和制剂准备",0,1,0],[116,"中药的质量研究",0,1,0],[116,"古法传承与推陈出新",0,1,0],[116,"水丸的现代化生产",0,1,0],[116,"古法水丸制作工艺",0,1,0],[116,"生活中哪些常见中药是水丸？",0,1,0],[116,"水丸是什么？",0,1,0],[116,"中药验方药材研究——土鳖虫（一）",0,1,0],[116,"中药验方药材研究——土鳖虫（二）",0,1,0],[116,"中药验方药材研究——土鳖虫（三）",0,1,0],[116,"中药验方药材研究——王不留行（一）",0,1,0],[116,"中药验方药材研究——王不留行（二）",0,1,0],[116,"中药验方药材研究——王不留行（三）",0,1,0],[116,"中药验方药材研究——射干",0,1,0],[116,"中药验方药材研究——毛冬青",0,1,0],[116,"中药验方药材研究——半枝莲（一）",0,1,0],[116,"中药验方药材研究——半枝莲（二）",0,1,0],[116,"中药验方药材研究——松叶（一）",0,1,0],[116,"中药验方药材研究——松叶（二）",0,1,0],[116,"中药验方药材研究——葛根（一）",0,1,0],[116,"中药验方药材研究——葛根（二）",0,1,0],[116,"中药验方药材研究——葛根（三）",0,1,0],[116,"中药验方药材研究——葛根（四）",0,1,0],[116,"中药验方药材研究——玉米须（一）",0,1,0],[116,"中药验方药材研究——玉米须（二）",0,1,0],[116,"中药验方药材研究——玉米须（三）",0,1,0],[116,"中药验方药材研究——三七（一）",0,1,0],[116,"中药验方药材研究——三七（二）",0,1,0],[116,"中药验方药材研究——三七（三）",0,1,0],[116,"中药验方药材研究——三七（四）",0,1,0],[116,"中药验方药材研究——三七（五）",0,1,0],[116,"中药验方药材研究——红花（一）",0,1,0],[116,"中药验方药材研究——红花（二）",0,1,0],[116,"中药验方药材研究——红花（三）",0,1,0],[116,"中药验方药材研究——红花（四）",0,1,0],[116,"中药验方药材研究——总章",0,1,0],[116,"中药验方药材研究——虎杖（一）",0,1,0],[116,"中药验方药材研究——虎杖（二）",0,1,0],[116,"中药验方药材研究——虎杖（三）",0,1,0],[116,"中药验方药材研究——人参（一）",0,1,0],[116,"中药验方药材研究——人参（二）",0,1,0],[116,"中药验方药材研究——人参（三）",0,1,0],[116,"中药验方药材研究——决明子（一）",0,1,0],[116,"中药验方药材研究——决明子（二）",0,1,0],[116,"中药验方药材研究——决明子（三）",0,1,0],[116,"中药验方药材研究——决明子（四）",0,1,0],[117,"小U第七十二课：乳腺癌不同转移部位的处理——胸膜转移",0,1,0],[117,"小U第七十一课：乳腺癌不同转移部位的处理——肺转移",0,1,0],[117,"小U第七十课：乳腺癌不同转移部位的处理——脑及脑膜转移2",0,1,0],[117,"小U第六十九课：乳腺癌不同转移部位的处理——脑及脑膜转移1",0,1,0],[117,"小U第六十八课：抗血管生成治疗在转移性乳腺癌患者中的应用2",0,1,0],[117,"小U第六十七课：抗血管生成治疗在转移性乳腺癌患者中的应用1",0,1,0],[117,"小U第六十六课：PARP抑制剂与三阴性乳腺癌",0,1,0],[117,"小U第六十二课：晚期三阴性乳腺癌治疗方案--2",0,1,0],[117,"小U第六十一课：晚期三阴性乳腺癌治疗方案--1",0,1,0],[117,"小U第六十三课：三阴性乳腺癌免疫治疗方案",0,1,0],[117,"小U第六十四课：三阴性乳腺癌抗体偶联药物（ADC)",0,1,0],[117,"小U第五十一课：转移性乳腺癌",0,1,0],[117,"小U第六十课：魔发子弹2——D58201",0,1,0],[117,"小U第五十九课：魔发子弹1——抗体偶联药物",0,1,0],[117,"小U第五十八课：HER2阳性晚期乳腺癌治疗方案",0,1,0],[117,"小U第五十七课：HER2阳性晚期乳腺癌治疗原则",0,1,0],[117,"小U第五十六课：激素受体阳性转移性乳腺癌治疗方案",0,1,0],[117,"小U第五十五课：激素受体阳性转移性乳腺癌治疗原则",0,1,0],[117,"小U第五十四课：转移性乳腺癌治疗原理",0,1,0],[117,"小U第五十三课：晚期乳腺癌预后影响因素",0,1,0],[117,"小U第五十二课：晚期乳腺癌预后判断",0,1,0],[117,"小U第四十五课：辅助抗HER2靶向治疗方法",0,1,0],[117,"小U第五十课：乳腺癌复发症状",0,1,0],[117,"小U第四十九课：查癌神器PET-CT",0,1,0],[117,"小U第四十八课：乳腺癌患者随访",0,1,0],[117,"小U第四十七课：男性乳腺癌",0,1,0],[117,"小U第四十六课：三阴性乳腺癌",0,1,0],[117,"小U第四十四课：HER2阳性乳腺癌辅助治疗靶向药物-2",0,1,0],[117,"小U第四十三课：HER2阳性乳腺癌辅助治疗靶向药物-1",0,1,0],[117,"小U第四十二课：HER2阳性乳腺癌治疗方法",0,1,0],[117,"小U第四十一课：HER2阳性乳腺癌简介",0,1,0],[117,"小U第四十课：内分泌治疗的用药原则",0,1,0],[117,"小U第三十九课：卵巢去势治疗",0,1,0],[117,"小U第三十八课：辅助内分泌治疗原理-2",0,1,0],[117,"小U第三十七课：辅助内分泌治疗原理-1",0,1,0],[117,"小U第三十六课：术后辅助内分泌治疗",0,1,0],[117,"小U第三十五课：术前化疗作用和意义",0,1,0],[117,"小U第三十四课：乳腺癌术前化疗",0,1,0],[117,"小U第三十三课：辅助化疗注意事项",0,1,0],[117,"小U第三十二课：辅助化疗治疗原理-3",0,1,0],[117,"小U第三十一课：辅助化疗及常用药物-2",0,1,0],[117,"小U第三十课：辅助化疗及常用药物-1",0,1,0],[117,"小U第二十九课：乳腺癌放疗副作用",0,1,0],[117,"小U第二十八课：放疗适合哪些患者",0,1,0],[117,"小U第二十七课：放疗：杀死癌细胞",0,1,0],[117,"小U第二十六课：乳腺癌乳房重建术",0,1,0],[117,"小U第二十五课：乳腺癌术后并发症",0,1,0],[117,"小U第二十四课：乳腺癌手术方式-2",0,1,0],[117,"小U第二十三课：乳腺癌手术方式-1",0,1,0],[117,"小U第二十二课：乳腺癌手术治疗",0,1,0],[117,"小U第二十一课：抗癌基因BRCA1/2",0,1,0],[117,"其他乳腺癌预后指标",0,1,0],[117,"乳腺癌预后指标之分型",0,1,0],[117,"乳腺癌预后指标之分期",0,1,0],[117,"乳腺癌诊疗方法之基因检测",0,1,0],[117,"乳腺癌会影响生育嘛",0,1,0],[117,"你是患乳腺癌高风险人群嘛",0,1,0],[117,"乳腺检查的专业手段",0,1,0],[117,"乳腺自检之触摸篇",0,1,0],[117,"乳腺自检之观察篇",0,1,0],[117,"乳腺癌的病因",0,1,0],[117,"什么是乳腺癌",0,1,0],[117,"了解它，远离它--急性乳腺炎",0,1,0],[117,"摸到硬块就罹癌？纤维腺瘤，了解一下！",0,1,0],[117,"小叶增生怎么办",0,1,0],[117,"小U第七十三课：乳腺癌不同转移部位的处理——肝转移",0,1,0],[117,"小U第六十五课：BRCA基因突变与三阴性乳腺癌",0,1,0],[117,"小U第100课：癌痛",0,1,0],[117,"小U第99课：肿瘤治疗常见不良反应——周围神经病变",0,1,0],[117,"小U第98课：肿瘤治疗常见不良反应——血小板减少",0,1,0],[117,"小U第97课：肿瘤治疗常见不良反应——肝损伤",0,1,0],[117,"小U第96课：肿瘤治疗常见不良反应——恶心呕吐",0,1,0],[117,"小U第95课：肿瘤治疗常见不良反应——中性粒细胞减少2",0,1,0],[117,"小U第94课：肿瘤治疗常见不良反应——中性粒细胞减少1",0,1,0],[117,"小U第93课：特殊乳腺癌——老年乳腺癌2",0,1,0],[117,"小U第92课：特殊乳腺癌——老年乳腺癌1",0,1,0],[117,"小U第91课：特殊乳腺癌——年轻乳腺癌4",0,1,0],[117,"小U第90课：特殊乳腺癌——年轻乳腺癌3",0,1,0],[117,"小U第89课：特殊乳腺癌——年轻乳腺癌2",0,1,0],[117,"小U第88课：特殊乳腺癌——年轻乳腺癌1",0,1,0],[117,"小U第87课：特殊乳腺癌——双侧乳腺癌2",0,1,0],[117,"小U第86课：特殊乳腺癌——双侧乳腺癌1",0,1,0],[117,"小U第85课：特殊乳腺癌——隐匿性乳腺癌2",0,1,0],[117,"小U第84课：特殊乳腺癌——隐匿性乳腺癌1",0,1,0],[117,"小U第83课：特殊乳腺癌——妊娠哺乳期乳腺癌3",0,1,0],[117,"小U第82课：特殊乳腺癌——妊娠哺乳期乳腺癌2",0,1,0],[117,"小U第81课：特殊乳腺癌——妊娠哺乳期乳腺癌1",0,1,0],[117,"小U第80课：特殊乳腺癌——乳房佩吉特病2",0,1,0],[117,"小U第79课：特殊乳腺癌——乳房佩吉特病1",0,1,0],[117,"小U第78课：乳腺癌不同转移部位的处理——骨转移的治疗",0,1,0],[117,"小U第77课：乳腺癌不同转移部位的处理——骨转移的诊断",0,1,0],[117,"小U第76课：乳腺癌不同转移部位的处理——骨转移",0,1,0],[117,"小U第75课：不同淋巴结引流区域的治疗方法",0,1,0],[117,"小U第97课：肿瘤治疗常见不良反应——肝损伤",0,1,0],[117,"小U第96课：肿瘤治疗常见不良反应——恶心呕吐",0,1,0],[117,"小U第99课：肿瘤治疗常见不良反应——周围神经病变",6,1,0],[117,"小U第100课：肿瘤治疗常见不良反应——癌痛",0,1,0],[117,"小U第98课：肿瘤治疗常见不良反应——血小板减少",0,1,0],[117,"小U第95课：肿瘤治疗常见不良反应—中性粒细胞减少2",0,1,0],[117,"小U第七十四课：乳腺癌转移处理——区域淋巴结复发转移",0,1,0],[117,"小U第八十四课：特殊乳腺癌——隐匿性乳腺癌1",0,1,0],[118,"雷达和摄像头，谁能扛起自动驾驶的大旗（下）",0,6,0],[118,"雷达和摄像头谁能扛起自动驾驶的大旗（上）",0,6,0],[118,"自动驾驶比人类开车还安全吗？",0,6,0],[118,"自动驾驶能改善堵车状况吗？",0,6,0],[118,"自动驾驶汽车的“眼睛”！",0,6,0],[118,"自动驾驶车辆摄像头在“看”什么？",0,6,0],[118,"倒车救星-超声波雷达",0,6,0],[118,"可以“看”透雨雪的毫米波雷达",0,6,0],[118,"自动驾驶四大传感器的优势与劣势",0,6,0],[118,"害怕自动驾驶会迷路？高精地图来了",0,6,0],[118,"高级自动驾驶的主流—激光雷达",0,6,0],[118,"自动定位不迷路，帮你成为“老司机”！(上)",0,6,0],[118,"自动定位不迷路，帮你成为“老司机”！(下)",0,6,0],[118,"永不堵车不再是梦！",0,6,0],[118,"自动驾驶汽车更环保吗？",0,6,0],[118,"如何制作高精度地图 （上）",0,6,0],[118,"如何制作高精度地图 （下）",0,6,0],[118,"来亲自体验下自动驾驶？",0,6,0],[118,"带你了解下汽车的HMI",0,6,0],[118,"这种飞机上的技术，让你开车不再低头！",0,6,0],[118,"当开车有了游戏的视感",0,6,0],[118,"你的车是什么级别？了解下自动驾驶的分级",0,6,0],[118,"如果到了五级自动化驾驶，驾照还有意义吗？",0,6,0],[118,"自动驾驶的接管系统",0,6,0],[118,"什么是ADAS？（上）",0,6,0],[118,"什么是ADAS（下）",0,6,0],[118,"车辆自带的“安全员”——DMS",0,6,0],[118,"自动驾驶汽车是如何“监控”你的？",0,6,0],[118,"开车要认真！你的眼睛正在“出卖”你！",0,6,0],[118,"开车别分心！你的一举一动它都看在眼里！",0,6,0],[118,"当脑电信号监测设备应用到车辆之后！",0,6,0],[118,"车辆是如何完成自动泊车的？",0,6,0],[118,"自动驾驶的自适应巡航，你了解多少？",0,6,0],[118,"什么是「V2X」？",0,6,0],[118,"“车联网”原来是这么来的！",0,6,0],[118,"「车联万物」，如何“联”？",0,6,0],[118,"车联网发展现状",0,6,0],[118,"自动驾驶如何识别车道线？",0,6,0],[118,"车道线图像检测之图像预处理：图像灰度化",0,6,0],[118,"车道线图像检测之图像预处理：图像去噪",0,6,0],[118,"车道线图像检测之图像预处理：阈值分割",0,6,0],[118,"车道线图像检测之边缘检测",0,6,0],[118,"车道线图像检测之车道线拟合",0,6,0],[118,"基于深度学习的车道线检测",0,6,0],[118,"自动驾驶规模化应用的关键！",0,6,0],[118,"各国自动驾驶权责划分大盘点之中国",0,6,0],[118,"各国自动驾驶权责划分大盘点之英国",0,6,0],[118,"各国自动驾驶权责划分大盘点之德国",0,6,0],[118,"各国自动驾驶权责划分大盘点之日本",0,6,0],[118,"各国自动驾驶权责划分大盘点之美国",0,6,0],[118,"自动驾驶与神经网络",0,6,0],[118,"神经网络的由来",0,6,0],[118,"神经网络的基本构成",0,6,0],[118,"多层神经网络（上）",0,6,0],[118,"多层神经网络（下）",0,6,0],[118,"神经网络的训练",0,6,0],[118,"失函数的权值参数更新",0,6,0],[118,"神经网络的泛化能力",0,6,0],[118,"卷积神经网络",0,6,0],[118,"图像的特征",0,6,0],[118,"卷积神经网络的核心组件",0,6,0],[118,"卷积神经网络的池化层",0,6,0],[118,"卷积神经网络的特征",0,6,0],[118,"基于神经网络的目标检测",0,6,0],[118,"目标检测的方法",0,6,0],[118,"自动驾驶汽车目标三维信息获取",0,6,0],[118,"激光雷达信号获取三维信息",0,6,0],[118,"自动驾驶的决策规划系统",0,6,0],[118,"全局路由寻径",0,6,0],[118,"自动驾驶的行为决策",0,6,0],[118,"基于规则的有限状态机模型",0,6,0],[118,"自动驾驶的端到端决策系统",0,6,0],[118,"自动驾驶的局部路径规划",6,6,0],[118,"自动驾驶的强化学习系统",0,6,0],[118,"自动驾驶如何做出最优决策？",0,6,0],[118,"自动驾驶的无线充电",0,6,0],[118,"自动驾驶OTA技术",0,6,0],[118,"自动驾驶的ABS系统",0,6,0],[118,"【探秘实验室系列1】同济大学智能网联车实验室",0,6,0],[118,"【探秘实验室2】摄像头在环系统",0,6,0],[118,"【探秘实验室系列3】硬件在环仿真测试",0,6,0],[118,"【探秘实验室系列4】集群驾驶模拟器",0,6,0],[118,"【探秘实验室系列5】无人物流车的红绿灯场地测试",0,6,0],[118,"【探秘实验室系列6】无人物流车的环岛测试",0,6,0],[118,"【探秘测试场1】测试场概览",0,6,0],[118,"【探秘测试场2】自动驾驶红绿灯识别测试（上）",0,6,0],[118,"【探秘测试场3】自动驾驶红绿灯识别测试（下）",0,6,0],[118,"【探秘测试场4】鬼探头测试（上）",0,6,0],[118,"【探秘测试场5】鬼探头测试（中）",0,6,0],[118,"【探秘测试场6】鬼探头测试（下）",0,6,0],[118,"【探秘测试场7】同向避让测试（上）",0,6,0],[118,"【探秘测试场8】同向避让测试（下）",0,6,0],[118,"【探秘测试场9】路口避让测试",0,6,0],[118,"【探秘测试场10】障碍物避让测试",0,6,0],[118,"【探秘测试场11】体验篇",0,6,0],[118,"【专家说1】自动驾驶有何优势？",0,6,0],[118,"【专家说2】如何判断一辆自动驾驶汽车可以放心上路？",0,6,0],[118,"【专家说3】自动驾驶汽车的一些决策系统会不会出现故障？",0,6,0],[118,"【专家说4】自动驾驶汽车如何提高乘客体验？",0,6,0],[118,"【专家说5】自动驾驶安全吗？",0,6,0],[118,"【专家说6】一辆普通汽车可以改装为自动驾驶的车辆吗？",0,6,0],[118,"【专家说7】哪种技术是未来自动驾驶的研发重点？",0,6,0],[119,"科学训练营-天王星-09-天王星存在水和生命吗",0,1,0],[119,"科学训练营-天王星-08-天王星的时间",0,1,0],[119,"科学训练营-天王星-10-天王星的卫星",0,1,0],[119,"科学训练营-天王星-07-天王星的特色",0,1,0],[119,"科学训练营-天王星-01-天王星有多大",0,1,0],[119,"科学训练营-天王星-03-天王星的发现者",0,1,0],[119,"科学训练营-天王星-02-天王星肉眼可见",0,1,0],[119,"科学训练营-天王星-04-天王星的发现过程",0,1,0],[119,"科学训练营-天王星-05-发现天王星的奖励",0,1,0],[119,"科学训练营-天王星-06-天王星的命名",0,1,0],[119,"科学训练营12-牙签五角星",0,1,0],[119,"科学训练营13-扎不漏水袋",0,1,0],[119,"科学训练营14-复活的蜡烛",0,1,0],[119,"科学训练营15-逃跑的粉末",0,1,0],[119,"科学训练营16-神奇的纸桥",0,1,0],[119,"科学训练营17-隔空巧灭火",0,1,0],[119,"科学训练营18-水幕凸透镜",0,1,0],[119,"科学训练营19-沉重的纸片",0,1,0],[119,"科学训练营20-干燥的纸巾",0,1,0],[119,"科学训练营21-听话的泡泡",0,1,0],[119,"科学训练营22-跳舞的乒乓",0,1,0],[119,"科学训练营23-不起雾眼镜",0,1,0],[119,"科学训练营24-吸水的蜡烛",0,1,0],[119,"科学训练营25-彩虹摩天轮",0,1,0],[119,"科学训练营26-喷发的火山",0,1,0],[119,"科学训练营27-暴走的可乐",0,1,0],[119,"科学训练营28-叛逆的水瓶",0,1,0],[119,"科学训练营29-跳水乒乓球",0,1,0],[119,"科学训练营30-葡萄干跳舞",0,1,0],[119,"科学训练营31-逃跑的小车",0,1,0],[119,"科学训练营32-牛奶作名画",0,1,0],[119,"科学训练营33-水火不相容",0,1,0],[119,"科学训练营34-自制泡泡龙",0,1,0],[119,"科学训练营35-围困的冰块",0,1,0],[119,"科学训练营36-“大胃王”硬币",0,1,0],[119,"科学训练营37-神奇潜水艇",0,1,0],[119,"科学训练营38-复活的小鱼",0,1,0],[119,"科学训练营39-应急小蜡烛",0,1,0],[119,"科学训练营40-攀岩的丸子",0,1,0],[119,"科学训练营41-漂浮的橘子",0,1,0],[119,"科学训练营42-筷子提大米",0,1,0],[119,"科学训练营43-立正的鸡蛋",0,1,0],[119,"科学训练营44-柠檬造火山",0,1,0],[119,"科学训练营45-漂浮的鸡蛋",0,1,0],[119,"科学训练营47-漂浮回形针",0,1,0],[119,"科学训练营48-可乐秒结冰",0,1,0],[119,"科学训练营49-画个大西瓜",0,1,0],[119,"科学训练营46-扎不破气球",0,1,0],[119,"科学训练营50-坚强的气球",0,1,0],[119,"科学训练营51-凝固的水杯",0,1,0],[119,"科学训练营52-自制橡皮泥",0,1,0],[119,"科学训练营53-蜡烛会写字",0,1,0],[119,"科学训练营54-复刻赵州桥",0,1,0],[119,"科学训练营55-自制抽水机",0,1,0],[119,"科学训练营56-染色的白菜",0,1,0],[119,"科学训练营57-飞舞的雪花",0,1,0],[119,"科学训练营58-学做不倒翁",0,1,0],[119,"科学训练营59-稳固的积木",0,1,0],[119,"科学训练营60-自制气垫船",0,1,0],[119,"科学训练营61-猫咪饮水机",0,1,0],[119,"科学训练营62-自制空气泡",0,1,0],[119,"科学训练营63-奇妙的漩涡",0,1,0],[119,"科学训练营64-牙签坐电梯",0,1,0],[119,"科学训练营-天王星-12-天王星环的发现过程",0,1,0],[119,"科学训练营-天王星-13-旅行者号飞船登场",0,1,0],[119,"科学训练营-天王星-11-天王星的行星环",0,1,0],[119,"科学训练营-天王星-14-旅行者与外星人的对话",0,1,0],[119,"科学训练营-天王星-15-天王星的牧羊犬",0,1,0],[119,"科学训练营-天王星-16-旅行者的秘密武器",0,1,0],[119,"科学训练营11-会跳舞的盐",0,1,0],[119,"科学训练营-天王星-17-旅行者还能走多远",0,1,0],[119,"科学训练营-天王星-18-旅行者的下一站",0,1,0],[119,"科学训练营-土星-01-土星有哪些特征",0,1,0],[119,"科学训练营-土星-02-卡西尼号登场",0,1,0],[119,"科学训练营-土星-03-卡西尼号发射的故事",0,1,0],[119,"科学训练营-土星-04-卡西尼号的旅程",0,1,0],[119,"科学训练营-土星-05-卡西尼号到达土星",0,1,0],[119,"科学训练营-土星-07-惠更斯号的奥秘",0,1,0],[119,"科学训练营-土星-08-惠更斯号的登陆",0,1,0],[119,"科学训练营-土星-09-土卫六的奥秘",0,1,0],[119,"科学训练营-土星-10-有趣的星球表面",0,1,0],[119,"科学训练营-土星-11-星球表面的拍摄历程(一)",0,1,0],[119,"科学训练营-土星-12-星球表面的拍摄历程(二)",0,1,0],[119,"科学训练营-土星-13-土星的另一颗卫星",0,1,0],[119,"科学训练营-土星-14-土卫二有生命吗",0,1,0],[119,"科学训练营-土星-15-土卫二的温度之谜",0,1,0],[119,"科学训练营-土星-18-卡西尼号的归途",0,1,0],[119,"科学训练营-土星-16-土卫二的水源之谜",0,1,0],[119,"科学训练营-土星-17-甲烷的秘密",0,1,0],[119,"科学训练营-土星-06-土星有哪些卫星",0,1,0],[119,"科学训练营10-自制彩虹雨",0,1,0],[119,"科学训练营09-淘气小纸团",0,1,0],[119,"科学训练营08-铜丝灭烛火",0,1,0],[119,"科学训练营07-有吸力的水",0,1,0],[119,"科学训练营06-剪刀提硬币",0,1,0],[119,"科学训练营05-简易指南针",0,1,0],[119,"科学训练营04-粘住的书本",0,1,0],[119,"科学训练营03-变形的气球",0,1,0],[119,"科学训练营02-深海大捞针",0,1,0],[119,"科学训练营01-站立的牙签",0,1,0],[120,"为爱呐罕——第一批罕见病目录中最与癌症相关的PJ综合征",6,1,0],[120,"为爱呐罕",6,1,0],[120,"与跳水冠军吴敏霞一起关注抗癌科普",0,1,0],[120,"跟随胡歌，关注全国肿瘤防治宣传周，关注上海市抗癌协会！",0,1,0],[120,"和《健康脱口秀》第一季冠军一起关注全国肿瘤防治宣传周！",0,1,0],[120,"抗癌如是说——肿瘤病理乾坤大",0,1,0],[120,"抗癌如是说——应对肿瘤脑转移",0,1,0],[120,"抗癌如是说——守护生命的起点",0,1,0],[120,"抗癌如是说——做你的健康保安",0,1,0],[120,"抗癌如是说·大咖脱口秀——守护女性生育的自由选择",0,1,0],[120,"抗癌如是说·大咖脱口秀——王红霞教授谈谈肿瘤患者这些年的变化",0,1,0],[120,"抗癌如是说——癌症与战争",0,1,0],[120,"抗癌如是说——呵护你的子宫健康",0,1,0],[120,"抗癌如是说——沪语聊聊防癌那些事",0,1,0],[120,"抗癌如是说——七情畅通很重要",0,1,0],[120,"抗癌如是说——关心你的甲状腺结节",0,1,0],[120,"抗癌如是说——消除宫颈癌，我们在路上",0,1,0],[120,"抗癌如是说——子宫内膜的问题，我们来解决",0,1,0],[120,"抗癌如是说——肿瘤患者要怎么运动康复",0,1,0],[120,"肿瘤大咖叶定伟教授，与你分享得了前列腺癌，还能不能做幸福男人",0,1,0],[120,"乳腺癌大咖吴炅教授，告诉你老公是不是乳腺癌的病原体",0,1,0],[120,"与自行车奥运冠军钟天使一起关注抗癌科普",0,1,0],[120,"与健康脱口秀第二季亚军大巴医生，一起在欢乐中感受科普！",0,1,0],[120,"抗癌如是说——你知道男性乳腺癌吗",0,1,0],[120,"抗癌如是说——肿瘤患者的心理健康也要关心",0,1,0],[120,"抗癌如是说——护士与患者的日常",0,1,0],[120,"抗癌如是说——吃吃喝喝与肠癌",0,1,0],[121,"血栓，知否、知否？",0,1,0],[121,"肺栓塞是什么？",0,1,0],[121,"肺栓塞的诱因有哪些？",0,1,0],[121,"高危人群如何预防肺栓塞？",0,1,0],[121,"长途旅行中肺栓塞的预防",0,1,0],[121,"肺栓塞的药物预防",0,1,0],[121,"肺栓塞的案例分享",0,1,0],[121,"体检在肺栓塞早发现中的作用",0,1,0],[122,"青少年力量训练系列之自重训练：四步练出标准俯卧撑！（视频）",0,1,0],[122,"青少年力量训练系列之自重训练：挑战变式俯卧撑",0,1,0],[122,"青少年力量训练之自重训练：“动作之王”——基本蹲起练习来啦",0,1,0],[122,"青少年力量训练之自重训练：挑战进阶蹲起",0,1,0],[122,"青少年力量训练之自重训练：开启核心力量训练入门！",0,1,0],[122,"青少年力量训练之自重训练：挑战核心力量进阶练习",0,1,0],[122,"跳绳健身系列（1）：每逢佳节“胖三斤”？跳绳帮你来健身！",0,1,0],[122,"跳绳健身系列（2）：热辣滚烫年味浓，寒假跳绳助你燃！",0,1,0],[122,"青少年力量训练之自重训练：迎接核心力量终极挑战！",0,1,0],[122,"有效提高运动表现必备——徒手下肢爆发力训练入门篇！",0,1,0],[122,"有效提高运动表现必备——徒手下肢爆发力训练进阶篇！",0,1,0],[122,"远离运动损伤，从提高下肢稳定性做起！",0,1,0],[122,"白领智慧运动第②周——“每天一个微运动”！",0,1,0],[122,"白领智慧运动第③周——“每天两个微运动”！",0,1,0],[122,"白领智慧运动第④周——“轻松地继续每天两个微运动”！",0,1,0],[122,"白领智慧运动第⑤周——“小小地挑战每天三个微运动”！",0,1,0],[122,"白领智慧运动第⑥周——适量运动入门",0,1,0],[122,"白领智慧运动第⑦周——小强度运动计划",0,1,0],[122,"白领智慧运动第⑧周——中等强度适量运动",0,1,0],[122,"白领智慧运动第⑨周——较大强度适量运动",0,1,0],[122,"白领智慧运动第⑩周——乐享运动计划开启",0,1,0],[122,"白领智慧运动第11周——继续乐享运动计划",0,1,0],[122,"白领智慧运动第12周——乐享运动计划第三期！",0,1,0],[122,"白领智慧运动第13周——乐享运动计划最后一周！",0,1,0],[122,"绿瓦工间操系列课堂 | 挑战中级练习部分",0,1,0],[122,"绿瓦工间操系列课堂｜从热身和初级练习开始",0,1,0],[122,"绿瓦工间操系列课堂｜迎接高级练习部分",0,1,0],[122,"提高“颈”惕！这样做才能判断和处理颈部疼痛",0,1,0],[122,"春节假期手机不离手？当心你的颈椎在“过劫”！",0,1,0],[122,"春节“葛优躺”小心变“大问题”！深度解析与健康指南",0,1,0],[122,"春节麻将局，别让健康“出局”！",0,1,0],[122,"雪道的尽头是骨科？冬季滑雪如何避免运动损伤？",0,1,0],[122,"如何预防颈部疼痛？",0,1,0],[122,"如何保持正确的坐姿与站姿呢？",0,1,0],[122,"颈部疼痛的解决方案来了！是不是干货试试就知道",0,1,0],[122,"腰痛反复？三分钟带您了解什么是腰部损伤！",0,1,0],[122,"学会这几个动作，助您有效预防腰部损伤！",0,1,0],[122,"腰痛怎么办？试试这几个腰部拉伸动作！",1,1,0],[122,"惹上“跑步膝”？试试这五种“跑步膝”的缓解方法！",1,1,0],[122,"你的跑步姿势正确吗？小心“跑步膝”！",0,1,0],[122,"这三个“跑步膝” 的误区，你知道吗？",0,1,0],[122,"膝关节，不只是“弯曲的艺术”",0,1,0],[122,"学会这几招，你也能快速判断膝关节前侧损伤!",0,1,0],[122,"膝关节前侧疼痛症状详解视频来啦",0,1,0],[122,"叮咚！健康师提醒你该关注膝关节后侧损伤啦！",0,1,0],[122,"膝关节后侧损伤详解视频来啦",0,1,0],[122,"滴滴！请收好这份膝关节内外侧损伤查询指南",1,1,0],[122,"青少年脊柱健康：脊柱形体操—脊柱柔韧性训练",0,1,0],[122,"青少年脊柱健康：专家解读脊柱侧弯的预防与治疗",1,1,0],[122,"青少年脊柱健康动画科普：弯弯的脊柱与健康之路",1,1,0],[122,"青少年脊柱健康：脊柱形体操—核心肌力训练",0,1,0],[123,"美丽健康中国本草文化系列-悬壶济世的传说",0,1,0],[123,"美丽健康中国本草文化系列-杏林故事",0,1,0],[123,"美丽健康中国本草文化系列--甘麦大枣汤的故事",0,1,0],[124,"“皇家疾病”----烟雾病（毛毛样病）",0,1,0],[124,"脑血管病血管内治疗医学简史",0,1,0],[124,"巨大的代价！--不规则服用降血压药物的危害",6,1,0],[124,"面对心肌梗死，记住这3句保命的话",0,1,0],[124,"神经外科医生大揭秘：霸道总裁VS神秘老道，科学养生笑到最后！",0,1,0],[124,"戏说烟雾病--穿越历史迷雾：新材料助力揭秘“皇家疾病”",0,1,0],[124,"99%的人都不知道这样的电影桥段居然是骗人的！",0,1,0],[124,"神奇的弹簧圈：脑动脉瘤治疗的微创革命",0,1,0],[124,"在狭窄的脑血管里撑起一片天地--脑血管内支架的故事",0,1,0],[124,"游走在血管内的“幽灵” --探秘神经介入导管",0,1,0],[125,"夏季“热”知识与 “冷”科普",0,2,0],[125,"云游开利空调博物馆",0,2,0],[125,"厨房专用空调简介",0,2,0],[126,"光热产氢",0,2,0],[126,"纸箱产氢",0,2,0],[126,"第一讲-走进绿色制氢-个人线上录制",0,2,0],[126,"第一讲-走进绿色制氢-线下实录",0,2,0],[126,"第二讲-绿色产氢机理-个人线上录制",0,2,0],[126,"第三讲-规模制氢-线下实录",0,2,0],[126,"第三讲-规模制氢-个人线上录制",0,2,0],[126,"第四讲-前沿技术-个人线上录制",0,2,0],[126,"第四讲-前沿技术-线下实录",0,2,0],[126,"第五讲-社会影响-线下实录",0,2,0],[126,"第五讲-社会影响-个人线上录制",0,2,0],[127,"小学现代木工课堂（第一课时）|从制造的过去到智造的未来",1,7,0],[127,"小学现代木工课堂（第二课时）|从制造的过去到智造的未来",1,7,0],[127,"安全底线——报警器（第三课时）|从制造的过去到智造的未来",0,7,0],[127,"我的未来船（第四课时）|从制造的过去到智造的未来",0,7,0],[128,"便秘请注意，小心静脉硬化性结肠炎——朱晓娟",0,1,0],[128,"小肠穿孔可不止破了个洞那么简单——黄顺伟",0,1,0],[128,"如何预防和治疗药物性胰腺炎——何娟",0,1,0],[128,"警惕药物性肝炎——虞美玲",0,1,0],[128,"如何科学护航高原旅游中的消化道——倪童天",0,1,0],[128,"小酌怡情 酗酒伤身——周与华",0,1,0],[128,"警惕并及时治疗转移性右下腹痛",0,1,0],[128,"警惕暴饮暴食后的腹痛——急性胰腺炎",0,1,0],[128,"吞下消毒片 食道绝对不消气",0,1,0],[128,"“口腔清洁”的烦恼",0,1,0],[128,"小小的鱼刺 伤害这么大？",0,1,0],[128,"便秘请注意！小心静脉硬化性结肠炎！",0,1,0],[128,"小酌怡情 酗酒伤身",0,1,0],[128,"警惕药物性肝炎",0,1,0],[128,"如何科学护航高原旅游中的消化道",0,1,0],[128,"如何预防和治疗药物性胰腺炎？",0,1,0],[128,"小酌怡情，酗酒伤身",0,1,0],[128,"警惕药物性肝炎！",0,1,0],[128,"如何科学护航高原旅游中的消化道？",0,1,0],[128,"小肠穿孔？可不止破了个洞那么简单！",0,1,0],[128,"便秘请注意！小心静脉硬化性结肠炎！",0,1,0],[128,"药物也会引起胰腺炎吗？",0,1,0],[128,"重症急性胰腺炎后的饮食建议",0,1,0],[128,"急性胸痛-预防与急救",0,1,0],[128,"人工气道的常用技术器官切开术",0,1,0],[128,"揭秘便秘-告别肠道困扰",0,1,0],[128,"肠道慢性炎症性疾病",0,1,0],[128,"幽门螺杆菌-胃里的隐形杀手",0,1,0],[128,"隐形敌人-“腹内高压”",0,1,0],[128,"ICU肠道衰竭中医大有用",0,1,0],[128,"什么是血便",0,1,0],[128,"肠道有炎也能好好生活，给克罗恩病患者的饮食建议",0,1,0],[128,"揭秘便秘——告别肠道困扰",0,1,0],[128,"胃里的隐形杀手——幽门螺杆菌",0,1,0],[128,"危重症救治中常常被忽略的问题——腹内高压",0,1,0],[128,"如何正确认识血便",0,1,0],[128,"ICU肠道衰竭——中医大有用",0,1,0],[129,"病毒感染与疾病",0,10,13],[129,"二师兄梅山的简历",0,10,13],[129,"黑水虻餐厨垃圾资源化利用",0,10,13],[129,"建筑危害下的自救与互救",0,10,13],[129,"无处不在的芯片",0,10,13],[130,"皮肤过敏的元凶",0,1,0],[130,"皮肤的救赎-自制天然洗手液",0,1,0],[130,"皮肤过敏的常见误区",0,1,0],[130,"皮肤的救赎-自制抗敏防晒霜",0,1,0],[131,"卒中相关多学科系列科普活动居家康复护理之卒中后偏瘫的良肢位",0,1,0],[131,"脑卒中患者如何做到血糖管理科技节课件",0,1,0],[131,"卒中后的抑郁康复科技节课间",0,1,0],[131,"脑卒中患者居家康复护理科技节课间",0,1,0],[132,"老年居家康复操系列一站姿毛巾操之上举毛巾",0,1,0],[132,"老年居家康复操系列一站姿毛巾操之侧身弯腰",0,1,0],[132,"老年居家康复操系列一站姿毛巾操之侧向转体",0,1,0],[132,"老年居家康复操系列一站姿毛巾操之弓步前推",0,1,0],[132,"老年居家康复操系列一站姿毛巾操之屈膝下蹲",0,1,0],[132,"老年居家康复操系列一卧位毛巾操之压毛巾",0,1,0],[132,"老年居家康复操系列一卧位毛巾操之屈膝运动",0,1,0],[132,"老年居家康复操系列一卧位毛巾操之拉伸运动",0,1,0],[132,"老年居家康复操系列一卧位毛巾操之夹毛巾",0,1,0],[132,"老年居家康复操系列一卧位毛巾操之背部拉伸",0,1,0],[132,"老年居家康复操系列一坐姿椅子操之仰望天空",0,1,0],[132,"老年居家康复操系列一坐姿椅子操之2曲项向天歌",0,1,0],[132,"老年居家康复操系列一坐姿椅子操之靠背踏水",0,1,0],[132,"老年居家康复操系列一坐姿椅子操之双腿秋千",0,1,0],[132,"老年居家康复操系列一坐姿椅子操之站起蹲下",0,1,0],[132,"年居家康复操系列一站姿椅子操之钟摆运动",0,1,0],[132,"老年居家康复操系列一站姿椅子操之金鸡独立",0,1,0],[132,"老年居家康复操系列一站姿椅子操之弓步拉伸",0,1,0],[132,"老年居家康复操系列一站姿椅子操之椅背拉伸",0,1,0],[132,"老年居家康复操系列一靠墙操之站立位俯卧撑",0,1,0],[132,"老年居家康复操系列一靠墙操之靠墙静蹲",0,1,0],[132,"老年居家康复操系列一靠墙操之提踵运动",0,1,0],[132,"老年居家康复操系列一靠墙操之手臂爬墙",0,1,0],[132,"老年居家康复操系列一靠墙操之靠墙抬膝",0,1,0],[132,"老年居家康复操系列一水瓶操之外展运动",0,1,0],[132,"老年居家康复操系列一水瓶操之上举运动",0,1,0],[132,"老年居家康复操系列一水瓶操之扩胸运动",0,1,0],[132,"老年居家康复操系列一水瓶操之",0,1,0],[132,"老年居家康复操系列一水瓶操之举瓶下蹲",0,1,0],[132,"老年居家康复操系列二骨折快速康复之认识骨折快速康复",0,1,0],[132,"老年居家康复操系列二骨折快速康复之骨折快速康复（住院篇）",0,1,0],[132,"老年居家康复操系列二骨折快速康复之骨折快速康复（居家篇）",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之起式调息",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之云手舒筋",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之合掌托顶",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之燕子展翅",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之转头望月",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之龙脊游动",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之转体扶腰",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之摆腰健肾",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之活髋稳基",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之金鸡独立",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之挥臂掂足",0,1,0],[132,"老年居家康复操系列三老年居家筋骨操之收式凝神",0,1,0],[133,"科学家讲科学之拥抱大航天时代第二讲预告片——3人出发2人登月",0,3,0],[133,"科学家讲科学之拥抱大航天时代第一讲预告片——究极搭便车",0,3,0],[133,"科学家讲科学之拥抱大航天时代第一讲预告片——星星与星期连连看",0,3,0],[133,"科学家讲科学之拥抱大航天时代第四讲预告片——不要回答",0,3,0],[133,"科学家讲科学之拥抱大航天时代第三讲预告片——火星诅咒",0,3,0],[133,"科学家讲科学之拥抱大航天时代第二讲预告片——初降落月之暗面",6,3,0],[133,"科学家讲科学之拥抱大航天时代第三讲预告片——火星探索",0,3,0],[133,"科学家讲科学之拥抱大航天时代第四讲预告片——星辰大海",0,3,0],[133,"科学家讲科学之拥抱大航天时代第二讲（上）探索月球",1,3,0],[133,"科学家讲科学之拥抱大航天时代第二讲（下）登月之路",0,3,0],[133,"科学家讲科学之拥抱大航天时代第一讲（上）认识太阳系",6,3,0],[133,"科学家讲科学之拥抱大航天时代第一讲（下）太阳系探索",6,3,0],[133,"科学家讲科学之拥抱大航天时代第三讲（上）火星的传说",0,3,0],[133,"科学家讲科学之拥抱大航天时代第三讲（下）飞向火星",0,3,0],[133,"科学家讲科学之拥抱大航天时代第四讲（上）未来太空探测",0,3,0],[133,"科学家讲科学之拥抱大航天时代第四讲（下）飞向星辰大海",0,3,0],[134,"阻燃性能实验",0,7,14],[134,"透湿实验",0,7,14],[134,"头盔性能测试",0,7,14],[134,"热防护性能测试",0,7,14],[134,"耐静水压测试",0,7,14],[134,"面料表层沾水等级实验",0,7,14],[134,"数字背后的守护",6,7,14],[134,"还原真相",0,7,14],[134,"服装接缝抗撕裂实验",0,7,14],[134,"神奇的消防服装 第一课",0,7,14],[134,"神奇的消防服装 第二课",0,7,14],[134,"神奇的消防服装 第三课",0,7,14],[134,"神奇的消防服装 第四课",1,7,14],[135,"行星探测科普讲座——火星探测之旅",0,3,0],[135,"行星探测——火星探测",0,3,0],[135,"行星探测科普课程——火箭系统",0,3,0],[135,"行星探测科普讲座——勇攀高峰（1）",0,3,0],[135,"行星探测科普讲座——勇攀高峰（2）",0,3,0],[135,"行星探测科普讲座——日月经天",0,3,0],[136,"春季出游，必备小药箱里都可以放点啥？丨“药”你健康（七）",0,1,0],[136,"孕期“谈药色变”？听听药剂科主任怎么说",0,1,0],[136,"生命的起点辅助生殖技术与生育力保护",0,1,0],[136,"科学爱自己，守护女性生殖健康",0,1,0],[136,"乳腺健康，美丽人生”乳腺疾病的预防与治疗",1,1,0],[136,"宫颈疾病的预防、筛查与诊治问题",0,1,0],[136,"女性在不同生理阶段的营养需求",0,1,0],[136,"科学养育从生命早期1000天开始",0,1,0],[136,"出生缺陷防控中的遗传学问题",0,1,0],[136,"更年期女性的保健知识和应对策略",0,1,0],[136,"妇科体检",0,1,0],[136,"月来月健康”月经病的科学认识",0,1,0],[136,"婴幼儿与家长心理需求分析与指导",0,1,0],[136,"孕期营养素补充建议",0,1,0],[136,"妇科肿宿的中医治疗",1,1,0],[136,"子宫肌瘤和子宫肌腺症",1,1,0],[136,"如何减少阴道炎的发生",6,1,0],[136,"盆底肌撑起健康之“底”",0,1,0],[136,"痛经是什么原因引起的",0,1,0],[136,"月经异常有哪些表现",0,1,0],[136,"女性的妇科疾病具体指什么",0,1,0],[136,"女性体检有什么注意事项",0,1,0],[136,"早产儿的追赶性生长",0,1,0],[136,"请重视孩子的户外活动",0,1,0],[136,"生命的起点 辅助生殖技术与生育力保护",0,1,0],[136,"围产期保健母婴健康的守护",0,1,0],[136,"双胎宝贝如何安稳度过孕期",0,1,0],[136,"保健品可以补充治疗吗",0,1,0],[136,"更年期是否要补充维生素",0,1,0],[136,"更年期的常见症状有什么呢",0,1,0],[136,"更年期综合征需要治疗吗",0,1,0],[136,"更年期出现的标志是什么",0,1,0],[136,"子宫脱垂可以吃药治疗吗？",0,1,0],[136,"子宫脱垂可以不治疗吗？",0,1,0],[136,"顺产和剖宫产哪个好一点？",0,1,0],[136,"如何正确找到盆底肌？",0,1,0],[136,"如何早期诊断乳腺癌",0,1,0],[136,"月经时乳房肿胀是否正常？",0,1,0],[136,"常见乳腺疾病有哪些？",0,1,0],[136,"乳腺增生会发展成乳腺癌吗？",0,1,0],[136,"凯格尔运动常见错误有哪些？",0,1,0],[136,"哪些人群容易患乳腺疾病?",0,1,0],[136,"妇科肿瘤的发病率变化如何？",0,1,0],[136,"宫颈癌会有哪些临床表现",0,1,0],[136,"如何进行宫颈癌的早期筛查",0,1,0],[136,"接种HPV疫苗一定能预防宫颈癌？",0,1,0],[136,"如何早期发现卵巢癌",0,1,0],[136,"什么是月经病？",0,1,0],[136,"如何判断月经是否正常",0,1,0],[136,"排卵期为什么会出血",0,1,0],[136,"第一次来月经有哪些注意事项？",0,1,0],[136,"月经的哪些异常症状需要就医？",0,1,0],[136,"痛经都是子宫内膜异位症",0,1,0],[137,"从污水到清水需要几步？ ——污水处理系列科普视频",0,2,0],[137,"污水处理厂整体介绍 ——污水处理系列科普视频",0,2,0],[137,"预处理阶段 ——污水处理系列科普视频",0,2,0],[137,"平流式沉淀池的作用 ——污水处理系列科普视频",0,2,0],[137,"加氯消毒池 ——污水处理系列科普视频",0,2,0],[137,"反硝化深床滤池 ——污水处理系列科普视频",0,2,0],[137,"混凝沉淀池 ——污水处理系列科普视频",0,2,0],[137,"生化处理阶段 ——污水处理系列科普视频",0,2,0],[137,"污水处理厂的深度处理-环保科普课程实录",0,2,0],[137,"污水处理厂的初步处理-环保科普课程实录",0,2,0],[137,"废水排放标准与测试方法-环保科普课程实录",0,2,0],[137,"污水处理厂的微生物处理过程-环保科普课程实录",0,2,0],[137,"VR污水处理厂-环保科普课程实录",0,2,0],[138,"“数字化嘉年华”数字素养系列科普主题视频——无人机原理",0,6,0],[138,"“数字化嘉年华”数字素养系列科普主题视频—智能驾驶技术的应用",0,6,0],[138,"“数字化嘉年华”数字素养系列科普主题视频——VR技术",0,6,0],[138,"数字化嘉年华系列科普短视频——元宇宙",0,6,0],[138,"数字化嘉年华系列科普短视频——数字孪生技术",0,6,0],[138,"数字化嘉年华系列科普短视频——人工智能",0,6,0],[138,"数字化嘉年华系列科普短视频——光刻机技术",0,6,0],[138,"数字化嘉年华系列科普短视频——5G技术",0,6,0],[138,"数字化嘉年华系列科普短视频——3D打印技术",0,6,0],[139,"航天员在太空中饮食生活大揭秘--太空运动",0,3,0],[139,"“航天员在太空中饮食生活大揭秘”--神奇的“天上之水”",0,3,0],[139,"“航天员在太空中饮食生活大揭秘”--航天饮食的发展",0,3,0],[139,"太空“便便”的那些事儿",0,3,0],[139,"航天食品背后的营养科学",0,3,0],[140,"第一集 AI在龋病诊断及预防中的作用",0,1,0],[140,"第二集 人工智能助力口腔健康",1,1,0],[140,"第三集 AI在牙髓病诊断及预防中的优势",0,1,0],[140,"第四集 AI在口腔医学领域的应用",0,1,0],[141,"聚精“汇”神 ：免疫力的一天",0,1,0],[141,"聚精“汇”神：关注帕金森嗓音障碍，刻不容缓！",0,1,0],[141,"从“谈帕色变”到“知帕不怕”",1,1,0],[141,"聚精“汇”神 ：辣为什么是一种痛觉",0,1,0],[141,"嗅觉训练小课堂",0,1,0],[141,"神奇的脑起搏器",0,1,0],[141,"人类的大脑真的开发了10%吗？",0,1,0],[141,"大脑在晚上停止工作吗？",0,1,0],[141,"糖尿病致残杀手中风",0,1,0],[141,"青春不烦“脑”",0,1,0],[141,"阿尔茨海默病：症状与护理",0,1,0],[141,"科普视频：解密视网膜",0,1,0],[141,"科普视频：明月光还是地上霜，大脑视觉揭秘",0,1,0],[141,"科普视频：大脑的进化",1,1,0],[141,"科普视频：大脑的发育",0,1,0],[141,"科普视频：谁偷走了你的记忆力",0,1,0],[141,"科普视频：睡眠的秘密",0,1,0],[141,"科普视频：脑袋里的油门和刹车",0,1,0],[141,"科普视频：带状疱疹神经痛",1,1,0],[141,"聚精“汇”神：双减背景下家长如何做好心理建设",1,1,0],[141,"聚精“汇”神：为什么梵高不能是超级视觉者",0,1,0],[141,"聚精“汇”神：大脑成长手册",0,1,0],[141,"聚精“汇”神：你的颈椎还好吗？",1,1,0],[141,"对于内向的孩子 家长如何打开他的内心世界",0,1,0],[141,"父母与孩子身处异地 如何进行有效的心理沟通",0,1,0],[141,"孩子成绩波动 家长如何进行有效的心理沟通",0,1,0],[141,"“聚精‘汇’神”系列科普视频：海马与记忆",0,1,0],[141,"“聚精‘汇’神”：既视感，大脑错误的“浪漫”",0,1,0],[141,"“聚精‘汇’神”系列科普视频：可怕的脑卒中",1,1,0],[141,"“聚精‘汇’神： 家长和孩子应该做好哪些心理健康建设",0,1,0],[141,"“聚精‘汇’神”系列科普视频：应对痴呆精神行为症状的沟通技巧",0,1,0],[141,"“聚精‘汇’神”系列科普视频：指挥中心——人脑",0,1,0],[142,"【招募令】城市树木保护在行动！",0,2,0],[142,"我的城市我的树-走进市花白玉兰",0,2,0],[142,"我的城市我的树-走进千年古树",0,2,0],[142,"我的城市我的树-走进徐汇衡复林荫片区",0,2,0],[142,"我的城市我的树-走进普陀曹杨林荫片区",0,2,0],[142,"我的城市我的树-走进林荫",0,2,0],[142,"科普课堂-上海市古树名木资源普查",0,2,0],[142,"双碳背景下的城市树木保护行动——城市林荫保护计划课程实录",0,2,0],[142,"双碳背景下的城市树木保护行动——探访城市树木家族课程实录",0,2,0],[142,"双碳背景下的城市树木保护行动——树木医生实习计划课程实录",0,2,0],[142,"双碳背景下的城市树木保护行动——古树名木守护计划课程实录",1,2,0],[143,"用碳-从二氧化碳到淀粉合成",0,2,0],[143,"固碳：从植物中来到土壤中去的生物可降解材料",1,2,0],[143,"节碳：气凝胶隔热节能材料",0,2,0],[143,"算碳：算好材料的碳足迹帐",1,2,0],[144,"关于多动症 小李有话说 <第一弹>",0,1,0],[144,"会遗传的儿童多动症~",0,1,0],[144,"多动症和好动的区别视频",0,1,0],[144,"儿童多动症，你了解多少？",0,1,0],[144,"多动症患儿学习困难大揭秘",0,1,0],[144,"换位童年(微电影）",0,1,0],[145,"双碳、环保，需要你我他一起携手行动！",0,2,0],[145,"算碳：算好材料的碳足迹帐",8,2,0],[145,"光催化与碳中和的奥秘",0,2,0],[145,"助力双碳，绿氢未来可期",0,2,0],[146,"塑料系列科普视频——塑料的神秘代码",0,7,0],[146,"塑料系列科普视频——塑料的两面性",0,7,0],[146,"塑料系列科普视频——塑料发现史",0,7,0],[146,"塑料系列科普视频——什么是塑料？",0,7,0],[147,"认识沉默杀手--慢性肾脏病",9,1,0],[148,"父母近视小朋友会遗传吗",0,1,0],[148,"如何读懂验光单",0,1,0],[149,"第1课 认识载人潜水器",0,4,0],[149,"第2课 认识无人潜水器",0,4,0],[149,"第3课 海洋遥感与导航",0,4,0],[149,"第4课 海洋生物在哪里",0,4,0],[150,"你好，生物陶瓷系列课程——假牙的前世今生",0,4,0],[150,"你好，生物陶瓷系列课程——生物材料3D打印",0,4,0],[150,"你好，生物陶瓷系列课程——骨水泥盖房子",1,4,0],[150,"你好，生物陶瓷系列课程——生物陶瓷的故事",0,4,0],[151,"我们身边的新材料之美",0,7,15],[151,"材料魔法设计坊Ⅰ——文化·传承·情怀匠人精神体验",0,7,15],[151,"面向未来的新材料",0,7,15],[151,"材料驱动设计创新的故事",0,7,15],[151,"材料乘以设计：了不起的新材料",0,7,15],[151,"材料魔法设计坊2——绿色·时尚·设计创意材料制作",0,7,15],[152,"《潜艇兵的那些事》",0,7,0],[152,"《解密“海下利刃”-潜艇》",0,7,0],[152,"《潜艇今天我当厨》",0,7,0],[152,"《潜艇兵与维生素》",0,7,0],[152,"《潜艇内部长啥样》",0,7,0],[152,"《潜艇今天我当厨》",0,7,0],[152,"《潜艇内部长啥样》",0,7,0],[153,"《龙在中国》科普微电影",0,1,0],[154,"城市·新自然系列——关注身边的行道树",0,5,16],[154,"城市·新自然系列——我们身边的垂直绿化技术",0,5,16],[154,"城市·新自然系列——海绵城市的理念和绿化技术实践",0,5,16],[154,"城市·新自然系列——城市中的湿地生态系统",0,5,16],[154,"城市·新自然：城市植物生态修复和我们的生活系列课程合集",0,5,16],[155,"科普微电影——《少年问天宫》",0,3,0],[156,"2024全国科普日——佳康沙龙”听见“音乐疗愈活动",1,1,0],[156,"2024全国科普日活动",0,1,0],[156,"第30届全国肿瘤防治宣传周中国抗癌日甲状腺结节诊治全攻略",1,1,0],[156,"有了甲状腺结节，还能不能愉快地吃吃吃了？",1,1,0],[156,"刀过不留痕，一招治甲癌？",0,1,0],[157,"《深林信号：户外生存法则》野外自救与互救科普微电影",0,0,0],[158,"上海市科委零碳小先锋卫星科普实践课程第一课-航天的前世今生",0,3,0],[158,"上海市科委零碳小先锋卫星科普实践课程第二课-卫星的策划与制造",0,3,0],[158,"上海市科委零碳小先锋卫星科普实践课程第三课-卫星的研制与应用",0,3,0],[158,"上海市科委零碳小先锋卫星科普实践课程第四课-航天中的力学知识",0,3,0],[159,"课程实录1.敏锐的太空前哨——初识风云气象卫星",0,3,17],[159,"课程实录2.敏锐的太空前哨——硬核科技大集合",0,3,17],[159,"课程实录3.风云看大气——千里眼如何炼成",0,3,17],[159,"课程实录4.风云看大气——看云图识天气",0,3,17],[159,"课程实录5.风云看地球——气象卫星来帮忙",1,3,17],[159,"风云卫星知识系列动画1.敏锐的太空前哨—初识风云气象卫星",0,3,17],[159,"风云卫星知识系列动画2.敏锐的太空前哨—硬核科技大集合",0,3,17],[159,"风云卫星知识系列动画3.风云看大气—千里眼如何炼成",0,3,17],[159,"风云卫星知识系列动画4.风云看大气—看云图识天气",0,3,17],[159,"风云卫星知识系列动画5.风云看地球—风云卫星来帮忙",0,3,17],[159,"风云卫星知识系列动画6.风云看太阳—外太空的“刮风下雨”",0,3,17],[159,"课程实录6.风云看太阳——外太空“刮风下雨”",0,3,17],[160,"北斗系统与定位导航授时PNT关系",0,3,0],[160,"北斗的定位导航授时PNT应用",0,3,0],[160,"国家综合PNT体系建设方向与规划",0,3,0],[160,"什么是综合PNT体系",0,3,0],[161,"植物蓝染——酷米和炫迪的化学工坊课堂精彩集锦",0,4,0],[161,"护手霜的秘密——酷米和炫迪的化学工坊课堂精彩集锦",0,4,0],[162,"海上“钢铁侠”——工程船",0,7,0],[162,"核潜艇一万年也要搞出来！",1,7,0],[162,"挖泥船—海上“造岛神器”的传奇故事！",0,7,0],[162,"【舰船一分钟】巨轮的“定海神针”——船锚",0,7,0],[162,"【舰船一分钟】船舶的大鼻子——球鼻艏",0,7,0],[162,"【舰船一分钟】半潜船“海上举铁大神”是如何炼成的",0,7,0],[162,"揭秘海洋科考船！",1,7,0],[162,"舰队远航的浮动基地——补给舰",1,7,0],[162,"【舰船一分钟】挺进地球深部，“梦想号”大洋钻探船入列！（1）",0,7,0],[162,"【舰船一分钟】“梦想号”的定海神针",0,7,0],[162,"【舰船一分钟】雪龙2号是如何横行南北极？",0,7,0],[162,"从远望号研制看海上中国梦！",1,7,0],[162,"走进北极",0,7,0],[162,"大海上还有三甲医院？医院船！",0,7,0],[162,"航母知多少？",1,7,0],[162,"揭开两栖战舰的神秘面纱",0,7,0],[163,"华山医院感染科微电影《师姐，我不做医生了》",0,1,0],[164,"康康话健康之要命的胸痛(1)人体里的危险炸弹",0,1,0],[164,"《康康话健康》之要命的胸痛--第2集 追捕嫌疑犯",0,1,0],[164,"《康康话健康》之要命的胸痛--第3集 痛彻心扉的撕裂",0,1,0],[164,"《康康话健康》之要命的胸痛--第4集 生与死的较量",0,1,0],[164,"《康康话健康》之要命的胸痛--第5集 穿越雷区拆炸弹",0,1,0],[164,"《康康话健康》之要命的胸痛 --第6集 当心“炸弹”的次生危",0,1,0],[164,"《康康话健康》之要命的胸痛 --第7集 要命的夹层,究竟该咋",0,1,0],[165,"微电影《追光者》正式上映：致敬中国科学家，照亮科技梦想之路",0,10,0],[166,"阿肝正传——“瘦子”为什么也会得脂肪肝",1,1,0],[166,"阿肝正传第一集：脂肪肝——一个隐形的“杀手”",0,1,0],[166,"阿肝正传第二集：防治脂肪肝——让“杀手”无处遁形",1,1,0],[166,"阿肝正传——出现这些信号，可能是你的肝脏在求救",1,1,0],[166,"阿肝正传——药物性肝损伤的预防",1,1,0],[166,"阿肝正传——甲胎蛋白升高就代表得了肝癌吗？",0,1,0],[166,"阿肝正传——探索肝脏的奥秘，揭开肝硬化的影像学诊断面纱",1,1,0],[166,"阿肝正传——门静脉高压：肝脏的隐秘压力",0,1,0],[166,"阿肝正传——生命与实践赛跑，上消化道出血的居家自救指南",0,1,0],[166,"阿肝正传——食管胃底静脉曲张的一、二级预防",0,1,0],[166,"阿肝正传——体检发现谷氨酰转肽酶增高怎么办？",0,1,0],[166,"从“爆水管”到紧急抢修，食管胃底静脉曲张破裂出血常见止血方法",0,1,0],[166,"探索肝脏的奥秘——解开肝硬化的影像学诊断面纱",1,1,0],[167,"艺术助力科学传播",1,4,0],[167,"科学传播的内涵及发展历程",1,4,0],[167,"改变人类文明进程的化学元素",0,4,0],[168,"寻宝厨余垃圾——教学实录（柑橘）",0,1,0],[168,"寻宝厨余垃圾——教学实录（柑橘2）",0,1,0],[168,"寻宝厨余垃圾——教学实录（柑橘3）",0,1,0],[168,"寻宝厨余垃圾——教学实录（玉米）",0,1,0],[168,"寻宝厨余垃圾——教学实录（板栗）",0,1,0],[168,"寻宝厨余垃圾——教学实录（黄瓜）",0,1,0],[168,"寻宝厨余垃圾——教学实录（鸡蛋）",0,1,0],[168,"寻宝厨余垃圾——教学实录（西瓜）",0,1,0],[168,"寻宝厨余垃圾——教学实录（西瓜2）",0,1,0],[168,"寻宝厨余垃圾-教学实录（西瓜3）",0,1,0],[168,"寻宝厨余垃圾——教学实录（荔枝）",1,1,0],[168,"寻宝厨余垃圾——茄子（茄蒂）",0,1,0],[168,"寻宝厨余垃圾——玉米（玉米须）",0,1,0],[168,"寻宝厨余垃圾——甘蔗（甘蔗皮、甘蔗滓）",0,1,0],[168,"寻宝厨余垃圾——丝瓜（丝瓜络、丝瓜子、丝瓜皮、丝瓜蒂）",0,1,0],[168,"寻宝厨余垃圾——南瓜（南瓜蒂、南瓜瓤、南瓜籽）",0,1,0],[168,"寻宝厨余垃圾——菱（菱壳）",0,1,0],[168,"寻宝厨余垃圾——绿豆（绿豆衣）",0,1,0],[168,"寻宝厨余垃圾——苦瓜 （苦瓜子）",0,1,0],[168,"寻宝厨余垃圾——黄瓜 （ 黄瓜皮、黄瓜子、黄瓜霜）",0,1,0],[168,"寻宝厨余垃圾——冬瓜 （ 冬瓜皮、冬瓜子、冬瓜瓤）",0,1,0],[168,"寻宝厨余垃圾——黑豆 （ 黑豆衣）",0,1,0],[168,"寻宝厨余垃圾——蚕豆（蚕豆壳、蚕豆荚壳）",0,1,0],[168,"寻宝厨余垃圾——葱（葱白、葱须、葱叶）",0,1,0],[168,"寻宝厨余垃圾——莲（莲衣）",0,1,0],[168,"寻宝厨余垃圾——莲（莲房）",0,1,0],[168,"寻宝厨余垃圾——荔枝（荔枝壳、荔枝核）",0,1,0],[168,"寻宝厨余垃圾——教学实录（南瓜）",0,1,0],[168,"寻宝厨余垃圾——教学实录（冬瓜）",0,1,0],[169,"你知道上工程的湿垃圾收集后是如何处理的吗？",0,2,18],[169,"家校共育-感受节能奥秘，探索低碳未来——“碳之足迹”科普体验",0,2,18],[169,"低碳出行 绿电生活",0,2,18],[169,"化石能源",0,2,18],[169,"绿色贸易壁垒",0,2,18],[169,"“双碳”目标知多少？",1,2,18],[169,"电网碳减排",1,2,18],[169,"“碳”之足迹课程介绍",0,2,18],[169,"植物标本制作",0,2,18],[169,"认识碳足迹",1,2,18],[169,"新能源",0,2,18],[169,"叶绿素观察小实验",0,2,18],[169,"生态瓶的制作与观察",0,2,18],[128,"警惕并及时治疗转移性右下腹痛",0,1,0],[128,"警惕暴饮暴食后的腹痛——急性胰腺炎",0,1,0],[128,"吞下消毒片 食道绝对不消气",0,1,0],[128,"“口腔清洁”的烦恼",0,1,0],[128,"小小的鱼刺 伤害这么大？",0,1,0],[128,"便秘请注意！小心静脉硬化性结肠炎！",0,1,0],[128,"小酌怡情 酗酒伤身——周与华",0,1,0],[128,"警惕药物性肝炎——虞美玲",0,1,0],[128,"如何科学护航高原旅游中的消化道——倪童天",0,1,0],[128,"如何预防和治疗药物性胰腺炎？",0,1,0],[128,"上海瑞金医院公益科普片5分钟速览！守护您的胰腺健康",1,1,0],[170,"健康教育与健康传播理论基础（上）",0,0,0],[170,"健康教育与健康传播理论基础（下）",0,0,0],[170,"健康传播的兴起与发展（上）",0,0,0],[170,"健康传播的兴起与发展（中）",1,0,0],[170,"健康传播的兴起与发展（下）",0,0,0],[170,"健康传播研究方法探析（上）",0,0,0],[170,"健康传播研究方法探析（下）",0,0,0],[170,"烟草控制的健康传播与促进实践（上）",1,0,0],[170,"烟草控制的健康传播与促进实践（下）",0,0,0],[170,"健康知识习得与就医回避的影响因素研究",0,0,0],[170,"西医药健康科普能力提升实战技巧导引（上）",0,0,0],[170,"西医药健康科普能力提升实战技巧导引（下）",0,0,0],[170,"健康科普活动策划技巧(上)",0,0,0],[170,"健康科普活动策划技巧（下）",0,0,0],[170,"健康科普视频制作技巧（上）",0,0,0],[170,"健康科普视频制作技巧（下）",0,0,0],[170,"中医药健康科普能力提升实战技巧导引(上)",0,0,0],[170,"中医药健康科普能力提升实战技巧导引(下)",0,0,0],[170,"健康科普写作技巧(上)",0,0,0],[170,"健康科普写作技巧(下)",0,0,0],[170,"健康科普讲解技巧(上)",0,0,0],[170,"健康科普讲解技巧(下）",0,0,0],[170,"健康科普品牌传播技巧(上)",0,0,0],[170,"健康科普品牌传播技巧（下）",0,0,0],[171,"《发热迷踪》",0,1,0],[172,"破解熔堆难题，打造核电站反应堆的安全锁",0,10,0],[172,"核电站也能“搭积木”式建造？",0,10,0],[173,"儿童健康知识轻松学！“健康智多星”系列丛书为你助力！",0,1,0],[173,"智防传染病，教会孩子自我防护！",0,1,0],[173,"智胜口腔病，给孩子最专业的护齿指导！",0,1,0],[173,"智创无烟城，让孩子成为控烟小卫士",0,1,0],[174,"合理使用抗生素（上）",0,1,0],[174,"合理使用抗生素（下）",0,1,0],[174,"细菌不是无情物，人类始终需要它",0,1,0],[174,"弗莱明发现抗生素的过程",0,1,0],[174,"汉金发现噬菌体杀菌现象",0,1,0],[174,"德赫勒发现噬菌体的过程",0,1,0],[174,"噬菌体治疗强势回归",0,1,0],[175,"科技传播与舞台表现",0,0,0],[175,"科技传播的语言",0,0,0],[175,"科技传播者文案撰写",0,0,0],[175,"科普活动的效果评估",0,0,0],[175,"科普活动的策划与实施",0,0,0],[175,"科技传播的机制与模式",0,0,0],[175,"科技传播的内容、渠道与效果",0,0,0],[175,"科技传播的构成与主体",0,0,0],[175,"科技传播的历史",0,0,0],[175,"科技传播的国际视野",0,0,0],[175,"科技传播的公益性与公益精神",1,0,0],[175,"新媒体技术在科技传播中的应用（上）",1,0,0],[175,"新媒体技术在科技传播中的应用（下）",1,0,0],[175,"科技传播作品的设计与制作",1,0,0],[175,"科普研学的策划与实施",0,0,0],[175,"社区科普活动的策划与实施",0,0,0],[175,"科技传播者的科学思想和科学精神",0,0,0],[175,"科技传播与全民科学素质提升",1,0,0],[175,"上海大科学装置建设科普讲解",0,0,0],[175,"集成电路产业发展科普讲解",0,0,0],[175,"生物医药产业发展科普讲解",0,0,0],[175,"上海人工智能产业发展科普",0,0,0],[175,"乡村科普活动策划与实施",0,0,0],[175,"中小学科普活动的策划与实施",1,0,0],[176,"医学科普课程实录：医学科普需要融合发展",0,1,0],[176,"医学科普课程实录：健康科普呈现手段的特点",0,1,0],[176,"从门诊到热播剧教你如何“蹭”出好选题",0,1,0],[176,"揭秘打造个人ip账号四件套",0,1,0],[176,"医务人员为什么要做科普？",0,1,0],[176,"放射检查对身体有伤害吗？",0,1,0],[176,"脂肪肝会变成肝癌吗？",0,1,0],[176,"医学科普课程实录:做好老年友善科普 助力积极老龄化",0,1,0],[176,"医学科普课程实录:临床医生科普工作可持续推进小技巧",0,1,0],[176,"医学科普课程实录:医学与传播",0,1,0],[176,"医学科普课程实录:让“科普月月讲”更精彩",0,1,0],[176,"医学科普课程实录:临床医生如何打造自媒体科普IP",0,1,0],[176,"医学科普课程实录:健康科普平台与智库介绍",0,1,0],[176,"医学科普课程实录:控烟广告-不同文化下的科普",0,1,0],[176,"医学科普课程实录:科普创作如何突破瓶颈—以健康脱口秀为例",1,1,0],[176,"医学科普课程实录:拍-医学科普短视频制作2",1,1,0],[176,"医学科普课程实录:拍-医学科普短视频制作1",0,1,0],[176,"医学科普课程实录:图说科普与影像记录能力",0,1,0],[176,"医学科普课程实录:健康传播与健康科普",1,1,0],[176,"医学科普课程实录:健康传播与健康科普1",1,1,0],[176,"医学科普课程实录:健康科普助力健康上海建设",0,1,0],[176,"医学科普课程实录：临床医生为什么要做科普",0,1,0],[176,"医学科普课程实录:漫画青少年健康科普",1,1,0],[176,"医学科普课程实录:演讲能力2",1,1,0],[176,"医学科普课程实录:演讲能力1",1,1,0],[176,"医学科普课程实录:写-训练基础的科普能力",0,1,0],[176,"医学科普课程实录:健康科普的创作技巧",0,1,0],[176,"医学科普课程实录:解锁受众密码，点亮人文科普",0,1,0],[177,"诺贝尔奖化学奖又被人工智能拿了，快听人工智能教授的解读",0,6,0],[178,"海洋珍惜动物保护系列课程汇总",0,2,19],[178,"海水特性科学实验-明轮船",0,2,19],[178,"海水特性科学实验-螺旋桨船",0,2,19],[178,"海水特性科学实验-分层彩虹",0,2,19],[178,"海水特性科学实验-自制密度计",0,2,19],[178,"海水特性科学实验-盐水浮力",0,2,19],[179,"区块链技术在城市更新中的应用思考",0,6,0],[179,"数字化转型对跨境贸易的影响",0,6,0],[179,"“科创中国”新质生产力系列研讨会——区块链技术赋能建筑行业",0,6,0],[179,"“科创中国”新质生产力系列研讨会——走进临港跨境数科",0,6,0],[179,"一条视频了解智慧口岸建设",0,6,0],[179,"隐私计算，构建数据流通可信空间",0,6,0],[179,"营造商出行链——区块链赋能建筑业商旅管理",0,6,0],[179,"详解区块链技术与产业 现状及挑战",0,6,0],[179,"培养金融与技术复合型人才，推动我国Web3.0创新发展",0,6,0],[179,"未来如何更好地使用区块链、人工智能等技术赋能建筑业？",0,6,0],[179,"产业区块链共建数字新生态",0,6,0],[179,"区块链技术与蓬勃发展的低空经济能擦出怎样的火花？",0,6,0],[179,"区块链见证建筑业金融信用发展",0,6,0],[179,"什么是RWA？RWA如何提高传统资产流动性？",0,6,0],[179,"如何利用区块链技术解决国际贸易的信任问题和互信问题？",0,6,0],[179,"如何运用RWA打通传统金融与Web3.0的桥梁？",0,6,0],[179,"RWA如何借助区块链，从链圈“脱虚向实”，实现资产流通性？",0,6,0],[179,"区块链﻿如何在﻿跨境贸易﻿中助力企业？一起来听王昊分享",0,6,0],[179,"区块链如何支撑数据资源化、资产化、要素化、资本化、财富化？",1,6,0],[179,"区块链如何做到保障数据的安全与应用到密码之中?戴炳荣为您讲解",0,6,0],[179,"区块链如何应用到密码之中来保障数据的安全?",0,6,0],[179,"区块链科普——WEB3与区块链的关系，区块链如何实现防篡改？",0,6,0],[179,"区块链科普——哈希函数与哈希锁定技术",0,6,0],[179,"区块链科普——比特币的价值与地址",0,6,0],[179,"区块链科普——区块链中的不可能三角以及什么是区块高度",0,6,0],[179,"区块链科普——初学者必备区块链术语宝典",0,6,0],[179,"区块链科普——初学者必备WEB3术语宝典（上）",0,6,0],[179,"区块链科普——初学者必备WEB3术语宝典（下）",0,6,0],[179,"区块链科普——区块链如何扩容",0,6,0],[179,"区块链科普——什么是Layer0、1、2、3",0,6,0],[179,"区块链科普——侧链 v.s. Rollups,ZK又是什么？",1,6,0],[180,"斜视（1）",0,1,0],[180,"斜视（2）",0,1,0],[180,"斜视（3）",0,1,0],[180,"斜视（4）斜视的治疗",0,1,0],[180,"斜视（5）治疗斜视的常见非手术方法",0,1,0],[180,"斜视（6）不是所有人都适合佩戴棱镜",0,1,0],[180,"弱视（1）",0,1,0],[180,"弱视（2）",0,1,0],[180,"弱视（3）",0,1,0],[180,"弱视（4）",0,1,0],[180,"弱视（5）",0,1,0],[180,"弱视（6）",0,1,0],[180,"弱视（7）",0,1,0],[180,"弱视（8）",0,1,0],[180,"弱视（9）",0,1,0],[180,"弱视（10）",0,1,0],[180,"弱视（11）",0,1,0],[180,"斜视弱视",0,1,0],[180,"斜视弱视（19）如何识别宝宝的视力发育异常？",0,1,0],[180,"视功能异常（1）陪娃写作业",0,1,0],[180,"视功能异常（2）没有斜弱视，视功能就正常吗？",0,1,0],[180,"视功能异常（3）眼的集合和散开",0,1,0],[180,"视功能异常（4）内外隐斜不是斜视？",0,1,0],[180,"视功能异常（5）调节异常&眼球运动异常",0,1,0],[180,"视功能训练（1）视功能训练的作用",0,1,0],[180,"视功能训练（2）视功能训练的分类",0,1,0],[180,"视功能训练（3）视功能训练需要循序渐进",0,1,0],[180,"从《黑神话·悟空》聊起（1）一玩3D游戏就头晕呕吐",0,1,0],[180,"从《黑神话·悟空》聊起（2）如何预防3D眩晕",0,1,0],[180,"从《黑神话·悟空》聊起（3）3D眩晕可以克服吗？",0,1,0],[180,"从《黑神话·悟空》聊起（4）可以通过训练治疗3D眩晕吗？",0,1,0],[180,"从《黑神话·悟空》聊起（5） VR视训有点酷",0,1,0],[180,"从《黑神话·悟空》聊起（6）可以通过训练治疗3D眩晕吗？",0,1,0],[180,"视觉与学习困难（1）学习不好是病么？",0,1,0],[180,"视觉与学习困难（2）冷静应对孩子的学习烦恼",0,1,0],[180,"视觉与学习困难（3）学习困难的评估工具和方法",0,1,0],[180,"视觉与学习困难（4）视觉在学习中的作用",0,1,0],[180,"视觉与学习困难（5）与学习相关的视觉功能",0,1,0],[180,"视觉与学习困难（6）大脑&双眼视觉功能",0,1,0],[180,"视觉与学习困难（7）学习困难的困恼表现（1）",0,1,0],[180,"视觉与学习困难（8）学习困难的苦恼表现（2）",0,1,0],[180,"视觉与学习困难（9）学习困难的苦恼表现（3）",0,1,0],[180,"视觉与学习困难（10）为什么学不好数学？",0,1,0],[180,"视觉与学习困难（11）为什么学不好英语？",0,1,0],[180,"调节&集合（1）阅读时眼睛的变化",0,1,0],[180,"调节&集合（2）集合不足并不罕见",0,1,0],[180,"调节&集合（3）为什么“无法聚焦”？",0,1,0],[180,"调节&集合（4）集合不足的困扰",0,1,0],[180,"调节&集合（5）视觉问题 or ADHD?",0,1,0],[180,"近视防控（1）远视储备",0,1,0],[180,"近视防控（2）如何测量远视储备？",0,1,0],[180,"近视防控（3）近视会遗传吗？",0,1,0],[180,"近视防控（4）父母不近视的，孩子也不会近视？",0,1,0],[180,"近视防控（5）控制持续近距离用眼时间？",0,1,0],[180,"近视防控（6）日间户外活动——多巴胺学说",0,1,0],[180,"近视防控（7）日间户外活动——光谱学说",0,1,0],[180,"近视防控（8）日间户外活动——维生素D学说",0,1,0],[180,"近视防控（9）近视的类型",0,1,0],[180,"近视防控（10）屈光不正",0,1,0],[180,"近视防控（11）为什么要近视防控？",0,1,0],[180,"近视防控（12）近视防控的医学手段",0,1,0],[180,"近视防控（13）轻眼课间10分钟",0,1,0],[180,"近视防控（14）什么是屈光参差？",0,1,0],[180,"近视防控（15）屈光参差是怎么形成？",0,1,0],[180,"近视防控（16）屈光参差会影响视物吗？",0,1,0],[180,"近视防控（17）屈光参差的危害",0,1,0],[180,"近视防控（18）屈光参差的矫治",0,1,0],[180,"近视防控（19）什么是散光呢？",0,1,0],[180,"近视防控（20）散光是如何形成的？",0,1,0],[180,"近视防控（21）散光有哪些症状？",0,1,0],[180,"近视防控（22）散光如何矫治？",0,1,0],[180,"近视防控（23）散光的发展过程和趋势",0,1,0],[180,"近视防控（24）顺规性散光需要低矫",0,1,0],[180,"近视防控（25）哪些情况容易得单眼近视？",0,1,0],[180,"近视防控（26）近视了一定要带眼镜吗？",0,1,0],[180,"近视防控（27）近视从800度讲到100度？（1）",0,1,0],[180,"近视防控（28）近视从800度降到100度？（2）",0,1,0],[180,"近视防控（29）近视从800度降到100度？（3）",0,1,0],[180,"近视防控（30）近视从800度降到100度？（4）",0,1,0],[180,"近视防控（31）寒假近视防控的重要时段？",0,1,0],[180,"近视防控（32）户外活动多长时间对预防近视有效呢？",0,1,0],[180,"近视防控（33）寒假适合的户外活动",0,1,0],[180,"近视防控（34）阴天户外活动有效吗？",0,1,0],[180,"近视防控（35）如何选择电子产品？",0,1,0],[180,"近视防控（36）如何选择电子产品？",0,1,0],[180,"近视防控（37）电子产品的使用距离",0,1,0],[180,"近视防控（38）长时间阅读纸质书会不会伤害眼睛？",0,1,0],[180,"近视防控（39）阅读对光线有什么要求？",0,1,0],[180,"近视防控（40）眼保健操有用吗？",0,1,0],[180,"近视防控（41）熬夜不仅仅影响视力健康",0,1,0],[180,"近视防控（42）孩子适合戴防蓝光眼镜吗？",0,1,0],[180,"近视防控（43）近视和身高神同步？（1）",0,1,0],[180,"近视防控（44）近视与身高神同步？（2）",0,1,0],[180,"近视防控（45）早产儿容易患近视吗？",0,1,0],[180,"近视防控（56）如何规范坐姿",0,1,0],[180,"框架眼镜（1）防蓝光眼镜真的有用吗？",0,1,0],[180,"框架眼镜（2）蓝光是有害的吗？",0,1,0],[180,"框架眼镜（3）哪些人适合戴防蓝光眼镜？",0,1,0],[180,"框架眼镜（4）为什么要戴离焦框架镜？",0,1,0],[180,"框架眼镜（5）离焦眼镜的适用人群",0,1,0],[180,"框架眼镜（6）离焦眼镜的验配",0,1,0],[180,"框架眼镜（7）离焦眼镜的初戴适应",0,1,0],[180,"框架眼镜（8）为什么要全天佩戴离焦眼镜？",0,1,0],[180,"框架眼镜（9）如何爱惜您的离焦镜",0,1,0],[180,"框架眼镜（10）佩戴离焦眼镜需要注意什么？",0,1,0],[180,"框架眼镜（11）佩戴离焦眼镜需要注意什么？",0,1,0],[180,"框架眼镜（12）如何清洗离焦眼镜呢？",0,1,0],[180,"框架眼镜（13）离焦镜的定期复查",0,1,0],[180,"框架眼镜（14）离焦镜不是灵丹妙药",0,1,0],[180,"框架眼镜（15）矫正到1.0 还是1.2 ？",0,1,0],[180,"渐进多焦镜（1）什么是渐进多焦镜？",0,1,0],[180,"渐进多焦镜（2）渐进镜的使用场景",0,1,0],[180,"渐进多焦镜（3）渐进镜能否控制近视？",0,1,0],[180,"渐进多焦镜（3）渐进镜能否控制近视？",0,1,0],[180,"眼部护理（7）为什么高度近视不宜献血？",0,1,0],[180,"浅谈阿托品（2）阿托品并不是“近视神药”",0,1,0],[180,"浅谈阿托品（3）阿托品的适用人群",0,1,0],[180,"视光门诊的故事（1）警惕“隐形视力杀手”",0,1,0],[180,"视光门诊的故事（2）为什么要检查戴镜视力",0,1,0],[180,"视光门诊的故事（3）大龄孩子弱视能治愈吗？",0,1,0],[180,"视光门诊的故事（4）AI医生，是颠覆还是共生？",0,1,0],[180,"视光门诊的故事（5）白内障术后有黑点",0,1,0],[180,"眼疾解惑（1）支原体是否会引起眼部疾病",0,1,0],[180,"眼疾解惑（2）如何预防与治疗支原体引起的眼部疾病？",0,1,0],[180,"眼疾解惑（40）眼部的免疫系统",0,1,0],[180,"眼疾解惑（41）保护眼睛免受免疫疾病的影响",0,1,0],[180,"眼疾解惑（42）冬季出游，当心“雪盲”",0,1,0],[180,"眼疾解惑（43）出现“雪盲”，不要惊慌",0,1,0],[180,"眼疾解惑（44）预防雪盲，巧用护目镜",0,1,0],[180,"眼疾解惑（48）如何识别过敏性结膜炎？",0,1,0],[180,"眼疾解惑（49）季节性过敏“抗一下”就过去了？",0,1,0],[180,"青光眼（1）冬天，青光眼的高发季？",0,1,0],[180,"青光眼（2）青光眼高危人群如何预防",0,1,0],[180,"青光眼（3）哪些是闭角型青光眼高危人群",0,1,0],[180,"青光眼（4）眼压高的孩子是青光眼吗？",0,1,0],[180,"过敏性结膜炎（1）眼睛会过敏吗？",0,1,0],[180,"过敏性结膜炎（2）为什么会得过敏性结膜炎呢？",0,1,0],[180,"过敏性结膜炎（3）过敏性结膜炎有哪些表现？",0,1,0],[180,"过敏性结膜炎（4）过敏性结膜炎会传染吗？",0,1,0],[180,"过敏性结膜炎（5）得了过敏性结膜炎怎么办？",0,1,0],[180,"过敏性结膜炎（6）如何预防过敏性结膜炎？",0,1,0],[180,"视疲劳（1）睫状肌与视疲劳",0,1,0],[180,"视疲劳（2）视疲劳也有等级？",0,1,0],[180,"视疲劳（3）加重视疲劳的不良用眼情况",0,1,0],[180,"视疲劳（4）哪些饮食有助于缓解视疲劳？",0,1,0],[180,"视疲劳（5）高强度用眼怎么缓解视疲劳？",0,1,0],[180,"视疲劳（6）视疲劳就是干眼症？",0,1,0],[180,"玻璃体疾患（1）飞蚊症",0,1,0],[180,"玻璃体疾患（2）飞蚊群舞要警惕",0,1,0],[180,"玻璃体疾患（3）“好蚊子”还是“坏蚊子”？",0,1,0],[180,"运动&眼健康（1）巴黎奥运会",0,1,0],[180,"运动&眼健康（2）神射手的 “视力问题”",0,1,0],[180,"运动&眼健康（3）“睁只眼，闭只眼”的后果",0,1,0],[180,"运动&眼健康（4）击剑运动员为什么要戴面罩？",0,1,0],[180,"运动&眼健康（5）射击的视力要求",0,1,0],[180,"运动&眼健康（6）近视会影响射击成绩吗？",0,1,0],[180,"运动&眼健康（7）游泳为什么要戴泳镜？",0,1,0],[180,"运动&眼健康（8）哪些运动需要戴太阳镜？",1,1,0],[180,"运动&眼健康（9）羽毛球也会击伤眼睛？",0,1,0],[180,"运动&眼健康（10）户外运动&近视防控",0,1,0],[180,"运动&眼健康（11）日常游泳戴泳镜的好处",1,1,0],[180,"运动&眼健康（12）跳水运动员的“眼病”",1,1,0],[180,"运动&眼健康（13）警惕运动引起的眼外伤",1,1,0],[180,"运动&眼健康（16）运动员的清晰视界",0,1,0],[180,"运动&眼健康（17）一切皆有可能",1,1,0],[180,"少年也会黄斑变性（1）欢乐背后的视力烦恼",0,1,0],[180,"少年也会黄斑变性？（2）黄斑变性也有“干湿”之分？",0,1,0],[180,"少年也会黄斑变性（3）如何加固“黄斑区”？",0,1,0],[180,"世界强化免疫日",0,1,0],[180,"集合运动（1）为什么近视多“眼神涣散”",0,1,0],[180,"集合训练（2）眼睛俯卧撑——笔尖训练",0,1,0],[180,"户外活动，视力护航（2）放风筝",0,1,0],[180,"眼药睛典（1）如何正确滴眼药水？",0,1,0],[180,"眼药睛典（2）眼药水使用小细节",0,1,0],[180,"眼药睛典（3）眼药水开封后可以存放多久？",0,1,0],[180,"眼药睛典（4）眼药水不开封可以保存多久？",0,1,0],[180,"眼药睛典（5）使用单只眼药水的注意事项",0,1,0],[180,"眼药睛典（6）眼药水一次滴多少？",0,1,0],[180,"眼部护理（1）眼部美妆会影响眼健康吗？（上）",0,1,0],[180,"眼部护理（2）眼部美妆会影响眼健康吗？（下）",0,1,0],[180,"眼部护理（3）视频终端综合征",0,1,0],[180,"眼部护理（4）三伏天美目三件事（1）",0,1,0],[180,"眼部护理（5）三伏天美目三件事（2）",0,1,0],[180,"眼部护理（6）三伏天美目三件事（3）",0,1,0],[180,"眼部护理（7）高度近视不宜献血为什么呢？",0,1,0],[180,"眼部护理（8）风沙入眼怎么办？",0,1,0],[180,"眼部护理（8）睑板腺按摩——给您的眼睛做做“SPA”",0,1,0],[180,"眼部护理（9）激光笔为何成视力杀手？",0,1,0],[180,"世界防治糖尿病日",1,1,0],[180,"成人视界（1）如何让“清晰”和“颜值”兼得？",0,1,0],[180,"成人视界（2）三大类屈光手术",0,1,0],[180,"成人视界（3）角膜屈光手术",0,1,0],[180,"成人视界（4）哪些人适合做角膜屈光手术",0,1,0],[180,"成人视界（5）ICL手术",0,1,0],[180,"成人视界（10）ICL手术的热点话题",0,1,0],[180,"成人视界（11）”老花“换成了”近疲劳“？",0,1,0],[180,"成人视界（12）成年人也可以配戴OK镜吗？",0,1,0],[180,"成人视界（13）OK镜不是成年人的首选方案",0,1,0],[180,"成人视界（14）成年人如何选择适合的OK镜",0,1,0],[180,"成人视界（15）ICL手术有什么优势？",0,1,0],[180,"成人视界（16）ICL术前注意事项",0,1,0],[180,"成人视界（17）ICL手术当天注意事项",0,1,0],[180,"成人视界（18）ICL术后注意事项",0,1,0],[180,"成人视界（19）ICL术前术后用药及随访",0,1,0],[180,"成人视界（20）ICL术后白茫茫",0,1,0],[180,"成人视界（21）超高度近视者的烦恼",1,1,0],[180,"成人视界（24）如何选择合适的近视手术？",0,1,0],[180,"成人视界（26）角膜激光手术怎么选？",0,1,0],[180,"成人视界（27）晶体植入手术",0,1,0],[180,"成人视界（28）成年人的近视度数会长吗？",0,1,0],[180,"成人视界（29）成年人的近视度数会长吗？",0,1,0],[180,"成人视界（30）成年人的近视度数会长吗？（3）",0,1,0],[180,"成人视界（31）先做双眼皮还是先做近视手术？",0,1,0],[180,"老视（1）您老花了吗？",0,1,0],[180,"老视（2）哪些表现可能出现了老花？",0,1,0],[180,"老视（3）哪些情况会加重老花？",0,1,0],[180,"老视（4）老花了怎么办？",0,1,0],[180,"接触镜（1）平替OK镜的光学矫正手段",0,1,0],[180,"接触镜（2）多焦软镜如何控制近视",0,1,0],[180,"接触镜（3）儿童可以配戴隐形眼镜吗？",0,1,0],[180,"接触镜（4）如何验配多焦软镜",0,1,0],[180,"接触镜（5）配戴多焦软镜的适宜时间",0,1,0],[180,"接触镜（6）可以配戴多焦软镜入睡吗？",0,1,0],[180,"接触镜（7）哪些孩子不适合配戴多焦软镜？",0,1,0],[180,"接触镜（8）认识多焦RGP",0,1,0],[180,"接触镜（9）RGP的兄弟：巩膜镜",0,1,0],[180,"接触镜（10）如何正确配戴接触镜",0,1,0],[180,"接触镜（11）OK镜又碎了",0,1,0],[180,"超高度近视（23）超高度近视的手术选择",0,1,0],[181,"小鼠 天生实验动物？",1,5,0],[181,"斑马鱼的驯化史——小透明 也有春天",0,5,0],[181,"小型猪 化身为人",0,5,0],[182,"颈肩痛怎么办？“锦”需动起来！",0,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第一期",0,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第二期",1,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第三期",0,1,0],[183,"“医⼼守护 ⻘春护航 ”⻘春期健康科普进校园第四期（上）",1,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第四期（下）",1,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第五期(上）",0,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第五期(下）",0,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第六期",1,1,0],[183,"“医心守护 青春护航”青春期健康科普进校园第七期",0,1,0],[184,"气象万千 还看今朝",0,2,0],[184,"台风防灾减灾科普视频《何以护申城》",0,2,0],[184,"一张城市早期预警网的诞生与远航",0,2,0],[185,"“鸿云”杯长三角青少年航空航天活动开幕式",1,7,0],[185,"科普集市",0,7,0],[185,"追逐梦想 翼动未来-航空强国科普系列活动",1,7,0],[186,"微塑料如何让女性“难孕难育”？",0,1,0],[186,"备孕的那“亿”些事",0,1,0],[187,"两度跌入谷底，它靠什么活成“顶流”？",0,6,0],[187,"当AI遇见天气预报，真能“未卜先知”？",0,6,0],[188,"这些都是糖上集",1,1,0],[188,"这些都是糖下集",0,1,0],[189,"脑肠轴的奥秘",0,1,0],[189,"用艾化解肠易激综合征",1,1,0],[190,"走进生命科学之实验室-复旦大学人类表型组研究院",0,1,0],[190,"美国院士胡德专访:科学驱动的全面健康时代",0,1,0],[190,"人类表型组计划介绍",1,1,0],[191,"科学百科课：鸟儿是恐龙变得",0,4,0],[191,"科学百科课：白垩纪凶猛的霸王龙",0,4,0],[191,"科学百科课：飞机王国的闪电侠",0,4,0],[191,"科学百科课：飞机的四大奥秘",0,4,0],[191,"科学百科课：地球里面可以住人吗？",0,4,0],[191,"科学百科课：病毒大作战——细菌和病毒的秘密",0,4,0],[191,"科学百科课：远看火星",0,4,0],[191,"科学百科课：快看，地球的第一双眼睛",0,4,0],[191,"科学百科课：那些藏在岩石里的秘密",0,4,0],[191,"科学百科课：登陆的“鱼类”",0,4,0],[192,"《科技传播实务》微课程-科技传播理论发展与实践",0,6,0],[192,"《科技传播实务》微课程-人工智能技术在科普传播中的应用",0,6,0],[192,"《科技传播实务》微课程-科普宣讲活动",0,6,0],[192,"《科技传播实务》微课程-科普VR视频前期策划",0,6,0],[192,"《科技传播实务》微课程-科普VR视频拍摄",0,6,0],[192,"《科技传播实务》微课程-科普舞台剧的剧本创作",0,6,0],[192,"《科技传播实务》微课程-AIGC融入科普文创产品开发",0,6,0],[192,"《科技传播实务》微课程-科普动画前期策划",0,6,0],[192,"《科技传播实务》微课程-科普动画制作中期流程",0,6,0],[193,"解构卫星结构平台",0,3,0],[193,"解构卫星通信平台系统",0,3,0],[193,"解构卫星热控平台系统",0,3,0],[193,"解构卫星载荷系统",0,3,0],[193,"解构卫星综合电子系统",0,3,0],[194,"如何理解青少年“霸凌”行为背后的情感需求",0,1,0],[194,"青少年社交行为背后的情感需求",0,1,0],[194,"改善焦虑的法宝之一——音乐疗愈",0,1,0],[194,"给青少年的科普：什么是惊恐障碍？",0,1,0],[194,"给青少年的科普：什么是焦虑症？",0,1,0],[194,"给青少年的科普：什么是双相情感障碍？",1,1,0],[194,"认识青少年的社交焦虑",1,1,0],[195,"青草沙水库如何改变上海供水史",0,2,0],[195,"脏水去哪了？——探秘污水如何重获“新生”",0,2,0],[195,"一滴水的奇幻漂流",0,2,0],[195,"水脉百年——申城自来水背后的故事",0,2,0],[195,"排水百年：上海‘地下城’的隐秘史诗",0,2,0],[195,"你信过几个？——饮用水误区大澄清",0,2,0],[195,"绿水的真相——水源里的“微藻战争”",0,2,0],[195,"河流复活计划：我们如何还给城市一条清溪",0,2,0],[195,"从浑浊到清澈：水厂里的“变形记”",0,2,0],[195,"别让水悄悄流走：家庭节水实战手册",0,2,0],[196,"你的观察，让河流更有答案-生态守望者小程序使用指南",0,5,0],[197,"减重术后饮水指“难”",0,1,0],[197,"教你如何好好吃饭",0,1,0],[197,"减肥投资未来",0,1,0],[197,"BMI不是肥胖唯一指标",0,1,0],[197,"减肥期间怎么吃",0,1,0],[198,"守护城市电力动脉",0,7,0],[198,"惊涛海浪中铸盾",0,7,0],[198,"增强新型电力系统韧性铸就用电安全铜墙铁壁",0,7,0],[199,"当⼤脑⾥的炸弹遇到中国智慧，为千万颅内动脉瘤患者筑牢⽣命防线",6,10,0],[199,"中国科学院公众科学日，带领孩子解锁奇妙的生态世界",0,10,0],[200,"健康起步，乐龄同行——全国科普月活动记录",0,1,0],[200,"乐龄新生活｜阿根阿月的健康日常先导片",0,1,0],[200,"乐龄新生活 阿根阿月的健康日常——吃得对老得慢阿月的餐桌秘诀",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜动一动精神一整天阿根的活力操场",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜心宽一寸寿长十年快乐阿月心不累",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜觉睡得好身体才有料，作息不将就",0,1,0],[200,"乐龄新生活阿根阿月的健康日常有来有往不寂寞阿根的朋友圈大揭秘",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜病未到心先防，常见病也怕细心人",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜药吃对人才安心，阿月教你不迷糊",0,1,0],[200,"乐龄新生活 阿根阿月的健康日常｜日子再平凡，也能活得灿烂",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜补不如吃得巧选对营养不花冤枉钱",0,1,0],[200,"乐龄新生活阿根阿月的健康日常｜体检不是走过场早点查心不慌",0,1,0],[200,"2026上海科技节活动——“健康起步，乐龄同行识破血压的暗流",0,1,0],[200,"“乐龄新生活·线下公益课堂”第一讲走进社区",0,1,0],[200,"【沪语版】吃得对，老得慢：阿月的餐桌秘诀",0,1,0],[200,"【沪语版】动一动，精神一整天：阿根的活力操场",0,1,0],[200,"【沪语版】心宽一寸，寿长十年：快乐阿月心不累",0,1,0],[200,"【沪语版】有来有往，不寂寞：阿根的朋友圈大揭秘",0,1,0],[200,"【沪语版】病未到，心先防：常见病也怕细心人",0,1,0],[200,"【沪语版】体检不是走过场：早点查，心不慌",0,1,0],[200,"【沪语版】补，不如吃得巧：选对营养不花冤枉钱",0,1,0],[200,"【沪语版】药吃对，人才安心：阿月教你不迷糊",0,1,0],[200,"【沪语版】觉睡得好，身体才有料：作息不将就",0,1,0],[200,"【沪语版】乐龄新生活｜阿根阿月的健康日程（先导片）",0,1,0],[200,"【沪语版】日子再平凡，也能活得灿烂：阿根阿月有话说",0,1,0]]};</script>
+<script>/* 沪杏科技图书馆 · 科普视频档案系统 —— 前端主逻辑 */
+(function () {
+  'use strict';
+
+  /* ================= 基础配置 ================= */
+  var DEFAULT_CFG = {
+    base: 'https://api.agnes-ai.cn/v1',
+    model: 'agnes-2.0-flash',
+    key: 'sk-13HeUydAemMZQHZSTipmYBMGL3k60OvQ5K14TvO4zuCtZfAl'
+  };
+  var LS_CFG = 'hxlib_ai_cfg', LS_CACHE = 'hxlib_ai_cache', LS_PATCH = 'hxlib_data_patch';
+
+  /* ================= 工具函数 ================= */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
   }
-  // 北京时间 = UTC+8
-  const now = new Date(Date.now() + (new Date().getTimezoneOffset() + 480) * 60000);
-  document.getElementById('time').textContent = fmt(now) + '（北京时间）';
+  function debounce(fn, ms) {
+    var t; return function () { var a = arguments, s = this; clearTimeout(t); t = setTimeout(function () { fn.apply(s, a); }, ms); };
+  }
+  function hash(s) {
+    var h = 5381, i = s.length;
+    while (i) { h = (h * 33) ^ s.charCodeAt(--i); }
+    return (h >>> 0).toString(36);
+  }
+  var toastTimer;
+  function toast(msg, type) {
+    var el = $('toast');
+    el.textContent = msg;
+    el.className = 'toast on' + (type ? ' ' + type : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.className = 'toast'; }, 2600);
+  }
+  function download(name, content, mime) {
+    var blob = new Blob([content], { type: (mime || 'text/plain') + ';charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 200);
+  }
+  function stamp() {
+    var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+    return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '_' + p(d.getHours()) + p(d.getMinutes());
+  }
+
+  /* CSV 解析（支持引号包裹、转义双引号、字段内换行） */
+  function parseCSV(text) {
+    text = text.replace(/^\uFEFF/, '');
+    var rows = [], row = [], cur = '', inQ = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQ) {
+        if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else { inQ = false; } }
+        else { cur += c; }
+      } else {
+        if (c === '"') { inQ = true; }
+        else if (c === ',') { row.push(cur); cur = ''; }
+        else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+        else if (c !== '\r') { cur += c; }
+      }
+    }
+    if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (x) { return String(x).trim() !== ''; }); });
+  }
+  function csvCell(v) {
+    var s = String(v == null ? '' : v);
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  /* 从 AI 返回文本中提取 JSON（容错 ```json 包裹、前后废话） */
+  function extractJSON(txt) {
+    if (!txt) return null;
+    var s = String(txt).trim();
+    var m = s.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (m) s = m[1].trim();
+    if (s[0] !== '{') { var i = s.indexOf('{'), j = s.lastIndexOf('}'); if (i >= 0 && j > i) s = s.slice(i, j + 1); }
+    try { return JSON.parse(s); } catch (e) {
+      try { return JSON.parse(s.replace(/,\s*([}\]])/g, '$1').replace(/[\u0000-\u001F]/g, ' ')); } catch (e2) { return null; }
+    }
+  }
+
+  /* ================= 数据 ================= */
+  var DB = window.ARCHIVE || { meta: {}, batch: [], cat: [], unit: [], note: [], desc: [], proj: [], rows: [] };
+
+  var ITEMS = DB.rows.map(function (r, i) {
+    var p = DB.proj[r[0]] || ['', '', 0, 0];
+    return {
+      id: i, title: r[1] || '',
+      pno: p[0], pname: p[1], unit: DB.unit[p[2]] || '', batch: DB.batch[p[3]] || '',
+      cat: DB.cat[r[3]] || '', note: DB.note[r[2]] || '', desc: DB.desc[r[4]] || ''
+    };
+  });
+  ITEMS.forEach(function (it) {
+    it.key = it.pname + '||' + it.title;
+    it.st = (it.title + ' ' + it.pname + ' ' + it.unit + ' ' + it.cat + ' ' + it.pno).toLowerCase();
+  });
+  var keyMap = {};
+  ITEMS.forEach(function (it) { keyMap[it.key] = it; });
+
+  /* ================= AI 缓存 / 配置 ================= */
+  function loadJSON(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
+  function saveJSON(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); return true; }
+    catch (e) { toast('本地存储已满，请清理 AI 缓存', 'err'); return false; }
+  }
+  var AI_CFG = Object.assign({}, DEFAULT_CFG, loadJSON(LS_CFG, {}));
+  var AI_CACHE = loadJSON(LS_CACHE, {});
+  if (!AI_CFG.key) AI_CFG.key = DEFAULT_CFG.key;
+
+  /* ================= 状态 ================= */
+  var S = { q: '', qMode: 'and', batch: '', cat: '', unit: '', proj: '', flag: '', sort: 'default', page: 1, size: 50 };
+  var view = [];
+
+  /* ================= 初始化下拉 ================= */
+  function uniqSorted(arr) { return arr.filter(Boolean).sort(function (a, b) { return a.localeCompare(b, 'zh'); }); }
+  function fill(id, arr, withCount) {
+    var sel = $(id);
+    arr.forEach(function (v) {
+      var o = document.createElement('option');
+      o.value = v; o.textContent = withCount ? v + '（' + withCount[v] + '）' : v;
+      sel.appendChild(o);
+    });
+  }
+  function initFilters() {
+    var cnt = {};
+    ITEMS.forEach(function (i) { cnt[i.unit] = (cnt[i.unit] || 0) + 1; });
+    fill('fBatch', uniqSorted(DB.batch));
+    fill('fCat', uniqSorted(DB.cat));
+    fill('fUnit', uniqSorted(Object.keys(cnt)), cnt);
+    fill('fProj', uniqSorted(ITEMS.map(function (i) { return i.pname; }).filter(function (v, i, a) { return a.indexOf(v) === i; })));
+  }
+
+  function renderStats() {
+    var m = DB.meta || {};
+    var aiN = Object.keys(AI_CACHE).length;
+    $('stats').innerHTML =
+      '<div class="stat"><b>' + (m.total || ITEMS.length) + '</b><span>视频档案</span></div>' +
+      '<div class="stat"><b>' + (m.projects || 0) + '</b><span>科普项目</span></div>' +
+      '<div class="stat"><b>' + (m.units || 0) + '</b><span>承担单位</span></div>' +
+      '<div class="stat"><b>' + (m.cats || 0) + '</b><span>内容分类</span></div>' +
+      '<div class="stat"><b style="color:var(--accent)">' + aiN + '</b><span>AI 已描述</span></div>';
+    $('aiCacheInfo').textContent = '已缓存 AI 描述 ' + aiN + ' 条';
+  }
+
+  /* ================= 筛选 / 排序 ================= */
+  function applyFilter() {
+    var kws = S.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    view = ITEMS.filter(function (it) {
+      if (S.batch && it.batch !== S.batch) return false;
+      if (S.cat && it.cat !== S.cat) return false;
+      if (S.unit && it.unit !== S.unit) return false;
+      if (S.proj && it.pname !== S.proj) return false;
+      if (S.flag === 'ai' && !AI_CACHE[hash(it.key)]) return false;
+      if (S.flag === 'noai' && AI_CACHE[hash(it.key)]) return false;
+      if (S.flag === 'note' && !it.note) return false;
+      if (S.flag === 'multi' && !it.desc) return false;
+      if (kws.length) {
+        if (S.qMode === 'or') {
+          /* 任一关键词命中即可，并按命中数排序（相关性优先） */
+          var hit = 0;
+          for (var i = 0; i < kws.length; i++) if (it.st.indexOf(kws[i]) !== -1) hit++;
+          if (!hit) return false;
+          it._hit = hit;
+        } else {
+          for (var j = 0; j < kws.length; j++) if (it.st.indexOf(kws[j]) === -1) return false;
+          it._hit = 0;
+        }
+      } else { it._hit = 0; }
+      return true;
+    });
+    if (S.qMode === 'or' && S.sort === 'default' && S.q.trim()) {
+      view.sort(function (a, b) { return (b._hit || 0) - (a._hit || 0) || a.id - b.id; });
+    }
+    if (S.sort === 'title') view.sort(function (a, b) { return a.title.localeCompare(b.title, 'zh'); });
+    else if (S.sort === 'proj') view.sort(function (a, b) { return a.pname.localeCompare(b.pname, 'zh') || a.id - b.id; });
+    else if (S.sort === 'unit') view.sort(function (a, b) { return a.unit.localeCompare(b.unit, 'zh') || a.id - b.id; });
+    else if (S.sort === 'cat') view.sort(function (a, b) { return a.cat.localeCompare(b.cat, 'zh') || a.id - b.id; });
+    return view;
+  }
+
+  function renderList() {
+    var total = view.length;
+    var pages = Math.max(1, Math.ceil(total / S.size));
+    if (S.page > pages) S.page = pages;
+    var start = (S.page - 1) * S.size;
+    var page = view.slice(start, start + S.size);
+
+    $('cnt').textContent = total;
+    $('cntSub').textContent = total === ITEMS.length ? '' : '（全部 ' + ITEMS.length + ' 条）';
+    $('empty').style.display = total ? 'none' : 'block';
+
+    /* PC 表格 */
+    $('tbody').innerHTML = page.map(function (it, i) {
+      var ai = AI_CACHE[hash(it.key)];
+      return '<tr data-id="' + it.id + '">' +
+        '<td class="td-nowrap">' + (start + i + 1) + '</td>' +
+        '<td><div class="td-title">' + esc(it.title) + '</div>' +
+        (it.note ? '<div class="td-sub" style="color:var(--warn)">⚠ ' + esc(it.note) + '</div>' : '') + '</td>' +
+        '<td><div class="td-nowrap" style="color:var(--t1)">' + esc(it.pname) + '</div>' +
+        '<div class="td-sub">' + esc(it.unit) + '</div></td>' +
+        '<td><span class="tag">' + esc(it.cat) + '</span></td>' +
+        '<td class="td-nowrap">' + esc(it.batch) + '</td>' +
+        '<td>' + (ai ? '<span class="tag ai">已生成</span>' : '<span class="tag grey">—</span>') + '</td>' +
+        '</tr>';
+    }).join('');
+
+    /* 移动卡片 */
+    $('cards').innerHTML = page.map(function (it) {
+      var ai = AI_CACHE[hash(it.key)];
+      return '<div class="card" data-id="' + it.id + '">' +
+        '<div class="card-t">' + esc(it.title) + '</div>' +
+        '<div class="card-m"><div>📁 ' + esc(it.pname) + '</div><div>🏢 ' + esc(it.unit) + '</div>' +
+        '<div>🗓 ' + esc(it.batch) + (it.note ? ' · ⚠ ' + esc(it.note) : '') + '</div></div>' +
+        '<div class="card-tags"><span class="tag">' + esc(it.cat) + '</span>' +
+        (ai ? '<span class="tag ai">AI 已描述</span>' : '') + '</div></div>';
+    }).join('');
+
+    renderPager(total, pages);
+  }
+
+  function renderPager(total, pages) {
+    if (!total) { $('pager').innerHTML = ''; return; }
+    var h = '';
+    h += '<button class="pg" data-p="' + (S.page - 1) + '"' + (S.page <= 1 ? ' disabled' : '') + '>‹</button>';
+    var list = [];
+    for (var i = 1; i <= pages; i++) {
+      if (i === 1 || i === pages || Math.abs(i - S.page) <= 2) list.push(i);
+      else if (list[list.length - 1] !== '…') list.push('…');
+    }
+    list.forEach(function (p) {
+      h += p === '…' ? '<button class="pg" disabled>…</button>'
+        : '<button class="pg' + (p === S.page ? ' on' : '') + '" data-p="' + p + '">' + p + '</button>';
+    });
+    h += '<button class="pg" data-p="' + (S.page + 1) + '"' + (S.page >= pages ? ' disabled' : '') + '>›</button>';
+    h += '<span class="pg-info">第 ' + S.page + ' / ' + pages + ' 页</span>';
+    $('pager').innerHTML = h;
+  }
+
+  function refresh(resetPage) {
+    if (resetPage) S.page = 1;
+    applyFilter(); renderList(); renderStats();
+  }
+
+  /* ================= 详情抽屉 ================= */
+  var curItem = null;
+  function openDrawer(id) {
+    curItem = ITEMS[id];
+    if (!curItem) return;
+    $('dwTitle').textContent = curItem.title;
+    renderDrawer();
+    $('drawer').classList.add('on'); $('mask').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    $('drawer').classList.remove('on'); $('mask').classList.remove('on');
+    document.body.style.overflow = ''; curItem = null;
+  }
+
+  function renderDrawer() {
+    var it = curItem, h = '';
+
+    /* 基本档案 */
+    h += '<div class="sec"><div class="sec-t">档案信息</div><dl class="kv">' +
+      '<dt>视频标题</dt><dd>' + esc(it.title) + '</dd>' +
+      '<dt>所属项目</dt><dd>' + esc(it.pname) + '</dd>' +
+      '<dt>项目编号</dt><dd>' + esc(it.pno) + '</dd>' +
+      '<dt>承担单位</dt><dd>' + esc(it.unit) + '</dd>' +
+      '<dt>一级分类</dt><dd><span class="tag">' + esc(it.cat) + '</span></dd>' +
+      '<dt>年度批次</dt><dd>' + esc(it.batch) + '</dd>' +
+      '</dl>';
+    if (it.note) h += '<div class="note-box">审核备注：' + esc(it.note) + '</div>';
+    if (it.desc) h += '<div class="note-box" style="background:var(--accent-soft);border-color:#bcd9f5;color:var(--accent)">' + esc(it.desc) + '</div>';
+    h += '</div>';
+
+    /* AI 区 */
+    var ck = hash(it.key), ai = AI_CACHE[ck];
+    h += '<div class="sec"><div class="sec-t">AI 内容分析</div>';
+    if (!ai) {
+      h += '<div class="ai-box"><div class="ai-empty"><span class="big">✨</span>' +
+        '还没有 AI 描述<br><span style="font-size:12px">点击下方按钮，由 AI 根据标题、项目与单位信息生成内容概述、知识点与观看建议</span></div></div>';
+    } else {
+      h += aiHTML(ai);
+    }
+    h += '</div>';
+
+    /* 相似推荐 */
+    h += '<div class="sec"><div class="sec-t">相关档案推荐</div><div class="rel" id="relBox"></div></div>';
+
+    $('dwBody').innerHTML = h;
+    $('dwFoot').innerHTML =
+      '<button class="btn ai" id="btnGenAI">' + (ai ? '🔄 重新生成' : '✨ 生成 AI 描述') + '</button>' +
+      '<button class="btn" id="btnRecheck">🧭 分类复核</button>' +
+      '<button class="btn" id="btnCopy">📋 复制档案信息</button>';
+
+    renderRelated(it);
+
+    $('btnGenAI').onclick = function () { genAI(it, this); };
+    $('btnRecheck').onclick = function () { recheck(it, this); };
+    $('btnCopy').onclick = function () {
+      var t = ['视频标题：' + it.title, '所属项目：' + it.pname + '（' + it.pno + '）', '承担单位：' + it.unit,
+        '一级分类：' + it.cat, '年度批次：' + it.batch].join('\n');
+      if (AI_CACHE[hash(it.key)]) {
+        var a = AI_CACHE[hash(it.key)];
+        t += '\n\n【AI 描述】\n' + (a.summary || '') + '\n\n【核心知识点】\n' + ((a.points || []).join('\n')) +
+          '\n\n【观看建议】\n' + (a.advice || '');
+      }
+      navigator.clipboard.writeText(t).then(function () { toast('已复制到剪贴板', 'ok'); }, function () { toast('复制失败', 'err'); });
+    };
+  }
+
+  function aiHTML(ai) {
+    var h = '<div class="ai-box ai-live">';
+    h += '<div class="ai-field"><h4>内容概述</h4><p>' + esc(ai.summary || '—') + '</p></div>';
+    if (ai.points && ai.points.length) {
+      h += '<div class="ai-field"><h4>核心知识点</h4><ul>' + ai.points.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
+    }
+    h += '<div class="ai-field"><h4>观看建议</h4><p>' + esc(ai.advice || '—') + '</p>';
+    h += '<div class="ai-meta">' +
+      (ai.audience ? '<span class="tag">👥 ' + esc(ai.audience) + '</span>' : '') +
+      (ai.level ? '<span class="tag grey">📊 ' + esc(ai.level) + '</span>' : '') +
+      (ai.duration ? '<span class="tag grey">⏱ ' + esc(ai.duration) + '</span>' : '') +
+      '</div></div>';
+    if (ai.tags && ai.tags.length) {
+      h += '<div class="ai-field"><h4>智能标签</h4><div class="ai-tags">' +
+        ai.tags.map(function (t) { return '<span class="tag ai">' + esc(t) + '</span>'; }).join('') + '</div></div>';
+    }
+    if (ai.recheck) {
+      var ok = ai.recheck.ok;
+      h += '<div class="ai-field"><h4>分类复核</h4><p style="color:' + (ok ? 'var(--brand)' : 'var(--warn)') + '">' +
+        (ok ? '✅ 当前分类「' + esc(it_catOf(ai)) + '」合适。' : '⚠️ 建议调整为「' + esc(ai.recheck.suggest) + '」。') +
+        ' ' + esc(ai.recheck.reason || '') + '</p></div>';
+    }
+    h += '</div>';
+    return h;
+  }
+  function it_catOf(ai) { return curItem ? curItem.cat : ''; }
+
+  /* 本地相似推荐（标题 2-gram，同分类优先） */
+  function renderRelated(it) {
+    var box = $('relBox'); if (!box) return;
+    function grams(s) {
+      s = s.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '');
+      var g = []; for (var i = 0; i < s.length - 1; i++) g.push(s.substr(i, 2));
+      return g;
+    }
+    var a = grams(it.title);
+    if (!a.length) { box.innerHTML = '<div style="color:var(--t3);font-size:12px">标题过短，无法推荐</div>'; return; }
+    var setA = {}; a.forEach(function (g) { setA[g] = 1; });
+    var scored = [];
+    for (var i = 0; i < ITEMS.length; i++) {
+      var b = ITEMS[i];
+      if (b.id === it.id) continue;
+      var inter = 0, seen = {};
+      var gb = grams(b.title);
+      for (var j = 0; j < gb.length; j++) { if (setA[gb[j]] && !seen[gb[j]]) { seen[gb[j]] = 1; inter++; } }
+      if (!inter) continue;
+      var score = inter / Math.sqrt(a.length + gb.length);
+      if (b.cat === it.cat) score *= 1.35;
+      if (b.pname === it.pname) score *= 1.5;
+      scored.push([score, b]);
+    }
+    scored.sort(function (x, y) { return y[0] - x[0]; });
+    var top = scored.slice(0, 5);
+    box.innerHTML = top.length ? top.map(function (s) {
+      return '<div class="rel-item" data-id="' + s[1].id + '"><div class="rt">' + esc(s[1].title) + '</div>' +
+        '<div class="rs">' + esc(s[1].pname) + ' · ' + esc(s[1].cat) + '</div></div>';
+    }).join('') : '<div style="color:var(--t3);font-size:12px">暂无相关档案</div>';
+    box.querySelectorAll('.rel-item').forEach(function (el) {
+      el.onclick = function () { openDrawer(+el.dataset.id); };
+    });
+  }
+
+  /* ================= AI 调用 ================= */
+  function aiChat(messages, maxTokens) {
+    var url = AI_CFG.base.replace(/\/+$/, '') + '/chat/completions';
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AI_CFG.key },
+      body: JSON.stringify({
+        model: AI_CFG.model, messages: messages, stream: false,
+        temperature: 0.6, max_tokens: maxTokens || 900
+      })
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        if (!r.ok) throw new Error('HTTP ' + r.status + '：' + t.slice(0, 160));
+        var d; try { d = JSON.parse(t); } catch (e) { throw new Error('返回解析失败：' + t.slice(0, 120)); }
+        if (d.error) throw new Error(d.error.message || JSON.stringify(d.error).slice(0, 120));
+        var c = d.choices && d.choices[0];
+        return (c && c.message && c.message.content) || (c && c.text) || '';
+      });
+    });
+  }
+
+  function buildPrompt(it) {
+    return '你是上海市科普内容编目专家，服务于沪杏科技图书馆的科普视频档案系统。\n' +
+      '请根据下面的档案信息，推断这部科普视频的内容并生成档案描述。要求：语言规范、信息务实、不虚构具体数据（如无把握不要编造具体数字、人名、机构奖项）。\n\n' +
+      '【视频标题】' + it.title + '\n' +
+      '【所属项目】' + it.pname + '\n' +
+      '【承担单位】' + it.unit + '\n' +
+      '【一级分类】' + it.cat + '\n' +
+      '【年度批次】' + it.batch + '\n\n' +
+      '请严格只输出如下 JSON（不要输出任何解释、不要加 markdown 代码块标记）：\n' +
+      '{"summary":"160字左右的内容描述，说明这部视频大致讲了什么、采用什么形式呈现","' +
+      'points":["核心知识点1","核心知识点2","核心知识点3"],' +
+      '"advice":"观看建议：明确适合什么人群看、建议如何配套观看或用于什么场景，60-90字",' +
+      '"audience":"适用人群（如：中小学生/社区居民/老年群体/专业从业者/亲子家庭）",' +
+      '"level":"难度等级（入门/进阶/专业 三选一）",' +
+      '"duration":"预估观看时长（如：3-5分钟）",' +
+      '"tags":["标签1","标签2","标签3","标签4","标签5","标签6"]}';
+  }
+
+  function genAI(it, btn) {
+    var ck = hash(it.key);
+    if (!AI_CFG.key) { toast('请先在「AI 设置」中填写 API Key', 'err'); openModal('modalSettings'); return; }
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> 生成中…'; }
+    var sec = $('dwBody').querySelectorAll('.sec')[1];
+    if (sec) {
+      sec.innerHTML = '<div class="sec-t">AI 内容分析</div><div class="ai-box ai-live" style="padding:14px">' +
+        '<div class="skel" style="width:100%"></div><div class="skel" style="width:92%"></div>' +
+        '<div class="skel" style="width:78%"></div><div class="skel" style="width:88%;margin-top:12px"></div>' +
+        '<div class="skel" style="width:64%"></div></div>';
+    }
+    aiChat([{ role: 'user', content: buildPrompt(it) }])
+      .then(function (txt) {
+        var d = extractJSON(txt);
+        if (!d || !d.summary) throw new Error('AI 返回格式异常');
+        d.ts = Date.now();
+        AI_CACHE[ck] = d; saveJSON(LS_CACHE, AI_CACHE);
+        toast('AI 描述已生成', 'ok');
+        renderDrawer(); renderList(); renderStats();
+      })
+      .catch(function (e) {
+        toast('生成失败：' + e.message, 'err');
+        renderDrawer();
+      })
+      .then(function () { if (btn) { btn.disabled = false; btn.textContent = '🔄 重新生成'; } });
+  }
+
+  /* 分类复核 */
+  function recheck(it, btn) {
+    if (!AI_CFG.key) { toast('请先填写 API Key', 'err'); return; }
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin dark"></span> 复核中'; }
+    var cats = uniqSorted(DB.cat);
+    var p = '你是科普内容分类专家。判断下面这部科普视频被归入「' + it.cat + '」是否合适。\n' +
+      '可选分类：' + cats.join('、') + '\n\n' +
+      '标题：' + it.title + '\n项目：' + it.pname + '\n单位：' + it.unit + '\n\n' +
+      '只输出 JSON：{"ok":true或false,"suggest":"最合适的分类（从可选分类中选一个）","reason":"30字以内理由"}';
+    aiChat([{ role: 'user', content: p }], 300)
+      .then(function (txt) {
+        var d = extractJSON(txt);
+        if (!d) throw new Error('返回解析失败');
+        var ck = hash(it.key);
+        AI_CACHE[ck] = Object.assign(AI_CACHE[ck] || {}, { recheck: d });
+        saveJSON(LS_CACHE, AI_CACHE);
+        toast(d.ok ? '分类复核：合适' : '建议调整为「' + d.suggest + '」', d.ok ? 'ok' : 'err');
+        renderDrawer();
+      })
+      .catch(function (e) { toast('复核失败：' + e.message, 'err'); })
+      .then(function () { if (btn) { btn.disabled = false; btn.textContent = '🧭 分类复核'; } });
+  }
+
+  /* 自然语言智能检索 */
+  function aiSearch(btn) {
+    var q = prompt('想找什么样的科普视频？（用大白话描述即可）\n例如：适合给小学生看的人工智能启蒙、讲老年人用药安全的');
+    if (!q) return;
+    if (!AI_CFG.key) { toast('请先填写 API Key', 'err'); return; }
+    var old = btn.textContent; btn.disabled = true; btn.innerHTML = '<span class="spin"></span> 检索中';
+    var p = '你是检索助手。把用户的找片需求转成检索关键词，用于在科普视频档案库里做文本匹配。\n' +
+      '用户需求：' + q + '\n可选一级分类：' + uniqSorted(DB.cat).join('、') + '\n\n' +
+      '只输出 JSON：{"keywords":["关键词1","关键词2","关键词3"],"cats":["最相关的一级分类，可为空数组"]}';
+    aiChat([{ role: 'user', content: p }], 300)
+      .then(function (txt) {
+        var d = extractJSON(txt);
+        if (!d || !d.keywords) throw new Error('返回解析失败');
+        S.q = d.keywords.join(' ');
+        S.qMode = 'or';
+        $('q').value = S.q;
+        $('qMode').value = 'or';
+        S.cat = (d.cats && d.cats.length && DB.cat.indexOf(d.cats[0]) >= 0) ? d.cats[0] : '';
+        $('fCat').value = S.cat;
+        S.batch = ''; S.unit = ''; S.proj = ''; S.flag = '';
+        $('fBatch').value = ''; $('fUnit').value = ''; $('fProj').value = ''; $('fFlag').value = '';
+        refresh(true);
+        toast('已按「' + d.keywords.slice(0, 3).join('、') + '」检索到 ' + view.length + ' 条', 'ok');
+      })
+      .catch(function (e) { toast('检索失败：' + e.message, 'err'); })
+      .then(function () { btn.disabled = false; btn.textContent = old; });
+  }
+
+  /* 批量生成 */
+  var batchStop = false;
+  function batchRun() {
+    var targets = view.filter(function (it) { return !AI_CACHE[hash(it.key)]; });
+    if (!targets.length) { toast('当前筛选结果均已生成过 AI 描述', 'ok'); return; }
+    if (targets.length > 200 && !confirm('当前有 ' + targets.length + ' 条待生成，预计耗时较长并消耗较多 tokens。\n是否继续？（可随时点「停止」中断）')) return;
+    if (!AI_CFG.key) { toast('请先填写 API Key', 'err'); openModal('modalSettings'); return; }
+    batchStop = false;
+    $('prog').classList.add('on');
+    var done = 0, fail = 0, total = targets.length, idx = 0;
+    function upd() {
+      $('progNum').textContent = done + ' / ' + total + (fail ? '（失败 ' + fail + '）' : '');
+      $('progBar').style.width = (done / total * 100).toFixed(1) + '%';
+      $('progMsg').textContent = '正在批量生成 AI 描述…';
+    }
+    upd();
+    function worker() {
+      if (batchStop || idx >= total) return Promise.resolve();
+      var it = targets[idx++];
+      return aiChat([{ role: 'user', content: buildPrompt(it) }])
+        .then(function (txt) {
+          var d = extractJSON(txt);
+          if (!d || !d.summary) throw new Error('格式异常');
+          d.ts = Date.now();
+          AI_CACHE[hash(it.key)] = d;
+          if (done % 10 === 0) saveJSON(LS_CACHE, AI_CACHE);
+        })
+        .catch(function () { fail++; })
+        .then(function () { done++; upd(); return worker(); });
+    }
+    Promise.all([worker(), worker(), worker()]).then(function () {
+      saveJSON(LS_CACHE, AI_CACHE);
+      $('progMsg').textContent = batchStop ? '已停止' : '完成';
+      toast(batchStop ? '已停止，成功 ' + (done - fail) + ' 条' : '批量完成：成功 ' + (done - fail) + ' 条，失败 ' + fail + ' 条', fail ? 'err' : 'ok');
+      refresh(false);
+      setTimeout(function () { $('prog').classList.remove('on'); }, 2500);
+    });
+  }
+
+  /* ================= 导入导出 ================= */
+  function itemRows(list) {
+    return list.map(function (it, i) {
+      var a = AI_CACHE[hash(it.key)] || {};
+      return [
+        i + 1, it.batch, it.pno, it.pname, it.unit, it.title, it.cat, it.note,
+        a.summary || '', (a.points || []).join('；'), a.advice || '', a.audience || '',
+        a.level || '', (a.tags || []).join('、')
+      ];
+    });
+  }
+  var EXP_HEAD = ['序号', '年度批次', '项目编号', '项目名称', '承担单位', '视频标题', '一级分类', '审核备注',
+    'AI内容描述', 'AI核心知识点', 'AI观看建议', 'AI适用人群', 'AI难度等级', 'AI智能标签'];
+
+  function doExport() {
+    var scope = $('expScope').value, fmt = $('expFmt').value;
+    var list = scope === 'all' ? ITEMS : scope === 'ai'
+      ? ITEMS.filter(function (it) { return AI_CACHE[hash(it.key)]; }) : view;
+    if (!list.length) { toast('没有可导出的数据', 'err'); return; }
+    if (fmt === 'csv') {
+      var lines = [EXP_HEAD.map(csvCell).join(',')].concat(
+        itemRows(list).map(function (r) { return r.map(csvCell).join(','); })
+      );
+      download('沪杏科普视频档案_' + stamp() + '.csv', '\uFEFF' + lines.join('\r\n'), 'text/csv');
+    } else {
+      var payload = { type: 'hxlib-archive-backup', version: 1, exportedAt: new Date().toISOString(),
+        archive: { meta: DB.meta, batch: DB.batch, cat: DB.cat, unit: DB.unit, proj: DB.proj, rows: DB.rows },
+        aiCache: AI_CACHE, patch: loadJSON(LS_PATCH, []) };
+      download('沪杏科普视频档案_' + stamp() + '.json', JSON.stringify(payload, null, 1), 'application/json');
+    }
+    toast('已导出 ' + list.length + ' 条', 'ok');
+    closeModals();
+  }
+
+  function pick(o, names) {
+    for (var i = 0; i < names.length; i++) {
+      for (var k in o) { if (String(k).trim() === names[i]) return o[k]; }
+    }
+    return '';
+  }
+  function doImport(text) {
+    text = String(text || '').trim();
+    if (!text) { toast('没有可导入的内容', 'err'); return; }
+    var added = 0, updated = 0, aiIn = 0;
+
+    if (text[0] === '{' || text[0] === '[') {
+      var j; try { j = JSON.parse(text); } catch (e) { toast('JSON 格式错误', 'err'); return; }
+      if (j.aiCache) { Object.keys(j.aiCache).forEach(function (k) { AI_CACHE[k] = j.aiCache[k]; aiIn++; }); }
+      var recs = j.records || (Array.isArray(j) ? j : null);
+      if (recs && recs.length) {
+        recs.forEach(function (r) {
+          var title = (r.title || r['视频标题'] || '').trim();
+          var pname = (r.pname || r['项目名称'] || '').trim();
+          if (!title) return;
+          var k = pname + '||' + title;
+          if (keyMap[k]) { Object.assign(keyMap[k], r); updated++; }
+          else { pushItem({ title: title, pname: pname, unit: r.unit || r['承担单位'] || '', cat: r.cat || r['一级分类'] || '未分类', batch: r.batch || r['年度批次'] || '', pno: r.pno || r['项目编号'] || '', note: r.note || r['审核备注'] || '' }); added++; }
+        });
+      }
+    } else {
+      var rows = parseCSV(text);
+      if (rows.length < 2) { toast('CSV 内容不足（至少需要表头 + 1 行数据）', 'err'); return; }
+      var head = rows[0].map(function (h) { return String(h).trim(); });
+      rows.slice(1).forEach(function (r) {
+        var o = {}; head.forEach(function (h, i) { o[h] = (r[i] || '').trim(); });
+        var title = pick(o, ['视频标题', 'title', '标题']);
+        var pname = pick(o, ['项目名称', 'pname', '项目']);
+        if (!title) return;
+        var k = pname + '||' + title;
+        var summary = pick(o, ['AI内容描述', 'summary', 'AI描述']);
+        var tags = pick(o, ['AI智能标签', 'tags']);
+        var pts = pick(o, ['AI核心知识点', 'points']);
+        var aiObj = summary ? {
+          summary: summary,
+          points: pts ? pts.split(/[；;]/).filter(Boolean) : [],
+          advice: pick(o, ['AI观看建议', 'advice']),
+          audience: pick(o, ['AI适用人群', 'audience']),
+          level: pick(o, ['AI难度等级', 'level']),
+          tags: tags ? tags.split(/[、,，]/).filter(Boolean) : [],
+          ts: Date.now()
+        } : null;
+        if (keyMap[k]) {
+          var t = keyMap[k];
+          var nc = pick(o, ['一级分类', 'cat']), nn = pick(o, ['审核备注', 'note']);
+          if (nc) t.cat = nc; if (nn) t.note = nn;
+          t.st = (t.title + ' ' + t.pname + ' ' + t.unit + ' ' + t.cat + ' ' + t.pno).toLowerCase();
+          if (aiObj) { AI_CACHE[hash(k)] = aiObj; aiIn++; }
+          updated++;
+        } else {
+          var n = pushItem({
+            title: title, pname: pname, unit: pick(o, ['承担单位', 'unit']),
+            cat: pick(o, ['一级分类', 'cat']) || '未分类', batch: pick(o, ['年度批次', 'batch']) || '导入数据',
+            pno: pick(o, ['项目编号', 'pno']), note: pick(o, ['审核备注', 'note'])
+          });
+          if (aiObj) { AI_CACHE[hash(k)] = aiObj; aiIn++; }
+          added++;
+        }
+      });
+    }
+    saveJSON(LS_CACHE, AI_CACHE);
+    persistPatch();
+    refresh(true);
+    renderStats();
+    toast('导入完成：新增 ' + added + '、更新 ' + updated + '、AI 描述 ' + aiIn + ' 条', 'ok');
+    closeModals();
+  }
+  function pushItem(o) {
+    var it = Object.assign({ id: ITEMS.length, desc: '' }, o);
+    it.key = it.pname + '||' + it.title;
+    it.st = (it.title + ' ' + it.pname + ' ' + it.unit + ' ' + it.cat + ' ' + it.pno).toLowerCase();
+    it.custom = true;
+    ITEMS.push(it); keyMap[it.key] = it;
+    return it;
+  }
+  function persistPatch() {
+    saveJSON(LS_PATCH, ITEMS.filter(function (i) { return i.custom; }));
+  }
+
+  /* ================= 弹窗 ================= */
+  function openModal(id) { closeModals(); $(id).classList.add('on'); $('mask').classList.add('on'); }
+  function closeModals() {
+    ['modalSettings', 'modalImport', 'modalExport'].forEach(function (i) { $(i).classList.remove('on'); });
+    if (!$('drawer').classList.contains('on')) $('mask').classList.remove('on');
+  }
+
+  /* ================= 事件绑定 ================= */
+  function bind() {
+    $('q').addEventListener('input', debounce(function () { S.q = this.value; refresh(true); }, 220));
+    $('qMode').addEventListener('change', function () { S.qMode = this.value; refresh(true); });
+    ['fBatch', 'fCat', 'fUnit', 'fProj', 'fFlag'].forEach(function (id) {
+      $(id).addEventListener('change', function () {
+        S[({ fBatch: 'batch', fCat: 'cat', fUnit: 'unit', fProj: 'proj', fFlag: 'flag' })[id]] = this.value;
+        refresh(true);
+      });
+    });
+    $('sortBy').addEventListener('change', function () { S.sort = this.value; refresh(true); });
+    $('pageSize').addEventListener('change', function () { S.size = +this.value; refresh(true); });
+    $('btnReset').onclick = function () {
+      S = { q: '', qMode: 'and', batch: '', cat: '', unit: '', proj: '', flag: '', sort: S.sort, page: 1, size: S.size };
+      $('q').value = ''; $('qMode').value = 'and';
+      $('fBatch').value = ''; $('fCat').value = ''; $('fUnit').value = ''; $('fProj').value = ''; $('fFlag').value = '';
+      refresh(true); toast('筛选已重置', 'ok');
+    };
+    $('pager').addEventListener('click', function (e) {
+      var b = e.target.closest('.pg'); if (!b || b.disabled || !b.dataset.p) return;
+      S.page = +b.dataset.p; renderList(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    $('tbody').addEventListener('click', function (e) {
+      var tr = e.target.closest('tr[data-id]'); if (tr) openDrawer(+tr.dataset.id);
+    });
+    $('cards').addEventListener('click', function (e) {
+      var c = e.target.closest('.card[data-id]'); if (c) openDrawer(+c.dataset.id);
+    });
+    $('dwClose').onclick = closeDrawer;
+    $('mask').onclick = function () { closeDrawer(); closeModals(); };
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeDrawer(); closeModals(); } });
+
+    $('btnAiSearch').onclick = function () { aiSearch(this); };
+    $('btnBatchAI').onclick = batchRun;
+    $('btnStop').onclick = function () { batchStop = true; $('progMsg').textContent = '正在停止…'; };
+
+    $('btnSettings').onclick = function () {
+      $('setBase').value = AI_CFG.base; $('setModel').value = AI_CFG.model; $('setKey').value = AI_CFG.key || '';
+      openModal('modalSettings');
+    };
+    $('btnCloseSet').onclick = closeModals;
+    $('btnSaveSet').onclick = function () {
+      AI_CFG.base = ($('setBase').value || DEFAULT_CFG.base).trim();
+      AI_CFG.model = ($('setModel').value || DEFAULT_CFG.model).trim();
+      AI_CFG.key = ($('setKey').value || '').trim();
+      saveJSON(LS_CFG, AI_CFG);
+      toast('设置已保存到本机', 'ok'); closeModals();
+    };
+    $('btnClearAI').onclick = function () {
+      if (!confirm('确定清空本机全部 AI 描述缓存？此操作不可恢复（已导出的备份不受影响）。')) return;
+      AI_CACHE = {}; localStorage.removeItem(LS_CACHE);
+      toast('AI 缓存已清空', 'ok'); refresh(false);
+      if (curItem) renderDrawer();
+    };
+    $('btnTestAI').onclick = function () {
+      var b = this; b.disabled = true; b.innerHTML = '<span class="spin dark"></span> 测试中';
+      var cfg = {
+        base: ($('setBase').value || DEFAULT_CFG.base).trim(),
+        model: ($('setModel').value || DEFAULT_CFG.model).trim(),
+        key: ($('setKey').value || '').trim() || DEFAULT_CFG.key
+      };
+      var old = AI_CFG; AI_CFG = cfg;
+      aiChat([{ role: 'user', content: '回复两个字：正常' }], 30)
+        .then(function (t) { toast('连接成功：' + String(t).trim().slice(0, 20), 'ok'); })
+        .catch(function (e) { toast('连接失败：' + e.message, 'err'); })
+        .then(function () { AI_CFG = old; b.disabled = false; b.textContent = '测试连接'; });
+    };
+
+    $('btnExport').onclick = function () { openModal('modalExport'); };
+    $('btnCloseExp').onclick = closeModals;
+    $('btnCancelExp').onclick = closeModals;
+    $('btnDoExport').onclick = doExport;
+
+    $('btnImport').onclick = function () { $('impPreview').textContent = ''; $('impText').value = ''; $('fileInput').value = ''; openModal('modalImport'); };
+    $('btnCloseImp').onclick = closeModals;
+    $('btnCancelImp').onclick = closeModals;
+    $('btnDoImport').onclick = function () {
+      var t = $('impText').value.trim();
+      if (t) { doImport(t); return; }
+      var f = $('fileInput').files[0];
+      if (!f) { toast('请选择文件或粘贴内容', 'err'); return; }
+      var fr = new FileReader();
+      fr.onload = function () {
+        var raw = String(fr.result);
+        var res = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
+        try { new TextDecoder('utf-8', { fatal: true }).decode(new TextEncoder().encode(res)); }
+        catch (e) { }
+        doImport(res);
+      };
+      fr.onerror = function () { toast('文件读取失败。若为 Excel，请先另存为 CSV（UTF-8）', 'err'); };
+      fr.readAsText(f, 'utf-8');
+    };
+    $('fileInput').addEventListener('change', function () {
+      var f = this.files[0]; if (!f) return;
+      $('impPreview').textContent = '已选择：' + f.name + '（' + (f.size / 1024).toFixed(1) + ' KB），点击「导入」开始处理。';
+    });
+  }
+
+  /* ================= 启动 ================= */
+  function init() {
+    /* 恢复本地新增/修改的数据 */
+    var patch = loadJSON(LS_PATCH, []);
+    patch.forEach(function (r) { if (r && r.title && !keyMap[r.pname + '||' + r.title]) pushItem(r); });
+
+    initFilters();
+    bind();
+    refresh(true);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
 </script>
 </body>
 </html>
