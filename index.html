@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沪杏科技图书馆 · 科普视频档案系统</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f6f8;
+    color: #1f2328;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #ffffff;
+    border: 1px solid #e4e6ea;
+    border-radius: 14px;
+    padding: 48px 44px;
+    max-width: 620px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #1a7f5a;
+    background: #e6f4ee;
+    border: 1px solid #b9e2d0;
+    border-radius: 999px;
+    padding: 4px 12px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .sub {
+    font-size: 15px;
+    color: #5b6570;
+    margin-bottom: 28px;
+  }
+  .hello {
+    font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+    font-size: 17px;
+    color: #0b6bcb;
+    background: #f2f7fd;
+    border-left: 3px solid #0b6bcb;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eef0f2;
+  }
+  th {
+    width: 108px;
+    color: #5b6570;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  td { color: #1f2328; }
+  .ok { color: #1a7f5a; font-weight: 500; }
+  .foot {
+    margin-top: 26px;
+    font-size: 12px;
+    color: #8a939d;
+    border-top: 1px solid #eef0f2;
+    padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">HXLIB · 部署验证</span>
+    <h1>沪杏科技图书馆</h1>
+    <div class="sub">科普视频档案系统 · Hello World 测试页</div>
+
+    <div class="hello">Hello, World! 👋</div>
+
+    <table>
+      <tr><th>站点地址</th><td>https://peterinblue.github.io/hxlib/</td></tr>
+      <tr><th>代码仓库</th><td>peterinblue/hxlib</td></tr>
+      <tr><th>部署分支</th><td>main</td></tr>
+      <tr><th>部署状态</th><td class="ok" id="status">✅ GitHub Pages 部署通道正常</td></tr>
+      <tr><th>页面时间</th><td id="time">—</td></tr>
+    </table>
+
+    <div class="foot">
+      本页面用于验证 hxlib 仓库的 GitHub Pages 发布链路是否正常。后续将承载科普视频档案的检索、分类与编目功能。
+    </div>
+  </div>
+
+<script>
+  function fmt(d) {
+    const p = n => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+      + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+  }
+  // 北京时间 = UTC+8
+  const now = new Date(Date.now() + (new Date().getTimezoneOffset() + 480) * 60000);
+  document.getElementById('time').textContent = fmt(now) + '（北京时间）';
+</script>
+</body>
+</html>
